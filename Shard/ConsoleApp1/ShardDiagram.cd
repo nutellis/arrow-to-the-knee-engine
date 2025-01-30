@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Shard.BaseFunctionality">
+    <Position X="3" Y="2.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAQAAAAAAAAQAAAAAAAAEAAA=</HashCode>
+      <FileName>Shard\BaseFunctionality.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.Bootstrap">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="displayEngine" Type="Shard.Display" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="9.75" Y="2.938" />
+        <Point X="9.375" Y="2.938" />
+        <Point X="9.375" Y="7.085" />
+        <Point X="5.75" Y="7.085" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QAAAgAEFAIEAAAgAAAEgBEAADIAAAFAAAAAIBQAQEAA=</HashCode>
+      <FileName>Shard\Bootstrap.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="runningGame" />
+      <Field Name="displayEngine" />
+      <Field Name="input" />
+      <Field Name="soundEngine" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Shard.Collider">
+    <Position X="17" Y="17.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAADABgAAAAYAIAAAAAAAgABAAIAAAA=</HashCode>
+      <FileName>Shard\Collider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.ColliderCircle">
+    <Position X="21.25" Y="11.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAQEACAADAAAQAQAAAIEIIAAACDDhAAQQYAA=</HashCode>
+      <FileName>Shard\ColliderCircle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.ColliderRect">
+    <Position X="21.5" Y="17.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAQkAQAADAEAQAQQAAMEMAABICADhACQAYAA=</HashCode>
+      <FileName>Shard\ColliderRect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.Debug">
+    <Position X="1" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAACSgAAAgAAAQEAAAAgABAAAA=</HashCode>
+      <FileName>Shard\Debug.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.Display">
+    <Position X="4.25" Y="5.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QIAIAAAAAASAAAgAAAEAAAAAABUAQAAAAAQQAACAAAA=</HashCode>
+      <FileName>Shard\Display.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.DisplaySDL">
+    <Position X="1" Y="11" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAEIAAAABAAAAAAAAAEAAAAAAAEAQAAQAAQZEACAAAA=</HashCode>
+      <FileName>Shard\DisplaySDL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.DisplayText">
+    <Position X="1" Y="7" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AIAAAAABAgQAAAAAAAMAAABACAEAAAAAAAAACACEAkA=</HashCode>
+      <FileName>Shard\DisplayText.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.Game">
+    <Position X="15.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAEAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Shard\Game.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.GameObject">
+    <Position X="15.5" Y="9.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>EABAAEAAEBiCABAIAhEFAAQAgAAEAAAKDABACAAEAAA=</HashCode>
+      <FileName>Shard\GameObject.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="transform" />
+      <Field Name="myBody" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Shard.GameObjectManager">
+    <Position X="13" Y="8.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>EAAAAAAgAAAAAAAAAAAEAQAIAAAAAAQAAAAAAAAEQAA=</HashCode>
+      <FileName>Shard\GameObjectManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="myObjects" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Shard.InputBasic">
+    <Position X="23" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Shard\InputBasic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.InputEvent">
+    <Position X="21" Y="2" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AEAAAABAAAAABAQAAAQEAAAAAAAAAAAAAABgAAAAYAA=</HashCode>
+      <FileName>Shard\InputEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.InputFramework">
+    <Position X="21" Y="9.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AABAAAEAAAAAAAAAAAEAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Shard\InputFramework.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.InputSystem">
+    <Position X="21" Y="5.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AgAAAAEAEAAAIAAAAAEAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Shard\InputSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.PhysicsBody">
+    <Position X="10.25" Y="9.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gKMIBYAgAQMEAgBHABwBQAhcIIgJEQCCAQAIgAChCCY=</HashCode>
+      <FileName>Shard\PhysicsBody.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="myColliders" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Shard.PhysicsManager">
+    <Position X="6.75" Y="9.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAIwBEAQAAQIwAABACZAQQAgAFEaQAAAAAAQGAAA=</HashCode>
+      <FileName>Shard\PhysicsManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="allPhysicsObjects" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Shard.Sound" Collapsed="true">
+    <Position X="6.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Shard\Sound.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.SoundBeep" Collapsed="true">
+    <Position X="6.25" Y="3.25" Width="1.5" />
+    <InheritanceLine Type="Shard.Sound" FixedToPoint="true">
+      <Path>
+        <Point X="7" Y="2.812" />
+        <Point X="7" Y="3.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Shard\SoundBeep.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.Transform">
+    <Position X="18.25" Y="10" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABAABkCQAACAyACAAEoQgAACAEAAAABAAADgAIAA5AY=</HashCode>
+      <FileName>Shard\Transform.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.Vector">
+    <Position X="1" Y="3" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAQCAAEAAAAAAAAAQAAAAIAAABgAAAAYAA=</HashCode>
+      <FileName>Shard\Vector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shard.Transform3D" Collapsed="true">
+    <Position X="17" Y="7.5" Width="1.5" />
+    <InheritanceLine Type="Shard.Transform" FixedToPoint="true">
+      <Path>
+        <Point X="19" Y="10" />
+        <Point X="19" Y="7.875" />
+        <Point X="18.5" Y="7.875" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAwIAAAMCAAAAAAAAAAAAAQAAAAE=</HashCode>
+      <FileName>Shard\Transform3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Shard.CollisionHandler">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Shard\CollisionHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Shard.InputListener">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Shard\InputListener.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
