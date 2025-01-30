@@ -1,0 +1,5 @@
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Engine Code\4.0 - Real\Shard\ConsoleApp1\obj\Debug\netcoreapp2.2\Shard.csproj.AssemblyReference.cache
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Engine Code\4.0 - Real\Shard\ConsoleApp1\obj\Debug\netcoreapp2.2\Shard.csproj.ResolveComReference.cache
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Engine Code\4.0 - Real\Shard\ConsoleApp1\obj\Debug\netcoreapp2.2\Shard.AssemblyInfoInputs.cache
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Engine Code\4.0 - Real\Shard\ConsoleApp1\obj\Debug\netcoreapp2.2\Shard.AssemblyInfo.cs
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Engine Code\4.0 - Real\Shard\ConsoleApp1\obj\Debug\netcoreapp2.2\Shard.csproj.CoreCompileInputs.cache

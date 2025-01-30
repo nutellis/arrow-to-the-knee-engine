@@ -1,0 +1,68 @@
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libFLAC-8.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libjpeg-9.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libmodplug-1.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libmpg123-0.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libogg-0.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libopus-0.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libopusfile-0.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libpng16-16.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libtiff-5.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libvorbis-0.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libwebp-7.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\SDL2.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\SDL2_image.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\SDL2_mixer.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\SDL2_ttf.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\zlib1.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\Shard.exe
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\Shard.deps.json
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\Shard.runtimeconfig.json
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\Shard.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\Shard.pdb
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\bin\Debug\net8.0-windows\Sayers.SDL2.Core.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.csproj.AssemblyReference.cache
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.csproj.ResolveComReference.cache
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.GeneratedMSBuildEditorConfig.editorconfig
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.AssemblyInfoInputs.cache
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.AssemblyInfo.cs
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.csproj.CoreCompileInputs.cache
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.csproj.CopyComplete
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\obj\Debug\net8.0-windows\refint\Shard.dll
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.pdb
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.genruntimeconfig.cache
+D:\Jobs\(2019 - xxxx) Chalmers University of Technology\Teaching\Game Engine Architecture\Code Releases\1.2.0 - Look What You Made Me Do\Shard\ConsoleApp1\obj\Debug\net8.0-windows\ref\Shard.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libFLAC-8.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libjpeg-9.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libmodplug-1.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libmpg123-0.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libogg-0.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libopus-0.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libopusfile-0.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libpng16-16.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libtiff-5.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libvorbis-0.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\libwebp-7.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\SDL2.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\SDL2_image.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\SDL2_mixer.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\SDL2_ttf.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\zlib1.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\Shard.exe
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\Shard.deps.json
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\Shard.runtimeconfig.json
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\Shard.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\Shard.pdb
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\bin\Debug\net8.0-windows\Sayers.SDL2.Core.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.csproj.AssemblyReference.cache
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.csproj.ResolveComReference.cache
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.AssemblyInfoInputs.cache
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.AssemblyInfo.cs
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.csproj.CoreCompileInputs.cache
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.csproj.CopyComplete
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\obj\Debug\net8.0-windows\refint\Shard.dll
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.pdb
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.genruntimeconfig.cache
+C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\obj\Debug\net8.0-windows\ref\Shard.dll
