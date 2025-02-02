@@ -1,11 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "DnZi/BTHOBg=",
+  "dgSpecHash": "6n+uO5ela+VlBsYDxdHqOcX06xQSnAGJ54RP/QFfR6h47owe5H6PScFttB+Z+Viqj2zVlY9wdcgekrJPhDpvqw==",
   "success": true,
-  "projectFilePath": "Q:\\Users\\Nutellis\\Desktop\\Shard\\ConsoleApp1\\Shard.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\Nutellis\\.nuget\\packages\\sayers.sdl2.core\\1.0.11\\sayers.sdl2.core.1.0.11.nupkg.sha512",
-    "C:\\Users\\Nutellis\\.nuget\\packages\\sdl2-cs\\2.0.0\\sdl2-cs.2.0.0.nupkg.sha512"
-  ],
+  "projectFilePath": "W:\\CPP Project\\Shard\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }
