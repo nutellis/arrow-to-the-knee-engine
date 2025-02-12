@@ -1,51 +1,71 @@
 ﻿using SDL2;
 using Shard;
 using System.Drawing;
+using Shard.Shard.Components;
+using Shard.Shard;
 
 namespace SpaceInvaders
 {
     class Spaceship : GameObject, InputListener, CollisionHandler
     {
-        bool left, right;
-        float fireCounter, fireDelay;
+        //bool left, right;
+        //float fireCounter, fireDelay;
+
+        private TransformComponent transform;
+        private InputComponent input;
+        private WeaponComponent weapon;
 
 
         public override void initialize()
         {
 
-            this.Transform.X = 100.0f;
-            this.Transform.Y = 800.0f;
-            this.Transform.SpritePath = Bootstrap.getAssetManager().getAssetPath("player.png");
+            //this.Transform.X = 100.0f;
+            //this.Transform.Y = 800.0f;
+            //this.Transform.SpritePath = Bootstrap.getAssetManager().getAssetPath("player.png");
 
+            //fireDelay = 2;
+            //fireCounter = fireDelay;
 
-            fireDelay = 2;
-            fireCounter = fireDelay;
+            //Bootstrap.getInput().addListener(this);
+
+            //setPhysicsEnabled();
+
+            //MyBody.addRectCollider();
+
+            //addTag("Player");
+
+            transform = new TransformComponent(100.0f, 800.0f, 0f, 1f, 1f, Bootstrap.getAssetManager().getAssetPath("player.png"));
+            input = new InputComponent();
+            weapon = new WeaponComponent();
 
             Bootstrap.getInput().addListener(this);
 
             setPhysicsEnabled();
-
             MyBody.addRectCollider();
 
             addTag("Player");
-
 
         }
 
         public void fireBullet()
         {
-            if (fireCounter < fireDelay)
-            {
-                return;
-            }
+            //if (fireCounter < fireDelay)
+            //{
+            //    return;
+            //}
+
+            //Bullet b = new Bullet();
+
+            //b.setupBullet(this.Transform.Centre.X, this.Transform.Centre.Y);
+            //b.Dir = -1;
+            //b.DestroyTag = "Invader";
+
+            //fireCounter = 0;
 
             Bullet b = new Bullet();
-
-            b.setupBullet(this.Transform.Centre.X, this.Transform.Centre.Y);
+            b.setupBullet(transform.X, transform.Y);
             b.Dir = -1;
             b.DestroyTag = "Invader";
-
-            fireCounter = 0;
 
         }
 
@@ -62,12 +82,14 @@ namespace SpaceInvaders
 
                 if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
                 {
-                    right = true;
+                    //right = true;
+                    input.Right = true;
                 }
 
                 if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
                 {
-                    left = true;
+                    //left = true;
+                    input.Left = true;
                 }
 
             }
@@ -77,12 +99,14 @@ namespace SpaceInvaders
 
                 if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
                 {
-                    right = false;
+                    //right = false;
+                    input.Right = false;
                 }
 
                 if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
                 {
-                    left = false;
+                    //left = false;
+                    input.Left = false;
                 }
 
 
@@ -94,7 +118,8 @@ namespace SpaceInvaders
             {
                 if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE)
                 {
-                    fireBullet();
+                    //fireBullet();
+                    input.Fire = true;
                 }
             }
         }
@@ -103,16 +128,27 @@ namespace SpaceInvaders
         {
             float amount = (float)(100 * Bootstrap.getDeltaTime());
 
-            fireCounter += (float)Bootstrap.getDeltaTime();
+            //fireCounter += (float)Bootstrap.getDeltaTime();
 
-            if (left)
-            {
-                this.Transform.translate(-1 * amount, 0);
-            }
+            //if (left)
+            //{
+            //    this.Transform.translate(-1 * amount, 0);
+            //}
 
-            if (right)
+            //if (right)
+            //{
+            //    this.Transform.translate(1 * amount, 0);
+            //}
+
+            weapon.Update(Bootstrap.getDeltaTime());
+
+            if (input.Left) transform.Translate(-1 * amount, 0);
+            if (input.Right) transform.Translate(1 * amount, 0);
+            if (input.Fire && weapon.CanFire())
             {
-                this.Transform.translate(1 * amount, 0);
+                fireBullet();
+                weapon.Fire();
+                input.Fire = false;
             }
 
             Bootstrap.getDisplay().addToDraw(this);

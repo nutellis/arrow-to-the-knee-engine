@@ -6,6 +6,8 @@
 *   
 */
 
+using Shard.Shard;
+
 namespace Shard
 {
     interface CollisionHandler

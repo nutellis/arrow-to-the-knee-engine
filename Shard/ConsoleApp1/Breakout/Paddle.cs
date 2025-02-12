@@ -1,6 +1,7 @@
 ﻿using SDL2;
 
 using Shard;
+using Shard.Shard;
 
 namespace GameBreakout
 {
