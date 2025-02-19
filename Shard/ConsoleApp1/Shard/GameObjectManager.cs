@@ -8,6 +8,7 @@
 *   
 */
 
+using Shard.Shard.Components;
 using System.Collections.Generic;
 
 namespace Shard
@@ -44,59 +45,111 @@ namespace Shard
         }
 
 
+        //public void physicsUpdate()
+        //{
+        //    GameObject gob;
+        //    for (int i = 0; i < myObjects.Count; i++)
+        //    {
+        //        gob = myObjects[i];
+        //        gob.physicsUpdate();
+        //    }
+        //}
+
         public void physicsUpdate()
         {
-            GameObject gob;
-            for (int i = 0; i < myObjects.Count; i++)
+            foreach (var gob in myObjects)
             {
-                gob = myObjects[i];
-                gob.physicsUpdate();
+                PhysicsComponent physics = gob.getComponent<PhysicsComponent>();
+                if (physics != null)
+                {
+                    physics.physicsUpdate();
+                }
             }
         }
+
+        //public void prePhysicsUpdate()
+        //{
+        //    GameObject gob;
+        //    for (int i = 0; i < myObjects.Count; i++)
+        //    {
+        //        gob = myObjects[i];
+
+        //        gob.prePhysicsUpdate();
+        //    }
+        //}
 
         public void prePhysicsUpdate()
         {
-            GameObject gob;
-            for (int i = 0; i < myObjects.Count; i++)
+            foreach (var gob in myObjects)
             {
-                gob = myObjects[i];
-
-                gob.prePhysicsUpdate();
+                PhysicsComponent physics = gob.getComponent<PhysicsComponent>();
+                if (physics != null)
+                {
+                    physics.prePhysicsUpdate();
+                }
             }
         }
 
+        //public void update()
+        //{
+        //    List<int> toDestroy = new List<int>();
+        //    GameObject gob;
+        //    for (int i = 0; i < myObjects.Count; i++)
+        //    {
+        //        gob = myObjects[i];
+
+        //        gob.update();
+
+        //        gob.checkDestroyMe();
+
+        //        if (gob.ToBeDestroyed == true)
+        //        {
+        //            toDestroy.Add(i);
+        //        }
+        //    }
+
+        //    if (toDestroy.Count > 0)
+        //    {
+        //        for (int i = toDestroy.Count - 1; i >= 0; i--)
+        //        {
+        //            gob = myObjects[toDestroy[i]];
+        //            myObjects[toDestroy[i]].killMe();
+        //            myObjects.RemoveAt(toDestroy[i]);
+
+        //        }
+        //    }
+
+        //    toDestroy.Clear();
+        //    //Debug.Log ("NUm Objects is " + myObjects.Count);
+        //}
+
         public void update()
         {
-            List<int> toDestroy = new List<int>();
-            GameObject gob;
-            for (int i = 0; i < myObjects.Count; i++)
-            {
-                gob = myObjects[i];
+            List<GameObject> toDestroy = new List<GameObject>();
 
+            foreach (var gob in myObjects)
+            {
                 gob.update();
 
-                gob.checkDestroyMe();
-
-                if (gob.ToBeDestroyed == true)
+                // Only check destruction for objects with a PhysicsComponent
+                PhysicsComponent physics = gob.getComponent<PhysicsComponent>();
+                if (physics != null)
                 {
-                    toDestroy.Add(i);
+                    physics.checkDestroyMe(gob);
+                }
+
+                if (gob.ToBeDestroyed)
+                {
+                    toDestroy.Add(gob);
                 }
             }
 
-            if (toDestroy.Count > 0)
+            // Destroy marked objects
+            foreach (var gob in toDestroy)
             {
-                for (int i = toDestroy.Count - 1; i >= 0; i--)
-                {
-                    gob = myObjects[toDestroy[i]];
-                    myObjects[toDestroy[i]].killMe();
-                    myObjects.RemoveAt(toDestroy[i]);
-
-                }
+                gob.Destroy();
+                myObjects.Remove(gob);
             }
-
-            toDestroy.Clear();
-
-            //            Debug.Log ("NUm Objects is " + myObjects.Count);
         }
 
     }

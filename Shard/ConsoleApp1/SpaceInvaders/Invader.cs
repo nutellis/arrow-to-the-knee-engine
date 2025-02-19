@@ -1,5 +1,6 @@
 ﻿using Shard;
 using Shard.Shard;
+using Shard.Shard.Components;
 using System;
 
 namespace SpaceInvaders
@@ -17,8 +18,16 @@ namespace SpaceInvaders
 
         public int Xdir { get => xdir; set => xdir = value; }
 
+        //private SpriteComponent sprite;
+        private TagComponent tag;
+        private PhysicsComponent physics;
+
         public override void initialize()
         {
+            //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("bunkerBit.png"));
+            physics = new PhysicsComponent();
+            tag = new TagComponent();
+
             sprites = new string[2];
 
             game = (GameSpaceInvaders)Bootstrap.getRunningGame();
@@ -32,14 +41,14 @@ namespace SpaceInvaders
             this.Transform.Y = 100.0f;
             this.Transform.SpritePath = sprites[0];
 
-            setPhysicsEnabled();
-            MyBody.addRectCollider();
+            physics.setPhysicsEnabled(true);
+            physics.MyBody.addRectCollider();
 
             rand = new Random();
 
-            addTag("Invader");
+            tag.addTag("Invader");
 
-            MyBody.PassThrough = true;
+            physics.MyBody.PassThrough = true;
 
         }
 
@@ -64,16 +73,36 @@ namespace SpaceInvaders
             Bootstrap.getDisplay().addToDraw(this);
         }
 
+        //public void onCollisionEnter(PhysicsBody x)
+        //{
+        //    if (x.Parent.checkTag("Player"))
+        //    {
+        //        x.Parent.ToBeDestroyed = true;
+        //    }
+
+        //    if (x.Parent.checkTag("BunkerBit"))
+        //    {
+        //        x.Parent.ToBeDestroyed = true;
+        //    }
+        //}
+
         public void onCollisionEnter(PhysicsBody x)
         {
-            if (x.Parent.checkTag("Player"))
-            {
-                x.Parent.ToBeDestroyed = true;
-            }
+            // Get the TagComponent from the collided object
+            TagComponent tagComp = x.Parent.getComponent<TagComponent>();
 
-            if (x.Parent.checkTag("BunkerBit"))
+            // Check if the object has a TagComponent before using checkTag()
+            if (tagComp != null)
             {
-                x.Parent.ToBeDestroyed = true;
+                if (tagComp.checkTag("Player"))
+                {
+                    x.Parent.ToBeDestroyed = true;
+                }
+
+                if (tagComp.checkTag("BunkerBit"))
+                {
+                    x.Parent.ToBeDestroyed = true;
+                }
             }
         }
 

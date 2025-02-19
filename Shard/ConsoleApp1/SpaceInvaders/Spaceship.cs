@@ -12,16 +12,18 @@ namespace SpaceInvaders
         //float fireCounter, fireDelay;
 
         private TransformComponent transform;
+        //private SpriteComponent sprite;
         private InputComponent input;
         private WeaponComponent weapon;
-
+        private TagComponent tag;
+        private PhysicsComponent physics;
 
         public override void initialize()
         {
 
             //this.Transform.X = 100.0f;
             //this.Transform.Y = 800.0f;
-            //this.Transform.SpritePath = Bootstrap.getAssetManager().getAssetPath("player.png");
+            this.Transform.SpritePath = Bootstrap.getAssetManager().getAssetPath("player.png");
 
             //fireDelay = 2;
             //fireCounter = fireDelay;
@@ -34,16 +36,21 @@ namespace SpaceInvaders
 
             //addTag("Player");
 
-            transform = new TransformComponent(100.0f, 800.0f, 0f, 1f, 1f, Bootstrap.getAssetManager().getAssetPath("player.png"));
+            transform = new TransformComponent(100.0f, 800.0f, 0f, 1f, 1f);
+            //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("player.png"));
             input = new InputComponent();
             weapon = new WeaponComponent();
+            physics = new PhysicsComponent();
+            tag = new TagComponent();
+
+            //transform.sprite;
 
             Bootstrap.getInput().addListener(this);
 
-            setPhysicsEnabled();
-            MyBody.addRectCollider();
+            physics.setPhysicsEnabled(true);
+            physics.MyBody.addRectCollider();
 
-            addTag("Player");
+            tag.addTag("Player");
 
         }
 
@@ -162,12 +169,12 @@ namespace SpaceInvaders
         public void onCollisionExit(PhysicsBody x)
         {
 
-            MyBody.DebugColor = Color.Green;
+            physics.MyBody.DebugColor = Color.Green;
         }
 
         public void onCollisionStay(PhysicsBody x)
         {
-            MyBody.DebugColor = Color.Blue;
+            physics.MyBody.DebugColor = Color.Blue;
         }
 
         public override string ToString()

@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 
 namespace Shard.Shard.Components
 {
-    internal class SoundComponent : Component
+    internal class SpriteComponent : Component
     {
-        public string SoundPath { get; set; }   
-        public bool IsPlaying { get; set; }      
+        public string SpritePath { get; set; }
 
-        public SoundComponent(string soundPath)
+        public SpriteComponent(string spritePath = null)
         {
-            SoundPath = soundPath;
-            IsPlaying = false;
+            SpritePath = spritePath;
         }
 
         public override void initialize()

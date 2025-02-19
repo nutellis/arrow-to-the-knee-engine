@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shard.Shard.Components
 {
-    class WeaponComponent
+    internal class WeaponComponent : Component
     {
         private double fireCounter, fireDelay = 2.0f;
 
@@ -26,5 +26,10 @@ namespace Shard.Shard.Components
         { 
             fireCounter += deltaTime; 
         }
+
+        //protected override void UpdateComponent()
+        //{
+
+        //}
     }
 }

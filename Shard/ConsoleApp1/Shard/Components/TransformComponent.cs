@@ -8,24 +8,54 @@ using System.Threading.Tasks;
 
 namespace Shard.Shard.Components
 {
-    class TransformComponent
+    internal class TransformComponent : Component
     {
         public float X { get; set; }
         public float Y { get; set; }
         public float Rotation { get; set; } // Rotation in degrees
         public float ScaleX { get; set; }
         public float ScaleY { get; set; }
-        public string SpritePath { get; set; }
 
-        public TransformComponent(float x, float y, float rotation = 0, float scaleX = 1.0f, float scaleY = 1.0f, string spritePath = null)
+        public TransformComponent(float x, float y, float rotation = 0, float scaleX = 1.0f, float scaleY = 1.0f)
         {
             X = x;
             Y = y;
             Rotation = rotation;
             ScaleX = scaleX;
             ScaleY = scaleY;
-            SpritePath = spritePath;
         }
+
+
+        public Transform3D transform;
+
+        // set transform or whatever
+
+        public void initialize(float x, float y)
+        {
+            transform.X = x;
+            transform.Y = y;
+        }
+
+        public override void update()
+        {
+
+        }
+
+        internal Transform3D Transform
+        {
+            get => transform;
+        }
+
+        internal Transform Transform2D
+        {
+            get => (Transform)transform;
+        }
+
+        public float getCenterX()
+        {
+            return transform.Centre.X;
+        }
+        
 
         // Translate the transform by dx and dy
         public void Translate(float dx, float dy)
@@ -58,5 +88,10 @@ namespace Shard.Shard.Components
 
             return scaleMatrix * rotationMatrix * translationMatrix; // Order of operations is important!
         }
+
+        //protected override void UpdateComponent()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

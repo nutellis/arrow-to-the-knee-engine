@@ -59,6 +59,7 @@ namespace Shard
 
         private float[] minAndMaxX;
         private float[] minAndMaxY;
+        private Shard.Components.PhysicsComponent physicsComponent;
 
         public void applyGravity(float modifier, Vector2 dir)
         {
@@ -156,6 +157,11 @@ namespace Shard
             //            Debug.getInstance().log ("Setting physics enabled");
 
             PhysicsManager.getInstance().addPhysicsObject(this);
+        }
+
+        public PhysicsBody(Shard.Components.PhysicsComponent physicsComponent)
+        {
+            this.physicsComponent = physicsComponent;
         }
 
         public void addTorque(float dir)

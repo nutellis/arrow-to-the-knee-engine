@@ -1,5 +1,6 @@
 ﻿using Shard;
 using Shard.Shard;
+using Shard.Shard.Components;
 using System;
 using System.Drawing;
 
@@ -7,6 +8,10 @@ namespace SpaceInvaders
 {
     class Bullet : GameObject, CollisionHandler
     {
+
+        private TagComponent tag;
+        private PhysicsComponent physics;
+
         private string destroyTag;
         private int dir;
 
@@ -21,18 +26,22 @@ namespace SpaceInvaders
             this.Transform.Ht = 20;
 
 
-            setPhysicsEnabled();
+            physics.setPhysicsEnabled(true);
 
-            MyBody.addRectCollider();
+            physics.MyBody.addRectCollider();
 
-            addTag("Bullet");
+            tag.addTag("Bullet");
 
-            MyBody.PassThrough = true;
+            physics.MyBody.PassThrough = true;
 
         }
 
         public override void initialize()
         {
+
+            physics = new PhysicsComponent();
+            tag = new TagComponent();
+
             this.Transient = true;
         }
 
@@ -50,28 +59,26 @@ namespace SpaceInvaders
                 (int)Transform.X,
                 (int)Transform.Y + 20,
                 col);
-
-
-
-
         }
 
         public void onCollisionEnter(PhysicsBody x)
         {
             GameSpaceInvaders g;
 
-            if (x.Parent.checkTag(destroyTag) == true || x.Parent.checkTag("BunkerBit"))
+            // Get the TagComponent from x.Parent
+            TagComponent tagComp = x.Parent.getComponent<TagComponent>();
+
+            // Ensure the object has a TagComponent before checking tags
+            if (tagComp != null && (tagComp.checkTag(destroyTag) || tagComp.checkTag("BunkerBit")))
             {
                 ToBeDestroyed = true;
                 x.Parent.ToBeDestroyed = true;
 
-                if (x.Parent.checkTag("Player"))
+                if (tagComp.checkTag("Player"))
                 {
                     g = (GameSpaceInvaders)Bootstrap.getRunningGame();
-
                     g.Dead = true;
                 }
-
             }
         }
 
