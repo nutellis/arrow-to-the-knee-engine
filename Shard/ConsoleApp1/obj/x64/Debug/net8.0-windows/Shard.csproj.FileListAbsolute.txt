@@ -134,3 +134,13 @@ Q:\Users\Nutellis\Desktop\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\refint\
 Q:\Users\Nutellis\Desktop\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.pdb
 Q:\Users\Nutellis\Desktop\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.genruntimeconfig.cache
 Q:\Users\Nutellis\Desktop\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\ref\Shard.dll
+W:\CPP Project\Shard\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.csproj.AssemblyReference.cache
+W:\CPP Project\Shard\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.csproj.ResolveComReference.cache
+W:\CPP Project\Shard\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.GeneratedMSBuildEditorConfig.editorconfig
+W:\CPP Project\Shard\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.AssemblyInfoInputs.cache
+W:\CPP Project\Shard\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.AssemblyInfo.cs
+W:\CPP Project\Shard\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.csproj.CoreCompileInputs.cache
+W:\CPP Project\Shard\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.sourcelink.json
+W:\CPP Project\Shard\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.dll
+W:\CPP Project\Shard\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\refint\Shard.dll
+W:\CPP Project\Shard\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.pdb
