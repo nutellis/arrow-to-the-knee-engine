@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Shard.Shard.Components
 {
-    internal class TransformComponent : Component
+    internal class TransformComponent : BaseComponent
     {
         public float X { get; set; }
         public float Y { get; set; }

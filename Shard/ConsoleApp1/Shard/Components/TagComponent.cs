@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Shard.Shard.Components
 {
 
-    class TagComponent : Component
+    class TagComponent : BaseComponent
     {
         private List<string> tags;
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shard.Shard.Components
 {
-    internal class SpriteComponent : Component
+    internal class SpriteComponent : BaseComponent
     {
         public string SpritePath { get; set; }
 
