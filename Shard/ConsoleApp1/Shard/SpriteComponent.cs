@@ -21,7 +21,13 @@ namespace Shard.Shard.Components
 
         private void loadSprite()
         {
-            
+            sprite = Bootstrap.getAssetManager(). //More code, should be something like getSprite(assetName)
+
+            if (sprite == null)
+            {
+                Console.WriteLine($"Failed to Load Sprite {assetName}");
+            }
+
         }
 
         public void setSprite(string newAssetName)
@@ -31,7 +37,7 @@ namespace Shard.Shard.Components
 
         }
 
-        public void changeColor(float r, float g, float b, float a = 1.0f)
+        public void changeColor(float r, float g, float b, float a)
         {
             if (sprite != null)
             {

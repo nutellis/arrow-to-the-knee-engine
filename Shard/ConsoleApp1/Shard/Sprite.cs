@@ -19,13 +19,13 @@ namespace Shard
         //Loads texture from file path
         private void loadTexture()
         {
-            Console.WriteLine("Loading sprite from: " + path); 
+            Console.WriteLine("Loading sprite from: " + path); //placeholder
         }
 
         //Draw the sprite on the screen
         public void draw()
         {
-            Console.WriteLine($"Drawing sprite {path} at ({X}, {Y}) with scale {scale}");
+            Console.WriteLine($"Drawing sprite {path} at ({X}, {Y}) with scale {scale}"); //placeholder
         }
 
         //Updates position of sprite
@@ -45,22 +45,21 @@ namespace Shard
         //Change color of sprite
         public void changeColor(float r, float g, float b, float a)
         {
-            Console.WriteLine($"Changing sprite {path} color to RGBA({r}, {g}, {b}, {a})");
+            Console.WriteLine($"Changing sprite {path} color to RGBA({r}, {g}, {b}, {a})"); //placeholder
         }
 
         //Start animation for sprite
         public void animate()
         {
             isAnimating = true;
-            Console.WriteLine($"Animating sprite {path}");
+            Console.WriteLine($"Animating sprite {path}"); //placeholder
         }
 
         //Plays the animation once.
         public void repeatOnce()
         {
-            
             isAnimating = true;
-            Console.WriteLine($"Playing sprite animation {path} once");
+            Console.WriteLine($"Playing sprite animation {path} once"); //placeholder
         }
 
     }
