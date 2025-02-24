@@ -157,7 +157,7 @@ namespace Shard
 
     class GameObject
     {
-        private List<Component> components = new List<Component>();
+        private List<BaseComponent> components = new List<BaseComponent>();
         private Tags tags;
         private bool visible = true;
         private bool transient = false;
@@ -216,14 +216,14 @@ namespace Shard
         }
 
         // Add a new component to the GameObject
-        public void addComponent(Component component)
+        public void addComponent(BaseComponent component)
         {
             components.Add(component);
             component.initialize();  // Initialize the component as it's added
         }
 
         // Get a specific component of type T from the GameObject
-        public T getComponent<T>() where T : Component
+        public T getComponent<T>() where T : BaseComponent
         {
             return components.OfType<T>().FirstOrDefault();  // More efficient search using LINQ
         }

@@ -7,7 +7,7 @@ using Shard.Shard.Components;
 
 namespace Shard.SpaceInvaders
 {
-    internal class WeaponComponent : Component
+    internal class WeaponComponent : BaseComponent
     {
         private double fireCounter, fireDelay = 2.0f;
 

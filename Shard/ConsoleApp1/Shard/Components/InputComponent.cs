@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shard.Shard.Components
 {
-    internal class InputComponent : Component
+    internal class InputComponent : BaseComponent
     {
         public InputComponent(GameObject owner) : base(owner)
         {

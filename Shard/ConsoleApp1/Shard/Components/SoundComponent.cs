@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shard.Shard.Components
 {
-    internal class SoundComponent : Component
+    internal class SoundComponent : BaseComponent
     {
         public string SoundPath { get; set; }   
         public bool IsPlaying { get; set; }      

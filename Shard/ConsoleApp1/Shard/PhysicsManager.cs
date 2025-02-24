@@ -163,7 +163,7 @@ namespace Shard
         public long LastDebugDraw { get => lastDebugDraw; set => lastDebugDraw = value; }
         public float GravityModifier { get => gravityModifier; set => gravityModifier = value; }
 
-        public void addPhysicsObject(PhysicsBody body)
+        public void addPhysicsObject(PhysicsComponent body)
         {
             if (allPhysicsObjects.Contains(body))
             {
