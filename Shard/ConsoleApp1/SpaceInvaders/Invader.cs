@@ -36,17 +36,18 @@ namespace SpaceInvaders
 
             spriteToUse = 0;
 
-            this.Transform.X = 200.0f;
-            this.Transform.Y = 100.0f;
-            this.Transform.SpritePath = sprites[0];
+            this.transform.X = 200.0f;
+            this.transform.Y = 100.0f;
+            this.transform.SpritePath = sprites[0];
 
-            physics.MyBody.addRectCollider();
+            physics.addRectCollider();
 
             rand = new Random();
 
+            tags = new Tags();
             tags.addTag("Invader");
 
-            physics.MyBody.PassThrough = true;
+            physics.PassThrough = true;
 
         }
 
@@ -60,7 +61,7 @@ namespace SpaceInvaders
                 spriteToUse = 0;
             }
 
-            this.Transform.SpritePath = Bootstrap.getAssetManager().getAssetPath(sprites[spriteToUse]);
+            this.transform.SpritePath = Bootstrap.getAssetManager().getAssetPath(sprites[spriteToUse]);
 
         }
 
@@ -114,14 +115,14 @@ namespace SpaceInvaders
 
         public override string ToString()
         {
-            return "Asteroid: [" + Transform.X + ", " + Transform.Y + ", " + Transform.Width + ", " + Transform.Height + "]";
+            return "Asteroid: [" + transform.X + ", " + transform.Y + ", " + transform.Wid + ", " + transform.Ht + "]";
         }
 
         public void fire()
         {
             Bullet b = new Bullet();
-
-            b.setupBullet(this.Transform.Transform.Centre.X, this.Transform.Transform.Centre.Y);
+            b.initialize();
+            b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y);
             b.Dir = 1;
             b.DestroyTag = "Player";
         }

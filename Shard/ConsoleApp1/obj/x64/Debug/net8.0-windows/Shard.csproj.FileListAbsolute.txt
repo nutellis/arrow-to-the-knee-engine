@@ -169,3 +169,38 @@ C:\Users\xrist\OneDrive - University of Gothenburg\Documents\GitHub\arrow-to-the
 C:\Users\xrist\OneDrive - University of Gothenburg\Documents\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.pdb
 C:\Users\xrist\OneDrive - University of Gothenburg\Documents\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.genruntimeconfig.cache
 C:\Users\xrist\OneDrive - University of Gothenburg\Documents\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\ref\Shard.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\libFLAC-8.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\libjpeg-9.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\libmodplug-1.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\libmpg123-0.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\libogg-0.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\libopus-0.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\libopusfile-0.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\libpng16-16.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\libtiff-5.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\libvorbis-0.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\libwebp-7.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\SDL2.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\SDL2_image.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\SDL2_mixer.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\SDL2_ttf.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\zlib1.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\Shard.exe
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\Shard.deps.json
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\Shard.runtimeconfig.json
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\Shard.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\Shard.pdb
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\bin\x64\Debug\net8.0-windows\Sayers.SDL2.Core.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.csproj.AssemblyReference.cache
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.csproj.ResolveComReference.cache
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.AssemblyInfoInputs.cache
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.AssemblyInfo.cs
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.csproj.CoreCompileInputs.cache
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.sourcelink.json
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.csproj.Up2Date
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\refint\Shard.dll
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.pdb
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\Shard.genruntimeconfig.cache
+C:\Users\xrist\OneDrive\Doc\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\x64\Debug\net8.0-windows\ref\Shard.dll

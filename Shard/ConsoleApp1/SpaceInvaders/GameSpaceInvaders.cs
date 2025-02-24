@@ -82,11 +82,11 @@ namespace Shard
 
                         if (ymod != 0)
                         {
-                            myInvaders[i, j].Transform.translate(0, ymod);
+                            myInvaders[i, j].transform.translate(0, ymod);
                         }
                         else
                         {
-                            myInvaders[i, j].Transform.translate(xdir, 0);
+                            myInvaders[i, j].transform.translate(xdir, 0);
                         }
 
                         livingInvaders.Add(myInvaders[i, j]);
@@ -109,6 +109,7 @@ namespace Shard
         public void createObjects()
         {
             ship = new Spaceship();
+            ship.initialize();
 
 
             int ymod = 0;
@@ -121,8 +122,9 @@ namespace Shard
                 for (int i = 0; i < columns; i++)
                 {
                     Invader invader = new Invader();
-                    invader.Transform.X = 100 + (i * 50);
-                    invader.Transform.Y = 100 + (ymod * 50);
+                    invader.initialize();
+                    invader.transform.X = 100 + (i * 50);
+                    invader.transform.Y = 100 + (ymod * 50);
 
                     myInvaders[j, i] = invader;
 
@@ -143,11 +145,12 @@ namespace Shard
             {
 
                 Bunker b = new Bunker();
+                b.initialize();
 
-                b.Transform.X = 200 + (i * 180);
-                b.Transform.Y = 600;
+                b.transform.X = 200 + (i * 180);
+                b.transform.Y = 600;
 
-                Debug.Log("Setting up bunker " + i + "at " + b.Transform.X + ", " + b.Transform.Y);
+                Debug.Log("Setting up bunker " + i + "at " + b.transform.X + ", " + b.transform.Y);
 
                 b.setupBunker();
 

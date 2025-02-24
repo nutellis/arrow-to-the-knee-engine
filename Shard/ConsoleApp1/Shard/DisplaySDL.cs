@@ -113,19 +113,19 @@ namespace Shard
 
         public override void addToDraw(GameObject gob)
         {
-            _toDraw.Add(gob.Transform.Transform);
+            _toDraw.Add(gob.transform);
 
-            if (gob.Transform.SpritePath == null)
+            if (gob.transform.SpritePath == null)
             {
                 return;
             }
 
-            loadTexture(gob.Transform.SpritePath);
+            loadTexture(gob.transform.SpritePath);
         }
 
         public override void removeToDraw(GameObject gob)
         {
-            _toDraw.Remove(gob.Transform.Transform);
+            _toDraw.Remove(gob.transform);
         }
 
 
