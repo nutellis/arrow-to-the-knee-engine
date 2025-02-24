@@ -19,14 +19,13 @@ namespace SpaceInvaders
         public int Xdir { get => xdir; set => xdir = value; }
 
         //private SpriteComponent sprite;
-        private TagComponent tag;
+        private Tags tags;
         private PhysicsComponent physics;
 
         public override void initialize()
         {
             //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("bunkerBit.png"));
-            physics = new PhysicsComponent();
-            tag = new TagComponent();
+            physics = new PhysicsComponent(this);
 
             sprites = new string[2];
 
@@ -46,7 +45,7 @@ namespace SpaceInvaders
 
             rand = new Random();
 
-            tag.addTag("Invader");
+            tags.addTag("Invader");
 
             physics.MyBody.PassThrough = true;
 
@@ -89,7 +88,7 @@ namespace SpaceInvaders
         public void onCollisionEnter(PhysicsBody x)
         {
             // Get the TagComponent from the collided object
-            TagComponent tagComp = x.Parent.getComponent<TagComponent>();
+            Tags tagComp = x.Parent.tags;
 
             // Check if the object has a TagComponent before using checkTag()
             if (tagComp != null)
@@ -116,7 +115,7 @@ namespace SpaceInvaders
 
         public override string ToString()
         {
-            return "Asteroid: [" + Transform.X + ", " + Transform.Y + ", " + Transform.Wid + ", " + Transform.Ht + "]";
+            return "Asteroid: [" + Transform.X + ", " + Transform.Y + ", " + Transform.Width + ", " + Transform.Height + "]";
         }
 
         public void fire()

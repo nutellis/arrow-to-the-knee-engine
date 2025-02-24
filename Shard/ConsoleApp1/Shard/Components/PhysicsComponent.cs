@@ -12,7 +12,7 @@ namespace Shard.Shard.Components
         private bool physicsEnabled;
         private PhysicsBody myBody;
 
-        public PhysicsComponent()
+        public PhysicsComponent(GameObject owner) : base(owner)
         {
             physicsEnabled = true;  // Default: Physics enabled
         }

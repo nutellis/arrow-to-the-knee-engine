@@ -10,9 +10,9 @@ namespace Shard.Shard.Components
     {
         public string SpritePath { get; set; }
 
-        public SpriteComponent(string spritePath = null)
+        public SpriteComponent(GameObject owner) : base(owner)
         {
-            SpritePath = spritePath;
+            //SpritePath = spritePath;
         }
 
         public override void initialize()

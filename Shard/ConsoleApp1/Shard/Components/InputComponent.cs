@@ -9,6 +9,10 @@ namespace Shard.Shard.Components
 {
     internal class InputComponent : Component
     {
+        public InputComponent(GameObject owner) : base(owner)
+        {
+        }
+
         public bool Left { get; set; }
         public bool Right { get; set; }
         public bool Up { get; set; }

@@ -11,9 +11,9 @@ namespace Shard.Shard.Components
         public string SoundPath { get; set; }   
         public bool IsPlaying { get; set; }      
 
-        public SoundComponent(string soundPath)
+        public SoundComponent(GameObject owner) : base(owner) 
         {
-            SoundPath = soundPath;
+            //SoundPath = soundPath;
             IsPlaying = false;
         }
 
