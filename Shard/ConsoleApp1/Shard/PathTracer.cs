@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
 
 //To Do:
 /*
@@ -15,96 +15,142 @@ using System.Threading.Tasks;
 
 namespace Shard
 {
-    class PathTracer
+    public class PathTracer
     {
+        //variables
 
-        
-        // Variables;
+        private static readonly int[][] Directions =
+{
+                new int[] { 0, 1 },  // Right
+                new int[] { 1, 0 },  // Down
+                new int[] { 0, -1 }, // Left
+                new int[] { -1, 0 }  // Up
+        };
 
-        private List<GameObject> myObjects;
-        
-        private void setMyObjects()
+        // Node class might later put it in a different file
+        public class Node
         {
-            var temp = GameObjectManager.getInstance().
-        }
+            public int X, Y;
+            public int G, H;
+            public Node Parent;
+            public int F => G + H;
+            public bool isWalkable => true;
 
-        // To make The node system for A*
-        class Node
-        {
-            public int gridX, gridY;
-            public Vector2 worldPosition;
-            public bool isWalkable;
-
-            public Node(int x, int y)
+            public Node(int x, int y, Node parent = null)
             {
-                gridX = x;
-                gridY = y;
-                worldPosition = new Vector2(x * 16, y * 16);
-                isWalkable = true; // Default to walkable
-            }
-        }
-
-        // To make the display in a grid
-        class Grid
-        {
-            private int tileSize = 16;
-            private int gridWidth, gridHeight;
-            private Node[,] grid;
-
-            public Grid(int screenWidth, int screenHeight)
-            {
-                gridWidth = screenWidth / tileSize;
-                gridHeight = screenHeight / tileSize;
-                grid = new Node[gridWidth, gridHeight];
-                GenerateGrid();
+                X = x;
+                Y = y;
+                Parent = parent;
+                G = parent != null ? parent.G + 1 : 0;
+                H = 0;
             }
 
-            private void GenerateGrid()
+            public void setBool(bool isWalkable)
             {
-                for (int x = 0; x < gridWidth; x++)
+                if (isWalkable == false)
                 {
-                    for (int y = 0; y < gridHeight; y++)
-                    {
-                        grid[x, y] = new Node(x, y);
+                    isWalkable = false;
+                }
+            }
+        }
 
-                        // Example: Mark some tiles as obstacles (modify this condition)
-                        // need to get the game objects and check if they are in the tile
+        public class Tile
+        {
+            public int minX, minY, maxX, maxY; 
+        }
 
-                        // This needs Fix ???
-                        if ((x + y) % 5 == 0)
-                        {
-                            grid[x, y].isWalkable = false;
-                        }
-                    }
+        private int displayWidth = Bootstrap.getDisplay().getWidth();
+        private int displayHeight = Bootstrap.getDisplay().getHeight();
+        private int tileWidth = 16;
+        private int tileHeight = 16;
+        private int[,] grid;
+        private List<Node> path;
+
+        public void setGrid()
+        {
+            grid = new int[displayWidth, displayHeight];
+        }
+       
+        
+        public void transformWorldToGrid()
+        {
+            // Assuming Bootstrap.getGameObjects() returns a list of game objects with X and Y properties  
+            List<GameObject> gameObjects = GameObjectManager.getInstance().getMyObject();
+            int gridWidth = displayWidth / tileWidth;
+            int gridHeight = displayHeight / tileHeight;
+            grid = new int[gridWidth, gridHeight];
+
+            for (int i = 0; i < gridWidth; i++)
+            {
+                for (int j = 0; j < gridHeight; j++)
+                {
+                    grid[i, j] = 0;
                 }
             }
 
-            public Node GetNodeAt(int x, int y)
+            foreach (var gameObject in gameObjects)
             {
+                int x = (int)gameObject.Transform.X / tileWidth;
+                int y = (int)gameObject.Transform.Y / tileHeight;
                 if (x >= 0 && x < gridWidth && y >= 0 && y < gridHeight)
                 {
-                    return grid[x, y];
-                }
-                return null;
-            }
-
-            public void PrintGrid()
-            {
-                for (int y = 0; y < gridHeight; y++)
-                {
-                    for (int x = 0; x < gridWidth; x++)
-                    {
-                        Console.Write(grid[x, y].isWalkable ? "." : "#"); // '.' = walkable, '#' = obstacle
-                    }
-                    Console.WriteLine();
+                    grid[x, y] = 1;
                 }
             }
         }
 
-        void test()
+
+
+
+
+
+        public static List<Node> FindPath(int[,] grid, (int, int) start, (int, int) goal)
         {
-           var temp =  GameObjectManager.getInstance().ge
+            int width = grid.GetLength(0), height = grid.GetLength(1);
+            List<Node> openList = new List<Node>();
+            HashSet<(int, int)> closedList = new HashSet<(int, int)>();
+
+            Node startNode = new Node(start.Item1, start.Item2);
+            Node goalNode = new Node(goal.Item1, goal.Item2);
+            openList.Add(startNode);
+
+            while (openList.Count > 0)
+            {
+                Node current = openList.OrderBy(n => n.F).First();
+                if (current.X == goalNode.X && current.Y == goalNode.Y)
+                    return ReconstructPath(current);
+
+                openList.Remove(current);
+                closedList.Add((current.X, current.Y));
+
+                foreach (var direction in Directions)
+                {
+                    int newX = current.X + direction[0], newY = current.Y + direction[1];
+                    if (newX < 0 || newY < 0 || newX >= width || newY >= height || grid[newX, newY] == 1 || closedList.Contains((newX, newY)))
+                        continue;
+
+                    Node neighbor = new Node(newX, newY, current);
+                    neighbor.H = Math.Abs(newX - goalNode.X) + Math.Abs(newY - goalNode.Y);
+
+                    if (openList.Any(n => n.X == neighbor.X && n.Y == neighbor.Y && n.G <= neighbor.G))
+                        continue;
+
+                    openList.Add(neighbor);
+                }
+            }
+            return new List<Node>();
         }
 
+        private static List<Node> ReconstructPath(Node node)
+        {
+            List<Node> path = new List<Node>();
+            while (node != null)
+            {
+                path.Add(node);
+                node = node.Parent;
+            }
+            path.Reverse();
+            return path;
+        }
     }
 }

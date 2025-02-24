@@ -32,7 +32,7 @@ namespace Shard
             return me;
         }
 
-        public void getMyObject() => myObjects;
+        public List<GameObject> getMyObject() => myObjects;
 
         public void addGameObject(GameObject gob)
         {
