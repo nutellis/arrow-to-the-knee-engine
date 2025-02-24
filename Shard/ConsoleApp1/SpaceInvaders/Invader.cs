@@ -40,7 +40,6 @@ namespace SpaceInvaders
             this.Transform.Y = 100.0f;
             this.Transform.SpritePath = sprites[0];
 
-            physics.setPhysicsEnabled(true);
             physics.MyBody.addRectCollider();
 
             rand = new Random();
@@ -85,31 +84,31 @@ namespace SpaceInvaders
         //    }
         //}
 
-        public void onCollisionEnter(PhysicsBody x)
+        public void onCollisionEnter(PhysicsComponent x)
         {
             // Get the TagComponent from the collided object
-            Tags tagComp = x.Parent.tags;
+            Tags tagComp = x.Owner.Tags;
 
             // Check if the object has a TagComponent before using checkTag()
             if (tagComp != null)
             {
                 if (tagComp.checkTag("Player"))
                 {
-                    x.Parent.ToBeDestroyed = true;
+                    x.Owner.ToBeDestroyed = true;
                 }
 
                 if (tagComp.checkTag("BunkerBit"))
                 {
-                    x.Parent.ToBeDestroyed = true;
+                    x.Owner.ToBeDestroyed = true;
                 }
             }
         }
 
-        public void onCollisionExit(PhysicsBody x)
+        public void onCollisionExit(PhysicsComponent x)
         {
         }
 
-        public void onCollisionStay(PhysicsBody x)
+        public void onCollisionStay(PhysicsComponent x)
         {
         }
 
@@ -122,7 +121,7 @@ namespace SpaceInvaders
         {
             Bullet b = new Bullet();
 
-            b.setupBullet(this.Transform.Centre.X, this.Transform.Centre.Y);
+            b.setupBullet(this.Transform.Transform.Centre.X, this.Transform.Transform.Centre.Y);
             b.Dir = 1;
             b.DestroyTag = "Player";
         }

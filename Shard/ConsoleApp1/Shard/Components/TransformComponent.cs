@@ -62,13 +62,12 @@ namespace Shard.Shard.Components
         {
             return transform.Centre.X;
         }
-        
+
 
         // Translate the transform by dx and dy
-        public void translate(float dx, float dy)
+        public void translate(double nx, double ny)
         {
-            X += dx;
-            Y += dy;
+            translate((float)nx, (float)ny);
         }
 
         // Rotate the transform by a given amount

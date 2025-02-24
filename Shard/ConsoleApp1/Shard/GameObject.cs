@@ -183,6 +183,12 @@ namespace Shard
             get => toBeDestroyed;
             set => toBeDestroyed = value;
         }
+        public Tags Tags
+        {
+            get => tags;
+            set => tags = value;
+        }
+
 
         public GameObject()
         {

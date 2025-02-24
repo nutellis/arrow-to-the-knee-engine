@@ -7,36 +7,34 @@ namespace SpaceInvaders
     class BunkerBit : GameObject, CollisionHandler
     {
         //private SpriteComponent sprite;
-        private TagComponent tag;
+        private Tags tags;
         private PhysicsComponent physics;
 
         public override void initialize()
         {
 
             //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("bunkerBit.png"));
-            physics = new PhysicsComponent();
-            tag = new TagComponent();
+            physics = new PhysicsComponent(this);
 
             this.Transform.SpritePath = Bootstrap.getAssetManager().getAssetPath("bunkerBit.png");
 
-            physics.setPhysicsEnabled(true);
             physics.MyBody.addRectCollider();
 
-            tag.addTag("BunkerBit");
+            tags.addTag("BunkerBit");
 
             physics.MyBody.PassThrough = true;
 
         }
 
-        public void onCollisionEnter(PhysicsBody x)
+        public void onCollisionEnter(PhysicsComponent x)
         {
         }
 
-        public void onCollisionExit(PhysicsBody x)
+        public void onCollisionExit(PhysicsComponent x)
         {
         }
 
-        public void onCollisionStay(PhysicsBody x)
+        public void onCollisionStay(PhysicsComponent x)
         {
         }
 

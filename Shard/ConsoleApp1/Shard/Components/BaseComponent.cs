@@ -17,7 +17,7 @@ namespace Shard.Shard.Components
         //internal GameObject Parent { get => parent; set => parent = value; }
 
         // Constructor to initialize the component with a GameObject reference
-        public Component(GameObject owner)
+        public BaseComponent(GameObject owner)
         {
             this.owner = owner;
             tags = new Tags();  

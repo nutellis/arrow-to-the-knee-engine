@@ -48,9 +48,8 @@ namespace SpaceInvaders
 
             //transform.sprite;
 
-             Bootstrap.getInput().addListener(this);
+            Bootstrap.getInput().addListener(this);
 
-            physics.setPhysicsEnabled(true);
             physics.MyBody.addRectCollider();
 
             tags.addTag("Player");
@@ -165,18 +164,18 @@ namespace SpaceInvaders
             Bootstrap.getDisplay().addToDraw(this);
         }
 
-        public void onCollisionEnter(PhysicsBody x)
+        public void onCollisionEnter(PhysicsComponent x)
         {
 
         }
 
-        public void onCollisionExit(PhysicsBody x)
+        public void onCollisionExit(PhysicsComponent x)
         {
 
             physics.MyBody.DebugColor = Color.Green;
         }
 
-        public void onCollisionStay(PhysicsBody x)
+        public void onCollisionStay(PhysicsComponent x)
         {
             physics.MyBody.DebugColor = Color.Blue;
         }
