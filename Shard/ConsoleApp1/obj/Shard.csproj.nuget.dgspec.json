@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\xrist\\OneDrive - University of Gothenburg\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj": {}
+    "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj": {}
   },
   "projects": {
-    "C:\\Users\\xrist\\OneDrive - University of Gothenburg\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj": {
+    "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\xrist\\OneDrive - University of Gothenburg\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj",
+        "projectUniqueName": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj",
         "projectName": "Shard",
-        "projectPath": "C:\\Users\\xrist\\OneDrive - University of Gothenburg\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj",
-        "packagesPath": "C:\\Users\\xrist\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\xrist\\OneDrive - University of Gothenburg\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\obj\\",
+        "projectPath": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj",
+        "packagesPath": "C:\\Users\\telis\\.nuget\\packages\\",
+        "outputPath": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "Q:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\xrist\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\telis\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0-windows7.0": {
@@ -75,7 +75,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

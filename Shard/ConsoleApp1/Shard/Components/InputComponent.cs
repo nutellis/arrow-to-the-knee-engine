@@ -4,20 +4,22 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Shard.Shard.Components
 {
-    internal class InputComponent : BaseComponent
+    internal class InputComponent : BaseComponent, InputListener
     {
-        public bool Left { get; set; }
-        public bool Right { get; set; }
-        public bool Up { get; set; }
-        public bool Down { get; set; }
-        public bool Fire { get; set; }
+        Dictionary<string, int> inputs = new Dictionary<string, int>();
+
+
+        private List<InputAction> actions;
+
 
         public override void initialize()
         {
-            Left = Right = Up = Down = Fire = false;
+            Bootstrap.getInput().addListener(this);
+            actions = new List<InputAction>();
         }
 
         public override void update()
@@ -25,9 +27,58 @@ namespace Shard.Shard.Components
             // Handle input logic
         }
 
-        //protected override void UpdateComponent()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public void bindInputAction(string name, InputType type, Action<object[]> action, params object[] parameters)
+        {
+            //match name string to key code
+            if (inputs.ContainsKey(name))
+            {
+                int key = inputs[name];
+                InputAction inputAction = new InputAction(name, type, key, action, parameters);
+                actions.Add(inputAction);
+            }
+        }
+
+        public void handleInput(InputEvent inp, InputType eventType)
+        {
+            if (Bootstrap.getRunningGame().isRunning() == false)
+            {
+                return;
+            }
+            // we need to check if the input event is in our list of inputs
+            if (inputs.ContainsValue(inp.Key))
+            {
+                string name = inputs.FirstOrDefault(x => x.Value == inp.Key).Key;
+
+                InputAction action = actions.FirstOrDefault(x => x.Name == name);
+                
+                if (action == null)
+                {
+                    return;
+                } else
+                {
+                    switch (action.Type)
+                    {
+                        case InputType.Pressed:
+                            if (eventType == InputType.Pressed)
+                            {
+                                action.Execute();
+                            }
+                            break;
+                        case InputType.Held:
+                            if (eventType == InputType.Held)
+                            {
+                                action.Execute();
+                            }
+                            break;
+                        case InputType.Released:
+                            if (eventType == InputType.Released)
+                            {
+                                action.Execute();
+                            }
+                            break;
+                    }
+                }
+            }
+        }
     }
 }

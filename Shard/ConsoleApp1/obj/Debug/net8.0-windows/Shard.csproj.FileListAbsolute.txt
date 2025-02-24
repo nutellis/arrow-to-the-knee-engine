@@ -66,3 +66,13 @@ C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture
 C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.pdb
 C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.genruntimeconfig.cache
 C:\Users\natashab\Documents\Course Material\2024 - 2025\Game Engine Architecture\1.3.0 - Horizons\Shard\ConsoleApp1\obj\Debug\net8.0-windows\ref\Shard.dll
+Q:\Users\nutellis\Documents\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.csproj.AssemblyReference.cache
+Q:\Users\nutellis\Documents\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.csproj.ResolveComReference.cache
+Q:\Users\nutellis\Documents\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.GeneratedMSBuildEditorConfig.editorconfig
+Q:\Users\nutellis\Documents\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.AssemblyInfoInputs.cache
+Q:\Users\nutellis\Documents\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.AssemblyInfo.cs
+Q:\Users\nutellis\Documents\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.csproj.CoreCompileInputs.cache
+Q:\Users\nutellis\Documents\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.sourcelink.json
+Q:\Users\nutellis\Documents\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.dll
+Q:\Users\nutellis\Documents\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\Debug\net8.0-windows\refint\Shard.dll
+Q:\Users\nutellis\Documents\GitHub\arrow-to-the-knee-engine\Shard\ConsoleApp1\obj\Debug\net8.0-windows\Shard.pdb

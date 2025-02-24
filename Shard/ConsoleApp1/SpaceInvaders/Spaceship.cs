@@ -6,7 +6,7 @@ using Shard.Shard;
 
 namespace SpaceInvaders
 {
-    class Spaceship : GameObject, InputListener, CollisionHandler
+    class Spaceship : GameObject, CollisionHandler
     {
         //bool left, right;
         //float fireCounter, fireDelay;
@@ -45,7 +45,9 @@ namespace SpaceInvaders
 
             //transform.sprite;
 
-            Bootstrap.getInput().addListener(this);
+            input.initialize();
+
+            input.bindInputAction("fire", InputAction.InputType.Pressed, (parameters) => fireBullet());
 
             physics.setPhysicsEnabled(true);
             physics.MyBody.addRectCollider();

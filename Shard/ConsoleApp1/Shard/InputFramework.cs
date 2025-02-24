@@ -9,15 +9,33 @@
 */
 
 using SDL2;
+using System.Collections.Generic;
 
 namespace Shard
 {
+    public enum InputType
+    {
+        Pressed,
+        Released,
+        Held,
+        MouseMotion,
+        MouseDown,
+        MouseUp,
+        MouseWheel
+    }
 
     // We'll be using SDL2 here to provide our underlying input system.
     class InputFramework : InputSystem
     {
 
         double tick, timeInterval;
+        private Dictionary<int, double> keyHeldSeconds;
+       
+        public InputFramework()
+        {
+            keyHeldSeconds = new Dictionary<int, double>();
+        }
+
         public override void getInput()
         {
 
@@ -54,7 +72,7 @@ namespace Shard
                     ie.X = mot.x;
                     ie.Y = mot.y;
 
-                    informListeners(ie, "MouseMotion");
+                    informListeners(ie, InputType.MouseMotion);
                 }
 
                 if (ev.type == SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN)
@@ -67,7 +85,7 @@ namespace Shard
                     ie.X = butt.x;
                     ie.Y = butt.y;
 
-                    informListeners(ie, "MouseDown");
+                    informListeners(ie, InputType.MouseDown);
                 }
 
                 if (ev.type == SDL.SDL_EventType.SDL_MOUSEBUTTONUP)
@@ -80,7 +98,7 @@ namespace Shard
                     ie.X = butt.x;
                     ie.Y = butt.y;
 
-                    informListeners(ie, "MouseUp");
+                    informListeners(ie, InputType.MouseUp);
                 }
 
                 if (ev.type == SDL.SDL_EventType.SDL_MOUSEWHEEL)
@@ -92,21 +110,41 @@ namespace Shard
                     ie.X = (int)wh.direction * wh.x;
                     ie.Y = (int)wh.direction * wh.y;
 
-                    informListeners(ie, "MouseWheel");
+                    informListeners(ie, InputType.MouseWheel);
                 }
 
 
                 if (ev.type == SDL.SDL_EventType.SDL_KEYDOWN)
                 {
                     ie.Key = (int)ev.key.keysym.scancode;
-                    Debug.getInstance().log("Keydown: " + ie.Key);
-                    informListeners(ie, "KeyDown");
+                    // Record the time the key was pressed
+                    if (!keyHeldSeconds.ContainsKey(ie.Key))
+                    {
+                        Debug.getInstance().log("Keydown: " + ie.Key);
+                        keyHeldSeconds[ie.Key] = tick;
+                        informListeners(ie, InputType.Pressed);
+                    } else
+                    {
+                        double pressTime = keyHeldSeconds[ie.Key];
+                        double duration = tick - pressTime;
+                        Debug.getInstance().log("Key " + ie.Key + " is held for: " + duration + "seconds");
+
+                        informListeners(ie, InputType.Held);
+                    }
                 }
 
                 if (ev.type == SDL.SDL_EventType.SDL_KEYUP)
                 {
                     ie.Key = (int)ev.key.keysym.scancode;
-                    informListeners(ie, "KeyUp");
+                    informListeners(ie, InputType.Released);
+
+                    if (keyHeldSeconds.ContainsKey(ie.Key))
+                    {
+                        double pressTime = keyHeldSeconds[ie.Key];
+                        double duration = tick - pressTime;
+                        keyHeldSeconds.Remove(ie.Key);
+                        Debug.getInstance().log("Key " + ie.Key + " was held for " + duration + " seconds.");
+                    }
                 }
 
                 tick -= timeInterval;
