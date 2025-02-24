@@ -163,7 +163,7 @@ namespace Shard
         private bool transient = false;
         private bool toBeDestroyed = false;
 
-        public TransformComponent Transform { get; private set; }
+        public Transform transform { get; private set; }
 
 
         public bool Visible
@@ -193,7 +193,7 @@ namespace Shard
         public GameObject()
         {
             GameObjectManager.getInstance().addGameObject(this);  // Manage game object
-            Transform = new TransformComponent(this, 100.0f, 800.0f, 0f, 1f, 1f);
+            transform = new Transform(this);
             tags = new Tags();
             //this.initialize();  // Optional: Custom initialization logic for derived classes
         }
@@ -239,7 +239,7 @@ namespace Shard
             // Handle the cleanup logic when the GameObject is marked for destruction
             //Console.WriteLine("GameObject is being destroyed.");
             GameObjectManager.getInstance().removeGameObject(this);
-            Transform = null;
+            transform = null;
         }
 
     }

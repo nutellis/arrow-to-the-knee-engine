@@ -10,6 +10,11 @@ namespace Shard.Shard
     {
         private List<string> tags;
 
+        public Tags()
+        {
+            tags = new List<string>();
+        }
+
         public void addTag(string str)
         {
             if (tags.Contains(str))

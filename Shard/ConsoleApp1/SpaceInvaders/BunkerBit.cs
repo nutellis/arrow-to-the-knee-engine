@@ -16,13 +16,14 @@ namespace SpaceInvaders
             //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("bunkerBit.png"));
             physics = new PhysicsComponent(this);
 
-            this.Transform.SpritePath = Bootstrap.getAssetManager().getAssetPath("bunkerBit.png");
+            this.transform.SpritePath = Bootstrap.getAssetManager().getAssetPath("bunkerBit.png");
 
-            physics.MyBody.addRectCollider();
+            physics.addRectCollider();
 
+            tags = new Tags();
             tags.addTag("BunkerBit");
 
-            physics.MyBody.PassThrough = true;
+            physics.PassThrough = true;
 
         }
 

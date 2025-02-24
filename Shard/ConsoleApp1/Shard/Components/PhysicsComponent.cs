@@ -32,7 +32,6 @@ namespace Shard.Shard.Components
 
         private float[] minAndMaxX;
         private float[] minAndMaxY;
-        private PhysicsComponent myBody;
 
         public PhysicsComponent(GameObject owner) : base(owner)
         {
@@ -42,7 +41,7 @@ namespace Shard.Shard.Components
             myColliders = new List<Collider>();
             collisionCandidates = new List<Collider>();
 
-            Trans = owner.Transform.Transform;
+            Trans = owner.transform;
             Colh = (CollisionHandler)owner;
 
             AngularDrag = 0.01f;
@@ -316,7 +315,7 @@ namespace Shard.Shard.Components
 
         public ColliderRect addRectCollider()
         {
-            ColliderRect cr = new ColliderRect((CollisionHandler)owner, owner.Transform.Transform);
+            ColliderRect cr = new ColliderRect((CollisionHandler)owner, owner.transform);
 
             addCollider(cr);
 
@@ -325,7 +324,7 @@ namespace Shard.Shard.Components
 
         public ColliderCircle addCircleCollider()
         {
-            ColliderCircle cr = new ColliderCircle((CollisionHandler)owner, owner.Transform.Transform);
+            ColliderCircle cr = new ColliderCircle((CollisionHandler)owner, owner.transform);
 
             addCollider(cr);
 
@@ -334,7 +333,7 @@ namespace Shard.Shard.Components
 
         public ColliderCircle addCircleCollider(int x, int y, int rad)
         {
-            ColliderCircle cr = new ColliderCircle((CollisionHandler)owner, owner.Transform.Transform, x, y, rad);
+            ColliderCircle cr = new ColliderCircle((CollisionHandler)owner, owner.transform, x, y, rad);
 
             addCollider(cr);
 
@@ -344,7 +343,7 @@ namespace Shard.Shard.Components
 
         public ColliderRect addRectCollider(int x, int y, int wid, int ht)
         {
-            ColliderRect cr = new ColliderRect((CollisionHandler)owner, owner.Transform.Transform, x, y, wid, ht);
+            ColliderRect cr = new ColliderRect((CollisionHandler)owner, owner.transform, x, y, wid, ht);
 
             addCollider(cr);
 
@@ -401,7 +400,7 @@ namespace Shard.Shard.Components
 
         public void checkDestroyMe(GameObject gameObject)
         {
-            TransformComponent transform = gameObject.getComponent<TransformComponent>();
+            Transform transform = gameObject.transform;
 
             if (!gameObject.Transient)
             {
@@ -421,14 +420,13 @@ namespace Shard.Shard.Components
 
         public bool queryPhysicsEnabled()
         {
-            if (MyBody == null)
+            if (physicsEnabled)
             {
                 return false;
             }
             return true;
         }
 
-        internal PhysicsComponent MyBody { get => myBody; set => myBody = value; }
 
         // Check if physics is enabled
         public bool isPhysicsEnabled() => physicsEnabled;
@@ -443,9 +441,9 @@ namespace Shard.Shard.Components
 
         public virtual void killMe()
         {
-            PhysicsManager.getInstance().removePhysicsObject(myBody);
+            PhysicsManager.getInstance().removePhysicsObject(this);
 
-            myBody = null;
+            //this = null; TODO fix this
         }
     }
 }

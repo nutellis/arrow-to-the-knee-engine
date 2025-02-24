@@ -15,18 +15,19 @@ namespace SpaceInvaders
         //private TransformComponent transform;
         //private SpriteComponent sprite;
         private InputComponent input;
-        private WeaponComponent weapon;
+        //private WeaponComponent weapon;
         private PhysicsComponent physics;
 
         private Tags tags;
+        private double fireCounter, fireDelay = 2.0f;
 
         public override void initialize()
         {
 
-            this.Transform.X = 100.0f;
-            this.Transform.Y = 800.0f;
+            this.transform.X = 100.0f;
+            this.transform.Y = 800.0f;
             
-            this.Transform.SpritePath = Bootstrap.getAssetManager().getAssetPath("player.png");
+            this.transform.SpritePath = Bootstrap.getAssetManager().getAssetPath("player.png");
 
             //fireDelay = 2;
             //fireCounter = fireDelay;
@@ -36,14 +37,14 @@ namespace SpaceInvaders
             //setPhysicsEnabled();
 
             //MyBody.addRectCollider();
-
+            tags = new Tags();
             tags.addTag("Player");
             
 
             //transform = new TransformComponent(this, 100.0f, 800.0f, 0f, 1f, 1f);
             //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("player.png"));
             input = new InputComponent(this);
-            weapon = new WeaponComponent(this);
+            //weapon = new WeaponComponent(this);
             physics = new PhysicsComponent(this);
 
             //transform.sprite;
@@ -52,7 +53,7 @@ namespace SpaceInvaders
 
             input.bindInputAction("fire", InputAction.InputType.Pressed, (parameters) => fireBullet());
 
-            physics.MyBody.addRectCollider();
+            physics.addRectCollider();
 
             tags.addTag("Player");
 
@@ -61,23 +62,14 @@ namespace SpaceInvaders
 
         public void fireBullet()
         {
-            //if (fireCounter < fireDelay)
-            //{
-            //    return;
-            //}
 
-            //Bullet b = new Bullet();
-
-            //b.setupBullet(this.Transform.Centre.X, this.Transform.Centre.Y);
-            //b.Dir = -1;
-            //b.DestroyTag = "Invader";
-
-            //fireCounter = 0;
 
             Bullet b = new Bullet();
-            b.setupBullet(Transform.X, Transform.Y);
-            b.Dir = -1;
-            b.DestroyTag = "Invader";
+            b.initialize();
+            b.setupBullet(transform.X, transform.Y);
+            b.transform.rotate(this.transform.Rotz);
+
+            Bootstrap.getSound().playSound("fire.wav");
 
         }
 
@@ -140,7 +132,7 @@ namespace SpaceInvaders
         {
             float amount = (float)(100 * Bootstrap.getDeltaTime());
 
-            //fireCounter += (float)Bootstrap.getDeltaTime();
+            fireCounter += (float)Bootstrap.getDeltaTime();
 
             //if (left)
             //{
@@ -152,14 +144,12 @@ namespace SpaceInvaders
             //    this.Transform.translate(1 * amount, 0);
             //}
 
-            weapon.Update(Bootstrap.getDeltaTime());
-
-            if (input.Left) Transform.translate(-1 * amount, 0);
-            if (input.Right) Transform.translate(1 * amount, 0);
-            if (input.Fire && weapon.CanFire())
+            if (input.Left) transform.translate(-1 * amount, 0);
+            if (input.Right) transform.translate(1 * amount, 0);
+            if (input.Fire)
             {
                 fireBullet();
-                weapon.Fire();
+                //weapon.Fire();
                 input.Fire = false;
             }
 
@@ -174,17 +164,17 @@ namespace SpaceInvaders
         public void onCollisionExit(PhysicsComponent x)
         {
 
-            physics.MyBody.DebugColor = Color.Green;
+            physics.DebugColor = Color.Green;
         }
 
         public void onCollisionStay(PhysicsComponent x)
         {
-            physics.MyBody.DebugColor = Color.Blue;
+            physics.DebugColor = Color.Blue;
         }
 
         public override string ToString()
         {
-            return "Spaceship: [" + Transform.X + ", " + Transform.Y + ", " + Transform.Width + ", " + Transform.Height + "]";
+            return "Spaceship: [" + transform.X + ", " + transform.Y + ", " + transform.Wid + ", " + transform.Ht + "]";
         }
 
     }
