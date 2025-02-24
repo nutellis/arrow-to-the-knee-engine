@@ -16,15 +16,22 @@ namespace Shard.Shard.Components
         public float ScaleX { get; set; }
         public float ScaleY { get; set; }
 
-        public TransformComponent(float x, float y, float rotation = 0, float scaleX = 1.0f, float scaleY = 1.0f)
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+        public string SpritePath { get; set; }
+
+        public TransformComponent(GameObject owner, float x, float y, float rotation = 0, float scaleX = 1.0f, float scaleY = 1.0f) : base(owner)
         {
             X = x;
             Y = y;
             Rotation = rotation;
             ScaleX = scaleX;
             ScaleY = scaleY;
+            SpritePath = string.Empty;
+            Width = 0;
+            Height = 0;
         }
-
 
         public Transform3D transform;
 
@@ -55,13 +62,12 @@ namespace Shard.Shard.Components
         {
             return transform.Centre.X;
         }
-        
+
 
         // Translate the transform by dx and dy
-        public void Translate(float dx, float dy)
+        public void translate(double nx, double ny)
         {
-            X += dx;
-            Y += dy;
+            translate((float)nx, (float)ny);
         }
 
         // Rotate the transform by a given amount

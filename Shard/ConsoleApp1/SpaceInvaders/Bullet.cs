@@ -9,7 +9,7 @@ namespace SpaceInvaders
     class Bullet : GameObject, CollisionHandler
     {
 
-        private TagComponent tag;
+        private Tags tags;
         private PhysicsComponent physics;
 
         private string destroyTag;
@@ -22,15 +22,12 @@ namespace SpaceInvaders
         {
             this.Transform.X = x;
             this.Transform.Y = y;
-            this.Transform.Wid = 1;
-            this.Transform.Ht = 20;
-
-
-            physics.setPhysicsEnabled(true);
+            this.Transform.Transform.Wid = 1;
+            this.Transform.Transform.Ht = 20;
 
             physics.MyBody.addRectCollider();
 
-            tag.addTag("Bullet");
+            tags.addTag("Bullet");
 
             physics.MyBody.PassThrough = true;
 
@@ -39,8 +36,7 @@ namespace SpaceInvaders
         public override void initialize()
         {
 
-            physics = new PhysicsComponent();
-            tag = new TagComponent();
+            physics = new PhysicsComponent(this);
 
             this.Transient = true;
         }
@@ -51,7 +47,7 @@ namespace SpaceInvaders
             Random r = new Random();
             Color col = Color.FromArgb(r.Next(0, 256), r.Next(0, 256), 0);
 
-            this.Transform.translate(0, dir * 400 * Bootstrap.getDeltaTime());
+            this.Transform.translate(0, dir * 400.0 * Bootstrap.getDeltaTime());
 
             Bootstrap.getDisplay().drawLine(
                 (int)Transform.X,
@@ -61,20 +57,17 @@ namespace SpaceInvaders
                 col);
         }
 
-        public void onCollisionEnter(PhysicsBody x)
+        public void onCollisionEnter(PhysicsComponent x)
         {
             GameSpaceInvaders g;
 
-            // Get the TagComponent from x.Parent
-            TagComponent tagComp = x.Parent.getComponent<TagComponent>();
-
             // Ensure the object has a TagComponent before checking tags
-            if (tagComp != null && (tagComp.checkTag(destroyTag) || tagComp.checkTag("BunkerBit")))
+            if (tags != null && (tags.checkTag(destroyTag) || tags.checkTag("BunkerBit")))
             {
                 ToBeDestroyed = true;
-                x.Parent.ToBeDestroyed = true;
+                x.Owner.ToBeDestroyed = true;
 
-                if (tagComp.checkTag("Player"))
+                if (tags.checkTag("Player"))
                 {
                     g = (GameSpaceInvaders)Bootstrap.getRunningGame();
                     g.Dead = true;
@@ -82,11 +75,11 @@ namespace SpaceInvaders
             }
         }
 
-        public void onCollisionExit(PhysicsBody x)
+        public void onCollisionExit(PhysicsComponent x)
         {
         }
 
-        public void onCollisionStay(PhysicsBody x)
+        public void onCollisionStay(PhysicsComponent x)
         {
         }
 

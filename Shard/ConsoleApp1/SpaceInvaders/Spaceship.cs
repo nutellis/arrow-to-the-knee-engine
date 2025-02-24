@@ -3,6 +3,7 @@ using Shard;
 using System.Drawing;
 using Shard.Shard.Components;
 using Shard.Shard;
+using Shard.SpaceInvaders;
 
 namespace SpaceInvaders
 {
@@ -11,18 +12,20 @@ namespace SpaceInvaders
         //bool left, right;
         //float fireCounter, fireDelay;
 
-        private TransformComponent transform;
+        //private TransformComponent transform;
         //private SpriteComponent sprite;
         private InputComponent input;
         private WeaponComponent weapon;
-        private TagComponent tag;
         private PhysicsComponent physics;
+
+        private Tags tags;
 
         public override void initialize()
         {
 
-            //this.Transform.X = 100.0f;
-            //this.Transform.Y = 800.0f;
+            this.Transform.X = 100.0f;
+            this.Transform.Y = 800.0f;
+            
             this.Transform.SpritePath = Bootstrap.getAssetManager().getAssetPath("player.png");
 
             //fireDelay = 2;
@@ -34,14 +37,14 @@ namespace SpaceInvaders
 
             //MyBody.addRectCollider();
 
-            //addTag("Player");
+            tags.addTag("Player");
+            
 
-            transform = new TransformComponent(100.0f, 800.0f, 0f, 1f, 1f);
+            //transform = new TransformComponent(this, 100.0f, 800.0f, 0f, 1f, 1f);
             //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("player.png"));
-            input = new InputComponent();
-            weapon = new WeaponComponent();
-            physics = new PhysicsComponent();
-            tag = new TagComponent();
+            input = new InputComponent(this);
+            weapon = new WeaponComponent(this);
+            physics = new PhysicsComponent(this);
 
             //transform.sprite;
 
@@ -49,10 +52,10 @@ namespace SpaceInvaders
 
             input.bindInputAction("fire", InputAction.InputType.Pressed, (parameters) => fireBullet());
 
-            physics.setPhysicsEnabled(true);
             physics.MyBody.addRectCollider();
 
-            tag.addTag("Player");
+            tags.addTag("Player");
+
 
         }
 
@@ -72,7 +75,7 @@ namespace SpaceInvaders
             //fireCounter = 0;
 
             Bullet b = new Bullet();
-            b.setupBullet(transform.X, transform.Y);
+            b.setupBullet(Transform.X, Transform.Y);
             b.Dir = -1;
             b.DestroyTag = "Invader";
 
@@ -151,8 +154,8 @@ namespace SpaceInvaders
 
             weapon.Update(Bootstrap.getDeltaTime());
 
-            if (input.Left) transform.Translate(-1 * amount, 0);
-            if (input.Right) transform.Translate(1 * amount, 0);
+            if (input.Left) Transform.translate(-1 * amount, 0);
+            if (input.Right) Transform.translate(1 * amount, 0);
             if (input.Fire && weapon.CanFire())
             {
                 fireBullet();
@@ -163,25 +166,25 @@ namespace SpaceInvaders
             Bootstrap.getDisplay().addToDraw(this);
         }
 
-        public void onCollisionEnter(PhysicsBody x)
+        public void onCollisionEnter(PhysicsComponent x)
         {
 
         }
 
-        public void onCollisionExit(PhysicsBody x)
+        public void onCollisionExit(PhysicsComponent x)
         {
 
             physics.MyBody.DebugColor = Color.Green;
         }
 
-        public void onCollisionStay(PhysicsBody x)
+        public void onCollisionStay(PhysicsComponent x)
         {
             physics.MyBody.DebugColor = Color.Blue;
         }
 
         public override string ToString()
         {
-            return "Spaceship: [" + Transform.X + ", " + Transform.Y + ", " + Transform.Wid + ", " + Transform.Ht + "]";
+            return "Spaceship: [" + Transform.X + ", " + Transform.Y + ", " + Transform.Width + ", " + Transform.Height + "]";
         }
 
     }

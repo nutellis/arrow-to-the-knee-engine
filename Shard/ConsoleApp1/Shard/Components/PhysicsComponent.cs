@@ -12,7 +12,6 @@ namespace Shard.Shard.Components
 
         List<Collider> myColliders;
         List<Collider> collisionCandidates;
-        GameObject parent;
         CollisionHandler colh;
         Transform trans;
         private float angularDrag;
@@ -33,11 +32,36 @@ namespace Shard.Shard.Components
 
         private float[] minAndMaxX;
         private float[] minAndMaxY;
+        private PhysicsComponent myBody;
 
-
-        public PhysicsComponent()
+        public PhysicsComponent(GameObject owner) : base(owner)
         {
             physicsEnabled = true;  // Default: Physics enabled
+            DebugColor = Color.Green;
+
+            myColliders = new List<Collider>();
+            collisionCandidates = new List<Collider>();
+
+            Trans = owner.Transform.Transform;
+            Colh = (CollisionHandler)owner;
+
+            AngularDrag = 0.01f;
+            Drag = 0.01f;
+            Drag = 0.01f;
+            Mass = 1;
+            MaxForce = 10;
+            MaxTorque = 2;
+            usesGravity = false;
+            stopOnCollision = true;
+            reflectOnCollision = false;
+
+            MinAndMaxX = new float[2];
+            MinAndMaxY = new float[2];
+
+            timeInterval = PhysicsManager.getInstance().TimeInterval;
+            //            Debug.getInstance().log ("Setting physics enabled");
+
+            PhysicsManager.getInstance().addPhysicsObject(this);
         }
 
         public override void initialize() { }
@@ -62,7 +86,6 @@ namespace Shard.Shard.Components
 
         public float AngularDrag { get => angularDrag; set => angularDrag = value; }
         public float Drag { get => drag; set => drag = value; }
-        internal GameObject Parent { get => parent; set => parent = value; }
         internal Transform Trans { get => trans; set => trans = value; }
         public float Mass { get => mass; set => mass = value; }
         public float[] MinAndMaxX { get => minAndMaxX; set => minAndMaxX = value; }
@@ -119,35 +142,6 @@ namespace Shard.Shard.Components
             return new float[2] { min, max };
         }
 
-        public PhysicsComponent(GameObject p)
-        {
-            DebugColor = Color.Green;
-
-            myColliders = new List<Collider>();
-            collisionCandidates = new List<Collider>();
-
-            Parent = p;
-            Trans = p.Transform;
-            Colh = (CollisionHandler)p;
-
-            AngularDrag = 0.01f;
-            Drag = 0.01f;
-            Drag = 0.01f;
-            Mass = 1;
-            MaxForce = 10;
-            MaxTorque = 2;
-            usesGravity = false;
-            stopOnCollision = true;
-            reflectOnCollision = false;
-
-            MinAndMaxX = new float[2];
-            MinAndMaxY = new float[2];
-
-            timeInterval = PhysicsManager.getInstance().TimeInterval;
-            //            Debug.getInstance().log ("Setting physics enabled");
-
-            PhysicsManager.getInstance().addPhysicsObject(this);
-        }
 
         public void addTorque(float dir)
         {
@@ -322,7 +316,7 @@ namespace Shard.Shard.Components
 
         public ColliderRect addRectCollider()
         {
-            ColliderRect cr = new ColliderRect((CollisionHandler)parent, parent.Transform);
+            ColliderRect cr = new ColliderRect((CollisionHandler)owner, owner.Transform.Transform);
 
             addCollider(cr);
 
@@ -331,7 +325,7 @@ namespace Shard.Shard.Components
 
         public ColliderCircle addCircleCollider()
         {
-            ColliderCircle cr = new ColliderCircle((CollisionHandler)parent, parent.Transform);
+            ColliderCircle cr = new ColliderCircle((CollisionHandler)owner, owner.Transform.Transform);
 
             addCollider(cr);
 
@@ -340,7 +334,7 @@ namespace Shard.Shard.Components
 
         public ColliderCircle addCircleCollider(int x, int y, int rad)
         {
-            ColliderCircle cr = new ColliderCircle((CollisionHandler)parent, parent.Transform, x, y, rad);
+            ColliderCircle cr = new ColliderCircle((CollisionHandler)owner, owner.Transform.Transform, x, y, rad);
 
             addCollider(cr);
 
@@ -350,7 +344,7 @@ namespace Shard.Shard.Components
 
         public ColliderRect addRectCollider(int x, int y, int wid, int ht)
         {
-            ColliderRect cr = new ColliderRect((CollisionHandler)parent, parent.Transform, x, y, wid, ht);
+            ColliderRect cr = new ColliderRect((CollisionHandler)owner, owner.Transform.Transform, x, y, wid, ht);
 
             addCollider(cr);
 
@@ -404,31 +398,66 @@ namespace Shard.Shard.Components
 
             return null;
         }
+
+        public void checkDestroyMe(GameObject gameObject)
+        {
+            TransformComponent transform = gameObject.getComponent<TransformComponent>();
+
+            if (!gameObject.Transient)
+            {
+                return;
+            }
+
+            if (transform == null) return;
+
+            int screenWidth = Bootstrap.getDisplay().getWidth();
+            int screenHeight = Bootstrap.getDisplay().getHeight();
+
+            if (transform.X < 0 || transform.X > screenWidth || transform.Y < 0 || transform.Y > screenHeight)
+            {
+                gameObject.ToBeDestroyed = true;
+            }
+        }
+
+        public bool queryPhysicsEnabled()
+        {
+            if (MyBody == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        internal PhysicsComponent MyBody { get => myBody; set => myBody = value; }
+
+        // Check if physics is enabled
+        public bool isPhysicsEnabled() => physicsEnabled;
+
+        public virtual void physicsUpdate()
+        {
+        }
+
+        public virtual void prePhysicsUpdate()
+        {
+        }
+
+        public virtual void killMe()
+        {
+            PhysicsManager.getInstance().removePhysicsObject(myBody);
+
+            myBody = null;
+        }
     }
 }
 
 
-/* 
+/*
  //// Enable or disable physics for this component
         //public void setPhysicsEnabled(bool enabled)
         //{
         //    physicsEnabled = enabled;
         //    MyBody = new PhysicsBody(this);
         //}
-
-        // Enable or disable physics
-        public void setPhysicsEnabled(bool enabled)
-        {
-            physicsEnabled = enabled;
-            if (enabled)
-            {
-                myBody = new PhysicsBody(this);  // Create physics body
-            }
-            else
-            {             
-                myBody = null;  // Remove physics body
-            }
-        }
 
         public bool queryPhysicsEnabled()
         {

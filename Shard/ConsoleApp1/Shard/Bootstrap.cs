@@ -79,7 +79,6 @@ namespace Shard
         }
         public static double getDeltaTime()
         {
-
             return deltaTime;
         }
 

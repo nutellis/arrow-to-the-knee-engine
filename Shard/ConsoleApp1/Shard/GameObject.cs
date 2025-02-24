@@ -158,11 +158,13 @@ namespace Shard
     class GameObject
     {
         private List<BaseComponent> components = new List<BaseComponent>();
+        private Tags tags;
         private bool visible = true;
         private bool transient = false;
         private bool toBeDestroyed = false;
 
-        public Transform3D Transform { get; private set; }
+        public TransformComponent Transform { get; private set; }
+
 
         public bool Visible
         {
@@ -181,12 +183,18 @@ namespace Shard
             get => toBeDestroyed;
             set => toBeDestroyed = value;
         }
+        public Tags Tags
+        {
+            get => tags;
+            set => tags = value;
+        }
+
 
         public GameObject()
         {
             GameObjectManager.getInstance().addGameObject(this);  // Manage game object
-            Transform = new Transform3D(this);  // Add the Transform3D component by default
-
+            Transform = new TransformComponent(this, 100.0f, 800.0f, 0f, 1f, 1f);
+            tags = new Tags();
             //this.initialize();  // Optional: Custom initialization logic for derived classes
         }
 
