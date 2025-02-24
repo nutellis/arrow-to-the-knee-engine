@@ -39,19 +39,18 @@ namespace SpaceInvaders
             //MyBody.addRectCollider();
             tags = new Tags();
             tags.addTag("Player");
-            
+
 
             //transform = new TransformComponent(this, 100.0f, 800.0f, 0f, 1f, 1f);
             //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("player.png"));
             input = new InputComponent(this);
-            //weapon = new WeaponComponent(this);
             physics = new PhysicsComponent(this);
 
             //transform.sprite;
 
             input.initialize();
 
-            input.bindInputAction("fire", InputAction.InputType.Pressed, (parameters) => fireBullet());
+            input.bindInputAction("fire", InputType.Pressed, (parameters) => fireBullet());
 
             physics.addRectCollider();
 
@@ -81,51 +80,51 @@ namespace SpaceInvaders
                 return;
             }
 
-            if (eventType == "KeyDown")
-            {
+            //if (eventType == "KeyDown")
+            //{
 
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
-                {
-                    //right = true;
-                    input.Right = true;
-                }
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
+            //    {
+            //        //right = true;
+            //        input.Right = true;
+            //    }
 
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
-                {
-                    //left = true;
-                    input.Left = true;
-                }
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
+            //    {
+            //        //left = true;
+            //        input.Left = true;
+            //    }
 
-            }
-            else if (eventType == "KeyUp")
-            {
-
-
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
-                {
-                    //right = false;
-                    input.Right = false;
-                }
-
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
-                {
-                    //left = false;
-                    input.Left = false;
-                }
+            //}
+            //else if (eventType == "KeyUp")
+            //{
 
 
-            }
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
+            //    {
+            //        //right = false;
+            //        input.Right = false;
+            //    }
+
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
+            //    {
+            //        //left = false;
+            //        input.Left = false;
+            //    }
+
+
+            //}
 
 
 
-            if (eventType == "KeyUp")
-            {
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE)
-                {
-                    //fireBullet();
-                    input.Fire = true;
-                }
-            }
+            //if (eventType == "KeyUp")
+            //{
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE)
+            //    {
+            //        //fireBullet();
+            //        input.Fire = true;
+            //    }
+            //}
         }
 
         public override void update()
@@ -144,14 +143,14 @@ namespace SpaceInvaders
             //    this.Transform.translate(1 * amount, 0);
             //}
 
-            if (input.Left) transform.translate(-1 * amount, 0);
-            if (input.Right) transform.translate(1 * amount, 0);
-            if (input.Fire)
-            {
-                fireBullet();
-                //weapon.Fire();
-                input.Fire = false;
-            }
+            //if (input.Left) transform.translate(-1 * amount, 0);
+            //if (input.Right) transform.translate(1 * amount, 0);
+            //if (input.Fire)
+            //{
+            //    fireBullet();
+            //    //weapon.Fire();
+            //    input.Fire = false;
+            //}
 
             Bootstrap.getDisplay().addToDraw(this);
         }

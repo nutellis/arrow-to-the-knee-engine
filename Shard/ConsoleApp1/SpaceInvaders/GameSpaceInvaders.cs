@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace Shard
 {
-    class GameSpaceInvaders : Game, InputListener
+    class GameSpaceInvaders : Game
     {
         private Invader[,] myInvaders;
         private int xdir;
@@ -162,7 +162,7 @@ namespace Shard
 
         public override void initialize()
         {
-            Bootstrap.getInput().addListener(this);
+            // Bootstrap.getInput().addListener(this);
 
             rows = 6;
             columns = 11;

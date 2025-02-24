@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Shard")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a7cc415173fad3f3ab24560e068d874a183394b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+84a699482aa64bc5072afb1581ee08ae6f24546e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Shard")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Shard")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -10,16 +10,21 @@ namespace Shard.Shard.Components
 {
     internal class InputComponent : BaseComponent, InputListener
     {
-        Dictionary<string, int> inputs = new Dictionary<string, int>();
+        Dictionary<string, int> inputs;
 
 
         private List<InputAction> actions;
 
+        public InputComponent(GameObject owner) : base(owner)
+        {
+            inputs = new Dictionary<string, int>();
+            actions = new List<InputAction>();
+        }
 
         public override void initialize()
         {
             Bootstrap.getInput().addListener(this);
-            actions = new List<InputAction>();
+            
         }
 
         public override void update()
