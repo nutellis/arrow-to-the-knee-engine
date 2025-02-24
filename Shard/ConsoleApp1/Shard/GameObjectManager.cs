@@ -32,6 +32,8 @@ namespace Shard
             return me;
         }
 
+        public void getMyObject() => myObjects;
+
         public void addGameObject(GameObject gob)
         {
             myObjects.Add(gob);
@@ -98,6 +100,7 @@ namespace Shard
 
             //            Debug.Log ("NUm Objects is " + myObjects.Count);
         }
+
 
     }
 }

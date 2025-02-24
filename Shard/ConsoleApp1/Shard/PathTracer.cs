@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,7 +18,16 @@ namespace Shard
     class PathTracer
     {
 
-    
+        
+        // Variables;
+
+        private List<GameObject> myObjects;
+        
+        private void setMyObjects()
+        {
+            var temp = GameObjectManager.getInstance().
+        }
+
         // To make The node system for A*
         class Node
         {
@@ -91,7 +101,10 @@ namespace Shard
             }
         }
 
-
+        void test()
+        {
+           var temp =  GameObjectManager.getInstance().ge
+        }
 
     }
 }
