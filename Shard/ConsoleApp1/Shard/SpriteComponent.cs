@@ -8,31 +8,51 @@ using System.Threading.Tasks;
 
 namespace Shard.Shard.Components
 {
-    public class SpriteComponent
+    public class SpriteComponent : Component
     {
-        private Sprite sprite;
-        private string assetName;
+        private Sprite sprite; //reference to sprite object
+        public string spritePath { get; set; }
 
-        public SpriteComponent(string assetName_, )
+        public SpriteComponent(string spritePath)
         {
-            assetName = assetName_;
-            loadSprite(assetName);
+            spritePath = spritePath;
+        }
+
+        public override void initialize()
+        {
+            if(!string.IsNullOrEmpty(spritePath))
+            {
+                loadSprite();
+            }
+        }
+
+        public override void update()
+        {
+            if (sprite != null)
+            {
+                sprite.animate;
+            }
         }
 
         private void loadSprite()
         {
-            sprite = Bootstrap.getAssetManager(). //More code, should be something like getSprite(assetName)
+            string spriteFilePath = Bootstrap.getAssetManager().getAssetPath(SpritePath);  //Should change code, should be something like getSprite() I believe?
 
-            if (sprite == null)
+            if (!string.IsNullOrEmpty(spriteFilePath)
             {
-                Console.WriteLine($"Failed to Load Sprite {assetName}");
+                sprite = new Sprite(spriteFilePath);
             }
+            else 
+            {
+                Console.WriteLine($"Failed to Load Sprite {spritePath}");
+            }
+            
 
         }
 
         public void setSprite(string newAssetName)
         {
-            assetName = newAssetName;
+            spritePath = newAssetName;
             loadSprite(assetName);
 
         }
