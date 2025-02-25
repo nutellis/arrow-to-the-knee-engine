@@ -36,6 +36,16 @@ namespace Shard
           
         }
 
+        public int getWidth()
+        {
+            return texture?.Width ?? 0;
+        }
+
+        public int getHeight()
+        {
+            return texture?.Height ?? 0;
+        }
+
         //Change scale of sprite
         public void setScale(float scale)
         {
