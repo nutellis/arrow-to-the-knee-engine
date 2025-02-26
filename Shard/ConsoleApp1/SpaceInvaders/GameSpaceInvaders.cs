@@ -162,7 +162,11 @@ namespace Shard
 
         public override void initialize()
         {
-            // Bootstrap.getInput().addListener(this);
+            //Setup input key mappings. The naive way for now
+            InputFramework.getInstance().setInputMapping("Fire", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_SPACE);
+            InputFramework.getInstance().setInputMapping("Fire", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_Q);
+            InputFramework.getInstance().setInputMapping("Left", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_A);
+            InputFramework.getInstance().setInputMapping("Right", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_D);
 
             rows = 6;
             columns = 11;

@@ -1,18 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "UcH7iGz6TS4=",
+  "dgSpecHash": "GObXyCa6U0E=",
   "success": true,
-  "projectFilePath": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj",
+  "projectFilePath": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\telis\\.nuget\\packages\\sayers.sdl2.core\\1.0.11\\sayers.sdl2.core.1.0.11.nupkg.sha512",
-    "C:\\Users\\telis\\.nuget\\packages\\sdl2-cs\\2.0.0\\sdl2-cs.2.0.0.nupkg.sha512"
+    "C:\\Users\\Nutellis\\.nuget\\packages\\sayers.sdl2.core\\1.0.11\\sayers.sdl2.core.1.0.11.nupkg.sha512",
+    "C:\\Users\\Nutellis\\.nuget\\packages\\sdl2-cs\\2.0.0\\sdl2-cs.2.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  "logs": []
 }

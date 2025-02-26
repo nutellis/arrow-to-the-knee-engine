@@ -292,7 +292,7 @@ namespace Shard
                 return false;
             }
 
-            //            Debug.Log("Tick: " + Bootstrap.TimeElapsed);
+            //Debug.Log("Tick: " + Bootstrap.TimeElapsed);
 
             lastUpdate = Bootstrap.getCurrentMillis();
 

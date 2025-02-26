@@ -10,15 +10,12 @@ namespace Shard.Shard.Components
 {
     internal class InputComponent : BaseComponent, InputListener
     {
-        Dictionary<string, int> inputs;
+        Dictionary<string, InputAction> actions;
 
-
-        private List<InputAction> actions;
 
         public InputComponent(GameObject owner) : base(owner)
         {
-            inputs = new Dictionary<string, int>();
-            actions = new List<InputAction>();
+            actions = new Dictionary<string, InputAction>();
         }
 
         public override void initialize()
@@ -34,12 +31,10 @@ namespace Shard.Shard.Components
 
         public void bindInputAction(string name, InputType type, Action<object[]> action, params object[] parameters)
         {
-            //match name string to key code
-            if (inputs.ContainsKey(name))
+            if (!actions.ContainsKey(name))
             {
-                int key = inputs[name];
-                InputAction inputAction = new InputAction(name, type, key, action, parameters);
-                actions.Add(inputAction);
+                InputAction inputAction = new InputAction(name, type, action, parameters);
+                actions[name] = inputAction;
             }
         }
 
@@ -50,36 +45,24 @@ namespace Shard.Shard.Components
                 return;
             }
             // we need to check if the input event is in our list of inputs
-            if (inputs.ContainsValue(inp.Key))
-            {
-                string name = inputs.FirstOrDefault(x => x.Value == inp.Key).Key;
-
-                InputAction action = actions.FirstOrDefault(x => x.Name == name);
-                
+            if (actions.TryGetValue(inp.InputActionName, out InputAction action)){
                 if (action == null)
                 {
                     return;
-                } else
+                }
+                
+                if (eventType == action.Type)
                 {
-                    switch (action.Type)
+                    switch (eventType)
                     {
                         case InputType.Pressed:
-                            if (eventType == InputType.Pressed)
-                            {
-                                action.Execute();
-                            }
+                            action.Execute();
                             break;
                         case InputType.Held:
-                            if (eventType == InputType.Held)
-                            {
-                                action.Execute();
-                            }
+                           action.Execute();
                             break;
                         case InputType.Released:
-                            if (eventType == InputType.Released)
-                            {
-                                action.Execute();
-                            }
+                            action.Execute();
                             break;
                     }
                 }

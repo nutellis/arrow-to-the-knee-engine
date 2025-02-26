@@ -1,42 +1,38 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\",
+  "WorkspaceRootPath": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\github\\arrow-to-the-knee-engine\\shard\\consoleapp1\\spaceinvaders\\spaceship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\spaceinvaders\\spaceship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\github\\arrow-to-the-knee-engine\\shard\\consoleapp1\\shard\\components\\inputcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\shard\\components\\inputcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\github\\arrow-to-the-knee-engine\\shard\\consoleapp1\\shard\\inputbasic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\shard\\inputbasic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\github\\arrow-to-the-knee-engine\\shard\\consoleapp1\\spaceinvaders\\gamespaceinvaders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\spaceinvaders\\gamespaceinvaders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\github\\arrow-to-the-knee-engine\\shard\\consoleapp1\\shard\\inputaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\shard\\inputaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\github\\arrow-to-the-knee-engine\\shard\\consoleapp1\\config.cfg||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\config.cfg||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\github\\arrow-to-the-knee-engine\\shard\\consoleapp1\\shard\\inputframework.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\projects\\arrow-to-the-knee-engine\\shard\\consoleapp1\\shard\\inputframework.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\shard\\inputframework.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\github\\arrow-to-the-knee-engine\\shard\\consoleapp1\\shard\\inputsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\shard\\inputsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\projects\\arrow-to-the-knee-engine\\shard\\consoleapp1\\shard\\components\\inputcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\shard\\components\\inputcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\github\\arrow-to-the-knee-engine\\shard\\consoleapp1\\shard\\inputlistener.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\projects\\arrow-to-the-knee-engine\\shard\\consoleapp1\\spaceinvaders\\spaceship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\spaceinvaders\\spaceship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\projects\\arrow-to-the-knee-engine\\shard\\consoleapp1\\shard\\inputaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\shard\\inputaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\projects\\arrow-to-the-knee-engine\\shard\\consoleapp1\\spaceinvaders\\gamespaceinvaders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\spaceinvaders\\gamespaceinvaders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\projects\\arrow-to-the-knee-engine\\shard\\consoleapp1\\shard\\inputbasic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\shard\\inputbasic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\projects\\arrow-to-the-knee-engine\\shard\\consoleapp1\\shard\\inputlistener.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\shard\\inputlistener.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|q:\\users\\nutellis\\documents\\projects\\arrow-to-the-knee-engine\\shard\\consoleapp1\\shard\\bootstrap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\shard\\bootstrap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -45,24 +41,63 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "DockedWidth": 236,
+          "SelectedChildIndex": 9,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{d3750d8a-574b-4fb3-b7e2-aa8af40e8231}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "InputComponent.cs",
+              "DocumentMoniker": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\Components\\InputComponent.cs",
+              "RelativeDocumentMoniker": "ConsoleApp1\\Shard\\Components\\InputComponent.cs",
+              "ToolTip": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\Components\\InputComponent.cs",
+              "RelativeToolTip": "ConsoleApp1\\Shard\\Components\\InputComponent.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAtwDoAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-25T23:40:05.096Z",
+              "EditorCaption": ""
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "Spaceship.cs",
+              "DocumentMoniker": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\SpaceInvaders\\Spaceship.cs",
+              "RelativeDocumentMoniker": "ConsoleApp1\\SpaceInvaders\\Spaceship.cs",
+              "ToolTip": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\SpaceInvaders\\Spaceship.cs",
+              "RelativeToolTip": "ConsoleApp1\\SpaceInvaders\\Spaceship.cs",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAAAJUAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-25T23:36:28.593Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Bootstrap.cs",
+              "DocumentMoniker": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\Bootstrap.cs",
+              "RelativeDocumentMoniker": "ConsoleApp1\\Shard\\Bootstrap.cs",
+              "ToolTip": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\Bootstrap.cs",
+              "RelativeToolTip": "ConsoleApp1\\Shard\\Bootstrap.cs",
+              "ViewState": "AgIAAG4AAAAAAAAAAAAswIQAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-25T13:03:12.851Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "InputBasic.cs",
-              "DocumentMoniker": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputBasic.cs",
+              "DocumentMoniker": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputBasic.cs",
               "RelativeDocumentMoniker": "ConsoleApp1\\Shard\\InputBasic.cs",
-              "ToolTip": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputBasic.cs",
+              "ToolTip": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputBasic.cs",
               "RelativeToolTip": "ConsoleApp1\\Shard\\InputBasic.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAB8AAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -71,104 +106,52 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "GameSpaceInvaders.cs",
-              "DocumentMoniker": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\SpaceInvaders\\GameSpaceInvaders.cs",
+              "DocumentMoniker": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\SpaceInvaders\\GameSpaceInvaders.cs",
               "RelativeDocumentMoniker": "ConsoleApp1\\SpaceInvaders\\GameSpaceInvaders.cs",
-              "ToolTip": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\SpaceInvaders\\GameSpaceInvaders.cs",
+              "ToolTip": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\SpaceInvaders\\GameSpaceInvaders.cs",
               "RelativeToolTip": "ConsoleApp1\\SpaceInvaders\\GameSpaceInvaders.cs",
-              "ViewState": "AgIAAJkAAAAAAAAAAAAowKQAAAAPAAAAAAAAAA==",
+              "ViewState": "AgIAAJQAAAAAAAAAAAAEwKkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-24T21:28:40.137Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "config.cfg",
-              "DocumentMoniker": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\config.cfg",
-              "RelativeDocumentMoniker": "ConsoleApp1\\config.cfg",
-              "ToolTip": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\config.cfg",
-              "RelativeToolTip": "ConsoleApp1\\config.cfg",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-02-24T19:39:11.134Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "InputSystem.cs",
-              "DocumentMoniker": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputSystem.cs",
-              "RelativeDocumentMoniker": "ConsoleApp1\\Shard\\InputSystem.cs",
-              "ToolTip": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputSystem.cs",
-              "RelativeToolTip": "ConsoleApp1\\Shard\\InputSystem.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-21T17:56:55.81Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "InputComponent.cs",
-              "DocumentMoniker": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\Components\\InputComponent.cs",
-              "RelativeDocumentMoniker": "ConsoleApp1\\Shard\\Components\\InputComponent.cs",
-              "ToolTip": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\Components\\InputComponent.cs",
-              "RelativeToolTip": "ConsoleApp1\\Shard\\Components\\InputComponent.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAA8wBMAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-21T17:38:11.047Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Spaceship.cs",
-              "DocumentMoniker": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\SpaceInvaders\\Spaceship.cs",
-              "RelativeDocumentMoniker": "ConsoleApp1\\SpaceInvaders\\Spaceship.cs",
-              "ToolTip": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\SpaceInvaders\\Spaceship.cs",
-              "RelativeToolTip": "ConsoleApp1\\SpaceInvaders\\Spaceship.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAAqwC0AAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-21T17:37:40.197Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 6,
               "Title": "InputListener.cs",
-              "DocumentMoniker": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputListener.cs",
+              "DocumentMoniker": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputListener.cs",
               "RelativeDocumentMoniker": "ConsoleApp1\\Shard\\InputListener.cs",
-              "ToolTip": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputListener.cs",
+              "ToolTip": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputListener.cs",
               "RelativeToolTip": "ConsoleApp1\\Shard\\InputListener.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA8AAAAUAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-24T19:06:31.615Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "InputAction.cs",
-              "DocumentMoniker": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputAction.cs",
+              "DocumentMoniker": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputAction.cs",
               "RelativeDocumentMoniker": "ConsoleApp1\\Shard\\InputAction.cs",
-              "ToolTip": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputAction.cs",
+              "ToolTip": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputAction.cs",
               "RelativeToolTip": "ConsoleApp1\\Shard\\InputAction.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAYAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-21T18:31:53.447Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
               "Title": "InputFramework.cs",
-              "DocumentMoniker": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputFramework.cs",
+              "DocumentMoniker": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputFramework.cs",
               "RelativeDocumentMoniker": "ConsoleApp1\\Shard\\InputFramework.cs",
-              "ToolTip": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputFramework.cs",
-              "RelativeToolTip": "ConsoleApp1\\Shard\\InputFramework.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAADgvxwAAAAFAAAAAAAAAA==",
+              "ToolTip": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputFramework.cs*",
+              "RelativeToolTip": "ConsoleApp1\\Shard\\InputFramework.cs*",
+              "ViewState": "AgIAALAAAAAAAAAAAAAAAMsAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-24T18:40:26.1Z",
               "EditorCaption": ""
@@ -176,7 +159,7 @@
           ]
         },
         {
-          "DockedWidth": 413,
+          "DockedWidth": 251,
           "SelectedChildIndex": -1,
           "Children": [
             {

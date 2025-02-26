@@ -34,11 +34,12 @@ namespace SpaceInvaders
             sprites[0] = "invader1.png";
             sprites[1] = "invader2.png";
 
+
             spriteToUse = 0;
 
             this.transform.X = 200.0f;
             this.transform.Y = 100.0f;
-            this.transform.SpritePath = sprites[0];
+            this.transform.SpritePath = Bootstrap.getAssetManager().getAssetPath(sprites[0]);
 
             physics.addRectCollider();
 

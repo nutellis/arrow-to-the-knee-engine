@@ -74,31 +74,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\telis\\.nuget\\packages\\": {},
-    "Q:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Nutellis\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj",
+      "projectUniqueName": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj",
       "projectName": "Shard",
-      "projectPath": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj",
-      "packagesPath": "C:\\Users\\telis\\.nuget\\packages\\",
-      "outputPath": "Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\obj\\",
+      "projectPath": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj",
+      "packagesPath": "C:\\Users\\Nutellis\\.nuget\\packages\\",
+      "outputPath": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "Q:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\telis\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Nutellis\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0-windows"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -116,8 +109,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.200"
+      }
     },
     "frameworks": {
       "net8.0-windows7.0": {
@@ -148,16 +140,8 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file Q:\\Users\\nutellis\\Documents\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  }
 }
