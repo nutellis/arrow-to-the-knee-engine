@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shard.Shard.Components
 {
-<<<<<<<< HEAD:Shard/ConsoleApp1/Shard/Components/Components.cs
-    public abstract class Component
-========
     internal abstract class BaseComponent
->>>>>>>> ecs_wip:Shard/ConsoleApp1/Shard/Components/BaseComponent.cs
     {
         protected GameObject owner;
         private Tags tags;
