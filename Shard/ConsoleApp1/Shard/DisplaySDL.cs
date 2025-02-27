@@ -123,7 +123,7 @@ namespace Shard
             //TODO: gob.SpriteComponent.Sprite
             _toDraw.Add(gob.sprite);
 
-            if (gob.Transform.SpritePath == null)
+            if (gob.transform.SpritePath == null)
             {
                 return;
             }
@@ -144,7 +144,7 @@ namespace Shard
 
         public override void removeToDraw(GameObject gob)
         {
-            _toDraw.Remove(gob.Transform);
+            _toDraw.Remove(gob.transform);
         }
 
 

@@ -1,44 +1,17 @@
-﻿/*
-*
-*   The physics body class does... a lot.  It handles the computation of internal values such as 
-*       the min and max values for X and Y (used by the Sweep and Prune algorithm, as well as 
-*       collision detection in general).  It registers and processes the colliders that belong to 
-*       an object.  It handles the application of forces and torque as well as drag and angular drag.
-*       It lets an object add colliders, and then exposes those colliders for narrow phase collision 
-*       detection.  It handles some naive default collision responses such as a simple reflection
-*       or 'stop on collision'.
-*       
-*   Important to note though that while this is called a PhysicsBody, no claims are made for the 
-*       *accuracy* of the physics.  If you are planning to do anything that requires the physics
-*       calculations to be remotely correct, you're going to have to extend the engine so it does 
-*       that.  All I'm interested in here is showing you how it's *architected*. 
-*       
-*   This is also the subsystem which I am least confident about people relying on, because it is 
-*       virtually untestable in any meaningful sense.  I spent three days trying to track down a 
-*       bug that mean that an object would pass through another one at a rate of approximately
-*       once every half hour...
-*       
-*   @author Michael Heron
-*   @version 1.0
-*   
-*   Several substantial contributions to the code made by others:
-*   @author Mårten Åsberg (see Changelog for 1.0.1)
-*   
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
 
-namespace Shard
+namespace Shard.Shard.Components
 {
-    class PhysicsBody
+    internal class PhysicsComponent : BaseComponent
     {
+        private bool physicsEnabled;
+
         List<Collider> myColliders;
         List<Collider> collisionCandidates;
-        GameObject parent;
         CollisionHandler colh;
         Transform trans;
         private float angularDrag;
@@ -60,6 +33,47 @@ namespace Shard
         private float[] minAndMaxX;
         private float[] minAndMaxY;
 
+        public PhysicsComponent(GameObject owner) : base(owner)
+        {
+            physicsEnabled = true;  // Default: Physics enabled
+            DebugColor = Color.Green;
+
+            myColliders = new List<Collider>();
+            collisionCandidates = new List<Collider>();
+
+            Trans = owner.transform;
+            Colh = (CollisionHandler)owner;
+
+            AngularDrag = 0.01f;
+            Drag = 0.01f;
+            Drag = 0.01f;
+            Mass = 1;
+            MaxForce = 10;
+            MaxTorque = 2;
+            usesGravity = false;
+            stopOnCollision = true;
+            reflectOnCollision = false;
+
+            MinAndMaxX = new float[2];
+            MinAndMaxY = new float[2];
+
+            timeInterval = PhysicsManager.getInstance().TimeInterval;
+            //            Debug.getInstance().log ("Setting physics enabled");
+
+            PhysicsManager.getInstance().addPhysicsObject(this);
+        }
+
+        public override void initialize() { }
+
+        public override void update()
+        {
+            base.update();
+            // Handle physics logic here if physics is enabled
+            if (physicsEnabled)
+            {
+                // Physics-related updates, e.g., movement, collision, etc.
+            }
+        }
         public void applyGravity(float modifier, Vector2 dir)
         {
 
@@ -71,7 +85,6 @@ namespace Shard
 
         public float AngularDrag { get => angularDrag; set => angularDrag = value; }
         public float Drag { get => drag; set => drag = value; }
-        internal GameObject Parent { get => parent; set => parent = value; }
         internal Transform Trans { get => trans; set => trans = value; }
         public float Mass { get => mass; set => mass = value; }
         public float[] MinAndMaxX { get => minAndMaxX; set => minAndMaxX = value; }
@@ -128,35 +141,6 @@ namespace Shard
             return new float[2] { min, max };
         }
 
-        public PhysicsBody(GameObject p)
-        {
-            DebugColor = Color.Green;
-
-            myColliders = new List<Collider>();
-            collisionCandidates = new List<Collider>();
-
-            Parent = p;
-            Trans = p.Transform;
-            Colh = (CollisionHandler)p;
-
-            AngularDrag = 0.01f;
-            Drag = 0.01f;
-            Drag = 0.01f;
-            Mass = 1;
-            MaxForce = 10;
-            MaxTorque = 2;
-            usesGravity = false;
-            stopOnCollision = true;
-            reflectOnCollision = false;
-
-            MinAndMaxX = new float[2];
-            MinAndMaxY = new float[2];
-
-            timeInterval = PhysicsManager.getInstance().TimeInterval;
-            //            Debug.getInstance().log ("Setting physics enabled");
-
-            PhysicsManager.getInstance().addPhysicsObject(this);
-        }
 
         public void addTorque(float dir)
         {
@@ -190,7 +174,7 @@ namespace Shard
             force *= -prop;
         }
 
-        public void impartForces(PhysicsBody other, float massProp)
+        public void impartForces(PhysicsComponent other, float massProp)
         {
             other.addForce(force * massProp);
 
@@ -207,7 +191,7 @@ namespace Shard
         {
             Vector2 reflect = new Vector2(0, 0);
 
-            Debug.Log ("Reflecting " + impulse);
+            Debug.Log("Reflecting " + impulse);
 
             // We're being pushed to the right, so we must have collided with the right.
             if (impulse.X > 0)
@@ -242,11 +226,13 @@ namespace Shard
 
         }
 
-        public void reduceForces(float prop) {
+        public void reduceForces(float prop)
+        {
             force *= prop;
         }
 
-        public void addForce(Vector2 dir, float force) {
+        public void addForce(Vector2 dir, float force)
+        {
             addForce(dir * force);
         }
 
@@ -311,7 +297,7 @@ namespace Shard
 
             force = this.force.Length();
 
-			trans.translate(this.force);
+            trans.translate(this.force);
 
             if (force < Drag)
             {
@@ -329,7 +315,7 @@ namespace Shard
 
         public ColliderRect addRectCollider()
         {
-            ColliderRect cr = new ColliderRect((CollisionHandler)parent, parent.Transform);
+            ColliderRect cr = new ColliderRect((CollisionHandler)owner, owner.transform);
 
             addCollider(cr);
 
@@ -338,7 +324,7 @@ namespace Shard
 
         public ColliderCircle addCircleCollider()
         {
-            ColliderCircle cr = new ColliderCircle((CollisionHandler)parent, parent.Transform);
+            ColliderCircle cr = new ColliderCircle((CollisionHandler)owner, owner.transform);
 
             addCollider(cr);
 
@@ -347,7 +333,7 @@ namespace Shard
 
         public ColliderCircle addCircleCollider(int x, int y, int rad)
         {
-            ColliderCircle cr = new ColliderCircle((CollisionHandler)parent, parent.Transform, x, y, rad);
+            ColliderCircle cr = new ColliderCircle((CollisionHandler)owner, owner.transform, x, y, rad);
 
             addCollider(cr);
 
@@ -357,7 +343,7 @@ namespace Shard
 
         public ColliderRect addRectCollider(int x, int y, int wid, int ht)
         {
-            ColliderRect cr = new ColliderRect((CollisionHandler)parent, parent.Transform, x, y, wid, ht);
+            ColliderRect cr = new ColliderRect((CollisionHandler)owner, owner.transform, x, y, wid, ht);
 
             addCollider(cr);
 
@@ -398,7 +384,7 @@ namespace Shard
         {
             Vector2? d;
 
-//            Debug.Log("Checking collision with " + other);
+            //            Debug.Log("Checking collision with " + other);
             foreach (Collider c in myColliders)
             {
                 d = c.checkCollision(other);
@@ -411,5 +397,118 @@ namespace Shard
 
             return null;
         }
+
+        public void checkDestroyMe(GameObject gameObject)
+        {
+            Transform transform = gameObject.transform;
+
+            if (!gameObject.Transient)
+            {
+                return;
+            }
+
+            if (transform == null) return;
+
+            int screenWidth = Bootstrap.getDisplay().getWidth();
+            int screenHeight = Bootstrap.getDisplay().getHeight();
+
+            if (transform.X < 0 || transform.X > screenWidth || transform.Y < 0 || transform.Y > screenHeight)
+            {
+                gameObject.ToBeDestroyed = true;
+            }
+        }
+
+        public bool queryPhysicsEnabled()
+        {
+            if (physicsEnabled)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
+        // Check if physics is enabled
+        public bool isPhysicsEnabled() => physicsEnabled;
+
+        public virtual void physicsUpdate()
+        {
+        }
+
+        public virtual void prePhysicsUpdate()
+        {
+        }
+
+        public virtual void killMe()
+        {
+            PhysicsManager.getInstance().removePhysicsObject(this);
+
+            //this = null; TODO fix this
+        }
     }
 }
+
+
+/*
+ //// Enable or disable physics for this component
+        //public void setPhysicsEnabled(bool enabled)
+        //{
+        //    physicsEnabled = enabled;
+        //    MyBody = new PhysicsBody(this);
+        //}
+
+        public bool queryPhysicsEnabled()
+        {
+            if (MyBody == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        internal PhysicsBody MyBody { get => myBody; set => myBody = value; }
+
+        // Check if physics is enabled
+        public bool isPhysicsEnabled() => physicsEnabled;
+
+        //protected override void UpdateComponent()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public void checkDestroyMe(GameObject gameObject)
+        {
+            TransformComponent transform = gameObject.getComponent<TransformComponent>();
+            
+            if(!gameObject.Transient)
+            {
+                return;
+            }
+
+            if (transform == null) return;
+
+            int screenWidth = Bootstrap.getDisplay().getWidth();
+            int screenHeight = Bootstrap.getDisplay().getHeight();
+
+            if (transform.X < 0 || transform.X > screenWidth || transform.Y < 0 || transform.Y > screenHeight)
+            {
+                gameObject.ToBeDestroyed = true;
+            }
+        }
+
+        public virtual void physicsUpdate()
+        {
+        }
+
+        public virtual void prePhysicsUpdate()
+        {
+        }
+
+        public virtual void killMe()
+        {
+            PhysicsManager.getInstance().removePhysicsObject(myBody);
+
+            myBody = null;
+        }
+
+ */

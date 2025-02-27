@@ -28,8 +28,8 @@ namespace Shard
 
             ie.Key = (int)cki.KeyChar;
 
-            informListeners(ie, "KeyDown");
-            informListeners(ie, "KeyUp");
+            informListeners(ie, InputType.Pressed);
+            informListeners(ie, InputType.Released);
 
             Debug.getInstance().log("Key is " + ie.Key);
         }

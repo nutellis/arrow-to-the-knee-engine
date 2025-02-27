@@ -1,4 +1,6 @@
 ﻿using Shard;
+using Shard.Shard;
+using Shard.Shard.Components;
 using System;
 
 namespace SpaceInvaders
@@ -16,8 +18,15 @@ namespace SpaceInvaders
 
         public int Xdir { get => xdir; set => xdir = value; }
 
+        //private SpriteComponent sprite;
+        private Tags tags;
+        private PhysicsComponent physics;
+
         public override void initialize()
         {
+            //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("bunkerBit.png"));
+            physics = new PhysicsComponent(this);
+
             sprites = new string[2];
 
             game = (GameSpaceInvaders)Bootstrap.getRunningGame();
@@ -25,20 +34,21 @@ namespace SpaceInvaders
             sprites[0] = "invader1.png";
             sprites[1] = "invader2.png";
 
+
             spriteToUse = 0;
 
-            this.Transform.X = 200.0f;
-            this.Transform.Y = 100.0f;
-            this.Transform.SpritePath = sprites[0];
+            this.transform.X = 200.0f;
+            this.transform.Y = 100.0f;
+            this.transform.SpritePath = Bootstrap.getAssetManager().getAssetPath(sprites[0]);
 
-            setPhysicsEnabled();
-            MyBody.addRectCollider();
+            physics.addRectCollider();
 
             rand = new Random();
 
-            addTag("Invader");
+            tags = new Tags();
+            tags.addTag("Invader");
 
-            MyBody.PassThrough = true;
+            physics.PassThrough = true;
 
         }
 
@@ -52,7 +62,7 @@ namespace SpaceInvaders
                 spriteToUse = 0;
             }
 
-            this.Transform.SpritePath = Bootstrap.getAssetManager().getAssetPath(sprites[spriteToUse]);
+            this.transform.SpritePath = Bootstrap.getAssetManager().getAssetPath(sprites[spriteToUse]);
 
         }
 
@@ -63,37 +73,57 @@ namespace SpaceInvaders
             Bootstrap.getDisplay().addToDraw(this);
         }
 
-        public void onCollisionEnter(PhysicsBody x)
-        {
-            if (x.Parent.checkTag("Player"))
-            {
-                x.Parent.ToBeDestroyed = true;
-            }
+        //public void onCollisionEnter(PhysicsBody x)
+        //{
+        //    if (x.Parent.checkTag("Player"))
+        //    {
+        //        x.Parent.ToBeDestroyed = true;
+        //    }
 
-            if (x.Parent.checkTag("BunkerBit"))
+        //    if (x.Parent.checkTag("BunkerBit"))
+        //    {
+        //        x.Parent.ToBeDestroyed = true;
+        //    }
+        //}
+
+        public void onCollisionEnter(PhysicsComponent x)
+        {
+            // Get the TagComponent from the collided object
+            Tags tagComp = x.Owner.Tags;
+
+            // Check if the object has a TagComponent before using checkTag()
+            if (tagComp != null)
             {
-                x.Parent.ToBeDestroyed = true;
+                if (tagComp.checkTag("Player"))
+                {
+                    x.Owner.ToBeDestroyed = true;
+                }
+
+                if (tagComp.checkTag("BunkerBit"))
+                {
+                    x.Owner.ToBeDestroyed = true;
+                }
             }
         }
 
-        public void onCollisionExit(PhysicsBody x)
+        public void onCollisionExit(PhysicsComponent x)
         {
         }
 
-        public void onCollisionStay(PhysicsBody x)
+        public void onCollisionStay(PhysicsComponent x)
         {
         }
 
         public override string ToString()
         {
-            return "Asteroid: [" + Transform.X + ", " + Transform.Y + ", " + Transform.Wid + ", " + Transform.Ht + "]";
+            return "Asteroid: [" + transform.X + ", " + transform.Y + ", " + transform.Wid + ", " + transform.Ht + "]";
         }
 
         public void fire()
         {
             Bullet b = new Bullet();
-
-            b.setupBullet(this.Transform.Centre.X, this.Transform.Centre.Y);
+            b.initialize();
+            b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y);
             b.Dir = 1;
             b.DestroyTag = "Player";
         }

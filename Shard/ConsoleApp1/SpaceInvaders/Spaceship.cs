@@ -2,15 +2,28 @@
 using Shard;
 using Shard.Shard.Components;
 using System.Drawing;
+using Shard.Shard.Components;
+using Shard.Shard;
+using Shard.SpaceInvaders;
+using System;
 
 namespace SpaceInvaders
 {
-    class Spaceship : GameObject, InputListener, CollisionHandler
+    class Spaceship : GameObject, CollisionHandler
     {
-        bool left, right;
-        float fireCounter, fireDelay;
+        //bool left, right;
+        //float fireCounter, fireDelay;
 
         public SpriteComponent sprite;
+ //private TransformComponent transform;
+        //private SpriteComponent sprite;
+        private InputComponent input;
+        //private WeaponComponent weapon;
+        private PhysicsComponent physics;
+
+        private Tags tags;
+        private double fireCounter, fireDelay = 2.0f;
+        private float moveDistance;
 
 
         public override void initialize()
@@ -20,19 +33,37 @@ namespace SpaceInvaders
 
             this.sprite = new SpriteComponent("player.png");
             
-
             fireDelay = 2;
             fireCounter = fireDelay;
 
-            Bootstrap.getInput().addListener(this);
+            tags = new Tags();
+            tags.addTag("Player");
 
-            setPhysicsEnabled();
+            //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("player.png"));
+            input = new InputComponent(this);
+            input.initialize();
 
-            MyBody.addRectCollider();
+            input.bindInputAction("Fire", InputType.Pressed, (parameters) => fireBullet());
+            input.bindInputAction("Left", InputType.Pressed, (parameters) => moveLeft());
+            input.bindInputAction("Right", InputType.Pressed, (parameters) => moveRight());
 
-            addTag("Player");
+            physics = new PhysicsComponent(this);
+            physics.addRectCollider();
 
+            tags.addTag("Player");
 
+        }
+
+        // Again a very naive way to implement axis movement
+        public void moveLeft()
+        {
+            moveDistance = (float)(2500 * Bootstrap.getDeltaTime());
+            this.transform.translate(-1 * moveDistance, 0);
+        }
+        public void moveRight()
+        {
+            moveDistance = (float)(2500 * Bootstrap.getDeltaTime());
+            this.transform.translate(1 * moveDistance, 0);
         }
 
         public void fireBullet()
@@ -43,8 +74,8 @@ namespace SpaceInvaders
             }
 
             Bullet b = new Bullet();
-
-            b.setupBullet(this.Transform.Centre.X, this.Transform.Centre.Y);
+            b.initialize();
+            b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y);
             b.Dir = -1;
             b.DestroyTag = "Invader";
 
@@ -60,86 +91,100 @@ namespace SpaceInvaders
                 return;
             }
 
-            if (eventType == "KeyDown")
-            {
+            //if (eventType == "KeyDown")
+            //{
 
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
-                {
-                    right = true;
-                }
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
+            //    {
+            //        //right = true;
+            //        input.Right = true;
+            //    }
 
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
-                {
-                    left = true;
-                }
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
+            //    {
+            //        //left = true;
+            //        input.Left = true;
+            //    }
 
-            }
-            else if (eventType == "KeyUp")
-            {
-
-
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
-                {
-                    right = false;
-                }
-
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
-                {
-                    left = false;
-                }
+            //}
+            //else if (eventType == "KeyUp")
+            //{
 
 
-            }
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
+            //    {
+            //        //right = false;
+            //        input.Right = false;
+            //    }
+
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
+            //    {
+            //        //left = false;
+            //        input.Left = false;
+            //    }
+
+
+            //}
 
 
 
-            if (eventType == "KeyUp")
-            {
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE)
-                {
-                    fireBullet();
-                }
-            }
+            //if (eventType == "KeyUp")
+            //{
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE)
+            //    {
+            //        //fireBullet();
+            //        input.Fire = true;
+            //    }
+            //}
         }
 
         public override void update()
         {
-            float amount = (float)(100 * Bootstrap.getDeltaTime());
+            
 
             fireCounter += (float)Bootstrap.getDeltaTime();
 
-            if (left)
-            {
-                this.Transform.translate(-1 * amount, 0);
-            }
+            //if (left)
+            //{
+            //    this.Transform.translate(-1 * amount, 0);
+            //}
 
-            if (right)
-            {
-                this.Transform.translate(1 * amount, 0);
-            }
+            //if (right)
+            //{
+            //    this.Transform.translate(1 * amount, 0);
+            //}
+
+            //if (input.Left) transform.translate(-1 * amount, 0);
+            //if (input.Right) transform.translate(1 * amount, 0);
+            //if (input.Fire)
+            //{
+            //    fireBullet();
+            //    //weapon.Fire();
+            //    input.Fire = false;
+            //}
 
             Bootstrap.getDisplay().addToDraw(this);
         }
 
-        public void onCollisionEnter(PhysicsBody x)
+        public void onCollisionEnter(PhysicsComponent x)
         {
 
         }
 
-        public void onCollisionExit(PhysicsBody x)
+        public void onCollisionExit(PhysicsComponent x)
         {
 
-            MyBody.DebugColor = Color.Green;
+            physics.DebugColor = Color.Green;
         }
 
-        public void onCollisionStay(PhysicsBody x)
+        public void onCollisionStay(PhysicsComponent x)
         {
-            MyBody.DebugColor = Color.Blue;
+            physics.DebugColor = Color.Blue;
         }
 
         public override string ToString()
         {
-            return "Spaceship: [" + Transform.X + ", " + Transform.Y + ", " + Transform.Wid + ", " + Transform.Ht + "]";
+            return "Spaceship: [" + transform.X + ", " + transform.Y + ", " + transform.Wid + ", " + transform.Ht + "]";
         }
 
     }

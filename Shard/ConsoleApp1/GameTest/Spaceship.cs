@@ -1,5 +1,6 @@
 ﻿using SDL2;
 using Shard;
+using Shard.Shard;
 using System.Drawing;
 
 namespace GameTest
