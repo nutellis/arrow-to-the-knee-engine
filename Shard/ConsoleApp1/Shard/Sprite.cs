@@ -5,28 +5,32 @@ namespace Shard
     public class Sprite
     {
         public string path;
+        public IntPtr img;
         public float X, Y;
-        public float scale;
+        public float scaleX, scaleY;
+        public float width, height;
         private bool isAnimating = false;
 
 
-        public Sprite(string path)
+        public Sprite()
         {
-            this.path = path; //save file path
-            loadTexture(); //load in texture
+            
         }
 
         //Loads texture from file path
+        // TODO: move DisplaySDL loadTexture here!
         private void loadTexture()
         {
             Console.WriteLine("Loading sprite from: " + path); //placeholder
         }
 
         //Draw the sprite on the screen
+        //TODO: not needed for now comment it
         public void draw()
         {
             Console.WriteLine($"Drawing sprite {path} at ({X}, {Y}) with scale {scale}"); //placeholder
         }
+
 
         //Updates position of sprite
         public void setPosition(float x, float y)
@@ -38,18 +42,22 @@ namespace Shard
 
         public int getWidth()
         {
-            return texture?.Width ?? 0;
+            return width ?? 0.0;
         }
 
         public int getHeight()
         {
-            return texture?.Height ?? 0;
+            return height ?? 0.0;
         }
 
         //Change scale of sprite
-        public void setScale(float scale)
+        public void setUniformScale(float scale)
         {
-            this.scale = scale;
+            this.scaleX = scale;
+            this.scaleY = scale;
+
+            //Minor priority
+            //TODO: actually scale the img when the scale is changed
         }
 
         //Change color of sprite

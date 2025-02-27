@@ -1,5 +1,6 @@
 ﻿using SDL2;
 using Shard;
+using Shard.Shard.Components;
 using System.Drawing;
 
 namespace SpaceInvaders
@@ -9,14 +10,16 @@ namespace SpaceInvaders
         bool left, right;
         float fireCounter, fireDelay;
 
+        public SpriteComponent sprite;
+
 
         public override void initialize()
         {
-
             this.Transform.X = 100.0f;
             this.Transform.Y = 800.0f;
-            this.Transform.SpritePath = Bootstrap.getAssetManager().getAssetPath("player.png");
 
+            this.sprite = new SpriteComponent("player.png");
+            
 
             fireDelay = 2;
             fireCounter = fireDelay;

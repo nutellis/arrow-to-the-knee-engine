@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SDL2;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -65,7 +66,33 @@ namespace Shard
 
         }
 
+        //TODO: create an IntPtr (img) from the path and store it for future use.
+        public Sprite getSprite(string asset)
+        {
+            Sprite newSprite = new Sprite();
 
+            IntPtr img;
+            uint format;
+            int access;
+            int w;
+            int h;
+
+            img = SDL_image.IMG_Load(asset);
+
+            SDL.SDL_QueryTexture(img, out format, out access, out w, out h);
+
+            newSprite.path = asset;
+            newSprite.img = img;
+            newSprite.height = h;
+            newSprite.width = w;
+
+            //TODO: lets keep that here for now. We will have to do changes on the game object later
+            //trans.recalculateCentre();
+
+            Debug.getInstance().log("IMG_Load: " + SDL_image.IMG_GetError());
+
+
+        }
 
     }
 }

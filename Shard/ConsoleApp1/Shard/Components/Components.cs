@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shard.Shard.Components
 {
-    internal abstract class Component
+    public abstract class Component
     {
         private bool enabled = true; // Default: enabled
 

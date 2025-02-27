@@ -14,7 +14,7 @@ namespace Shard.Shard.Components
         public string spritePath { get; set; }
         private List<Texture2D> animationFrames;
         private int currentFrame;
-        private float frameTimer;
+        private double frameTimer;
         private float frameDuration = 0.1f;
 
         public SpriteComponent(string spritePath) 
@@ -30,9 +30,9 @@ namespace Shard.Shard.Components
             }
         }
 
-        public override void update(float deltaTime)
+        public override void update()
         {
-            frameTimer += deltaTime;
+            frameTimer += Bootstrap.getDeltaTime();
             if (frameTimer >= frameDuration)
             {
                 frameTimer = 0;
@@ -41,11 +41,12 @@ namespace Shard.Shard.Components
             }
         }
 
+        //TODO: load the sprite from the getSprite function
         private void loadSprite()
         {
-            string spriteFilePath = Bootstrap.getAssetManager().getAssetPath(SpritePath);  //Should change code, should be something like getSprite() I believe?
+            string spriteFilePath = Bootstrap.getAssetManager().getAssetPath(spritePath);  //Should change code, should be something like getSprite() I believe?
 
-            if (!string.IsNullOrEmpty(spriteFilePath)
+            if (!string.IsNullOrEmpty(spriteFilePath))
             {
                 sprite = new Sprite(spriteFilePath);
             }
@@ -60,7 +61,7 @@ namespace Shard.Shard.Components
         public void setSprite(string newAssetName)
         {
             spritePath = newAssetName;
-            loadSprite(assetName);
+            loadSprite();
 
         }
 

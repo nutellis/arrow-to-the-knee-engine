@@ -79,11 +79,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "Q:\\Users\\Nutellis\\Desktop\\Shard\\ConsoleApp1\\Shard.csproj",
+      "projectUniqueName": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj",
       "projectName": "Shard",
-      "projectPath": "Q:\\Users\\Nutellis\\Desktop\\Shard\\ConsoleApp1\\Shard.csproj",
+      "projectPath": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard.csproj",
       "packagesPath": "C:\\Users\\Nutellis\\.nuget\\packages\\",
-      "outputPath": "Q:\\Users\\Nutellis\\Desktop\\Shard\\ConsoleApp1\\obj\\",
+      "outputPath": "Q:\\Users\\Nutellis\\Documents\\Projects\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Nutellis\\AppData\\Roaming\\NuGet\\NuGet.Config"

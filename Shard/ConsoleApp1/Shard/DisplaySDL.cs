@@ -14,6 +14,7 @@
 using SDL2;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 
 namespace Shard
@@ -52,7 +53,10 @@ namespace Shard
 
     class DisplaySDL : DisplayText
     {
+        //TODO: List of Sprites
         private List<Transform> _toDraw;
+
+
         private List<Line> _linesToDraw;
         private List<Circle> _circlesToDraw;
         private Dictionary<string, IntPtr> spriteBuffer;
@@ -69,6 +73,8 @@ namespace Shard
 
         }
 
+        // TODO: this should move inside Sprite Manager
+        // Load textures from Sprite Object
         public IntPtr loadTexture(Transform trans)
         {
             IntPtr ret;
@@ -88,7 +94,8 @@ namespace Shard
 
         }
 
-
+        
+        //this should be here!
         public IntPtr loadTexture(string path)
         {
             IntPtr img;
@@ -113,14 +120,26 @@ namespace Shard
 
         public override void addToDraw(GameObject gob)
         {
-            _toDraw.Add(gob.Transform);
+            //TODO: gob.SpriteComponent.Sprite
+            _toDraw.Add(gob.sprite);
 
             if (gob.Transform.SpritePath == null)
             {
                 return;
             }
+            //if the sprite exists and it is valid, try and see if it is contained on the draw buffer
+            // if its already there return the buffer
+            if (spriteBuffer.ContainsKey(path))
+            {
+                return;
+            }
 
-            loadTexture(gob.Transform.SpritePath);
+            spriteBuffer[path] = SDL.SDL_CreateTextureFromSurface(_rend, img);
+
+            SDL.SDL_SetTextureBlendMode(spriteBuffer[path], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
+
+            return spriteBuffer[path];
+
         }
 
         public override void removeToDraw(GameObject gob)
@@ -220,6 +239,7 @@ namespace Shard
                     continue;
                 }
 
+                // TODO: dont load again every frame
                 var sprite = loadTexture(trans);
 
                 sRect.x = 0;
