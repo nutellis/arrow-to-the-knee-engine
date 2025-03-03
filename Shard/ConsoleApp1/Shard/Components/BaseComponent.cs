@@ -9,18 +9,26 @@ namespace Shard.Shard.Components
     internal abstract class BaseComponent
     {
         protected GameObject owner;
-        private Tags tags;
+        protected Tags tags;
 
-        private bool enabled = true; // Default: enabled
+        protected bool enabled = true; // Default: enabled
        
-        //public GameObject parent;
-        //internal GameObject Parent { get => parent; set => parent = value; }
-
         // Constructor to initialize the component with a GameObject reference
         public BaseComponent(GameObject owner)
         {
             this.owner = owner;
-            tags = new Tags();  
+            tags = new Tags();
+            if (owner != null)
+            {
+                registerComponent();
+            }
+        }
+
+        public virtual void dispose()
+        {
+            owner = null;
+            tags = null;
+            enabled = false;
         }
 
         // Optionally override in derived components if needed

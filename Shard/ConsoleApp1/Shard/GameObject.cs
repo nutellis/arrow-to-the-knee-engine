@@ -195,8 +195,13 @@ namespace Shard
         {
             // Handle the cleanup logic when the GameObject is marked for destruction
             //Console.WriteLine("GameObject is being destroyed.");
-            GameObjectManager.getInstance().removeGameObject(this);
+            
             transform = null;
+            tags = null;
+
+            GameObjectManager.getInstance().removeAllComponents(this);
+            GameObjectManager.getInstance().removeGameObject(this);
+            
         }
 
         public void checkDestroyMe()

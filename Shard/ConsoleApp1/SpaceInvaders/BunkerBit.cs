@@ -6,17 +6,17 @@ namespace SpaceInvaders
 {
     class BunkerBit : GameObject, CollisionHandler
     {
-        //private SpriteComponent sprite;
+        private SpriteComponent sprite;
         private Tags tags;
         private PhysicsComponent physics;
 
         public override void initialize()
         {
 
-            //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("bunkerBit.png"));
-            physics = new PhysicsComponent(this);
+            sprite = new SpriteComponent(this,false);
+            sprite.addSprite("bunkerBit.png");
 
-            this.transform.SpritePath = Bootstrap.getAssetManager().getAssetPath("bunkerBit.png");
+            physics = new PhysicsComponent(this);
 
             physics.addRectCollider();
 
@@ -42,8 +42,7 @@ namespace SpaceInvaders
         public override void update()
         {
 
-
-            Bootstrap.getDisplay().addToDraw(this);
+            base.update();
         }
     }
 }

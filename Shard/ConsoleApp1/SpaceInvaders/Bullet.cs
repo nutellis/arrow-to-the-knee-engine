@@ -27,8 +27,6 @@ namespace SpaceInvaders
 
             physics.addRectCollider();
 
-            
-
             tags.addTag("Bullet");
 
             physics.PassThrough = true;
@@ -61,19 +59,19 @@ namespace SpaceInvaders
                 col);
         }
 
-        public void onCollisionEnter(PhysicsComponent x)
+         public void onCollisionEnter(PhysicsComponent x)
         {
             GameSpaceInvaders g;
 
             if (ToBeDestroyed) return;
 
             // Ensure the object has a TagComponent before checking tags
-            if (tags != null && (tags.checkTag(destroyTag) || tags.checkTag("BunkerBit")))
+            if (x.Owner.Tags != null && (x.Owner.Tags.checkTag(destroyTag) || x.Owner.Tags.checkTag("BunkerBit")))
             {
                 ToBeDestroyed = true;
                 x.Owner.ToBeDestroyed = true;
 
-                if (tags.checkTag("Player"))
+                if (x.Owner.Tags.checkTag("Player"))
                 {
                     g = (GameSpaceInvaders)Bootstrap.getRunningGame();
                     g.Dead = true;

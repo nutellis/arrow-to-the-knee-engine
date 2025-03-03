@@ -237,8 +237,7 @@ namespace Shard
             }
 
         }
-
-        public override nint loadTexture(string path)
+        public override nint loadTexture(nint loadedImage)
         {
             throw new NotImplementedException();
         }

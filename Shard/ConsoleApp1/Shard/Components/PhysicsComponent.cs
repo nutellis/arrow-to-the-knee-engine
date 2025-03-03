@@ -63,6 +63,19 @@ namespace Shard.Shard.Components
             PhysicsManager.getInstance().addPhysicsObject(this);
         }
 
+        public override void dispose()
+        {
+            base.dispose();
+
+            myColliders.Clear();
+            collisionCandidates.Clear();
+            colh = null;
+            trans = null;
+
+            MinAndMaxX = null;
+            MinAndMaxY = null;
+
+        }
         public override void initialize() { }
 
         public override void update()

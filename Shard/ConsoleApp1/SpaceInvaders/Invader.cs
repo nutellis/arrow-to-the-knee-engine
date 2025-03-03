@@ -11,35 +11,29 @@ namespace SpaceInvaders
         // https://github.com/sausheong/invaders
 
         private int spriteToUse;
-        private string[] sprites;
         private int xdir;
         private GameSpaceInvaders game;
         private Random rand;
 
         public int Xdir { get => xdir; set => xdir = value; }
 
-        //private SpriteComponent sprite;
+        private SpriteComponent sprite;
         private Tags tags;
         private PhysicsComponent physics;
 
         public override void initialize()
         {
-            //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("bunkerBit.png"));
+            //sprite = 
             physics = new PhysicsComponent(this);
 
-            sprites = new string[2];
+            sprite = new SpriteComponent(this, true);
+            sprite.addSprite("invader1.png");
+            sprite.addSprite("invader2.png");
 
             game = (GameSpaceInvaders)Bootstrap.getRunningGame();
 
-            sprites[0] = "invader1.png";
-            sprites[1] = "invader2.png";
-
-
-            spriteToUse = 0;
-
             this.transform.X = 200.0f;
             this.transform.Y = 100.0f;
-            this.transform.SpritePath = Bootstrap.getAssetManager().getAssetPath(sprites[0]);
 
             physics.addRectCollider();
 
@@ -57,20 +51,18 @@ namespace SpaceInvaders
         {
             spriteToUse += 1;
 
-            if (spriteToUse >= sprites.Length)
+            if (spriteToUse >= 2)
             {
                 spriteToUse = 0;
             }
 
-            this.transform.SpritePath = Bootstrap.getAssetManager().getAssetPath(sprites[spriteToUse]);
+            this.sprite.setSprite(spriteToUse);
 
         }
 
         public override void update()
         {
-
-
-            Bootstrap.getDisplay().addToDraw(this);
+            base.update();
         }
 
         //public void onCollisionEnter(PhysicsBody x)

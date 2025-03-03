@@ -96,7 +96,7 @@ namespace Shard
         public abstract void clearDisplay();
         public abstract void display();
 
-        public abstract IntPtr loadTexture(string path);
+        public abstract IntPtr loadTexture(IntPtr loadedImage);
 
         public abstract void showText(string text, double x, double y, int size, int r, int g, int b);
         public abstract void showText(char[,] text, double x, double y, int size, int r, int g, int b);

@@ -54,15 +54,25 @@ namespace Shard
             if (components.ContainsKey(owner))
             {
                 components[owner].Add(component);
-            } else
+            }
+            else
             {
                 List<BaseComponent> newListComponent = new List<BaseComponent>();
                 newListComponent.Add(component);
                 components.Add(owner, newListComponent);
             }
+        }
 
-
-
+        public void removeAllComponents(GameObject owner)
+        {
+            if (components.ContainsKey(owner))
+            {
+                foreach (BaseComponent component in components[owner])
+                {
+                    component.dispose();
+                }
+                components.Remove(owner);
+            }
         }
 
         public void removeComponent(GameObject owner, BaseComponent component)

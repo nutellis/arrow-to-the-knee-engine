@@ -12,6 +12,7 @@
 */
 
 using SDL2;
+using Shard;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -71,74 +72,17 @@ namespace Shard
 
         }
 
-        // TODO: this should move inside Sprite Manager
-        // Load textures from Sprite Object
-        public IntPtr loadTexture(Transform trans)
+        public override IntPtr loadTexture(IntPtr loadedImage)
         {
-            IntPtr ret;
-            uint format;
-            int access;
-            int w;
-            int h;
+            IntPtr result;
 
-            ret = loadTexture(trans.SpritePath);
-
-            SDL.SDL_QueryTexture(ret, out format, out access, out w, out h);
-            trans.Ht = h;
-            trans.Wid = w;
-            trans.recalculateCentre();
-
-            return ret;
-
-        }
-
-        
-        //this should be here!
-        public override IntPtr loadTexture(string path)
-        {
-            IntPtr img, result;
-
-            //if (spriteBuffer.ContainsKey(path))
-            //{
-            //    return spriteBuffer[path];
-            //}
-
-            img = SDL_image.IMG_Load(path);
-
-            Debug.getInstance().log("IMG_Load: " + SDL_image.IMG_GetError());
-
-            result = SDL.SDL_CreateTextureFromSurface(_rend, img);
+            result = SDL.SDL_CreateTextureFromSurface(_rend, loadedImage);
 
             SDL.SDL_SetTextureBlendMode(result, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
 
             return result;
 
         }
-
-
-        //public override void addToDraw(GameObject gob)
-        //{
-        //    //TODO: gob.SpriteComponent.Sprite
-        //    _toDraw.Add(gob.sprite);
-
-        //    if (gob.transform.SpritePath == null)
-        //    {
-        //        return;
-        //    }
-        //    //if the sprite exists and it is valid, try and see if it is contained on the draw buffer
-        //    // if its already there return the buffer
-        //    if (spriteBuffer.ContainsKey(path))
-        //    {
-        //        return;
-        //    }
-
-        //    spriteBuffer[path] = SDL.SDL_CreateTextureFromSurface(_rend, img);
-
-        //    SDL.SDL_SetTextureBlendMode(spriteBuffer[path], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
-
-        //    return spriteBuffer[path];
-
-        //}
 
         public override void addToDraw(Sprite sprite)
         {
@@ -156,7 +100,7 @@ namespace Shard
                 return;
             }
 
-            spriteBuffer[sprite.path] = SDL.SDL_CreateTextureFromSurface(_rend, sprite.img);
+            spriteBuffer[sprite.path] = sprite.img;
 
             SDL.SDL_SetTextureBlendMode(spriteBuffer[sprite.path], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
 

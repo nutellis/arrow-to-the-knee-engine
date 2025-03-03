@@ -20,26 +20,30 @@ namespace Shard.Shard.Components
         public SpriteComponent(GameObject owner,bool hasAnimation = false) : base(owner)
         {
             this.hasAnimation = hasAnimation;
+            animationFrames = new List<Sprite>();
         }
 
         public override void initialize()
         {
-            base.initialize();
         }
 
         public override void update()
         {
-            frameTimer += Bootstrap.getDeltaTime();
-            if (frameTimer >= frameDuration)
-            {
-                frameTimer = 0;
-                currentFrame = (currentFrame + 1) % animationFrames.Count;
-                sprite = animationFrames[currentFrame];
-            }
+           // frameTimer += Bootstrap.getDeltaTime();
+            //if (frameTimer >= frameDuration)
+            //{
+            //    frameTimer = 0;
+            //    currentFrame = (currentFrame + 1) % animationFrames.Count;
+            //    sprite = animationFrames[currentFrame];
+            //}
+
+            sprite.X = owner.transform.X;
+            sprite.Y = owner.transform.Y;
+
             Bootstrap.getDisplay().addToDraw(this.sprite);
         }
 
-        private void loadSprite(string spritePath)
+        private Sprite loadSprite(string spritePath)
         {
 
             string assetPath = Bootstrap.getAssetManager().getAssetPath(spritePath);
@@ -47,19 +51,27 @@ namespace Shard.Shard.Components
             if(assetPath == null)
             {
                 Console.WriteLine($"Failed to Load Sprite {spritePath}");
+                return null;
             }
 
-            sprite = Bootstrap.getAssetManager().getSprite(assetPath); 
-
-            if (sprite == null) 
-            {
-                Console.WriteLine($"Failed to Load Sprite {spritePath}");
-            }
+            return Bootstrap.getAssetManager().getSprite(assetPath);
         }
 
-        public void setSprite(string newAssetName)
+        public void addSprite(string newAssetName)
         {
-            loadSprite(newAssetName);
+            Sprite frame = loadSprite(newAssetName);
+            if (frame != null)
+            {
+                animationFrames.Add(frame);
+                if (animationFrames.Count == 1)
+                {
+                    sprite = frame;
+                    sprite.setPosition(owner.transform.X, owner.transform.Y);
+                    owner.transform.Wid = sprite.getWidth();
+                    owner.transform.Ht = sprite.getHeight();
+                    owner.transform.recalculateCentre();
+                }
+            }
         }
 
         public void changeColor(float r, float g, float b, float a)
@@ -71,6 +83,10 @@ namespace Shard.Shard.Components
 
         }
 
+        internal void setSprite(int spriteToUse)
+        {
+            sprite = animationFrames[spriteToUse];
+        }
     }
 
 }

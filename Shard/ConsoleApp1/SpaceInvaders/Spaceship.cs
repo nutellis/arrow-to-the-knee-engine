@@ -2,7 +2,6 @@
 using Shard;
 using Shard.Shard.Components;
 using System.Drawing;
-using Shard.Shard.Components;
 using Shard.Shard;
 using Shard.SpaceInvaders;
 using System;
@@ -11,14 +10,10 @@ namespace SpaceInvaders
 {
     class Spaceship : GameObject, CollisionHandler
     {
-        //bool left, right;
-        //float fireCounter, fireDelay;
-
         public SpriteComponent sprite;
- //private TransformComponent transform;
-        //private SpriteComponent sprite;
+
         private InputComponent input;
-        //private WeaponComponent weapon;
+
         private PhysicsComponent physics;
 
         private Tags tags;
@@ -33,7 +28,7 @@ namespace SpaceInvaders
 
             this.sprite = new SpriteComponent(this, false);
             this.sprite.initialize();
-            this.sprite.setSprite("player.png");
+            this.sprite.addSprite("player.png");
             
             fireDelay = 2;
             fireCounter = fireDelay;
@@ -142,9 +137,9 @@ namespace SpaceInvaders
         public override void update()
         {
             
-
             fireCounter += (float)Bootstrap.getDeltaTime();
 
+            base.update();
             //if (left)
             //{
             //    this.Transform.translate(-1 * amount, 0);
