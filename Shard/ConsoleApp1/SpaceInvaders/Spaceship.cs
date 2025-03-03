@@ -5,6 +5,7 @@ using Shard.Shard.Components;
 using Shard.Shard;
 using Shard.SpaceInvaders;
 using System;
+using System.Numerics;
 
 namespace SpaceInvaders
 {
@@ -18,6 +19,7 @@ namespace SpaceInvaders
         private InputComponent input;
         //private WeaponComponent weapon;
         private PhysicsComponent physics;
+        private SoundComponent sound;
 
         private Tags tags;
         private double fireCounter, fireDelay = 2.0f;
@@ -46,9 +48,16 @@ namespace SpaceInvaders
             input.bindInputAction("Right", InputType.Pressed, (parameters) => moveRight());
 
             physics = new PhysicsComponent(this);
+            sound = new SoundComponent(this);
+            sound.loadSound("SpaceShipAttack", "fire.wav");
+            sound.loadSound("BackgroundMusic", "background.wav");
+
             physics.addRectCollider();
 
             tags.addTag("Player");
+
+            //background music
+            sound.playSoundOnRepeat("BackgroundMusic");
 
         }
 
@@ -79,6 +88,8 @@ namespace SpaceInvaders
 
             fireCounter = 0;
 
+            Console.WriteLine("Firing bullet. Playing sound");
+            sound.playSound("SpaceShipAttack");
         }
 
         public void handleInput(InputEvent inp, string eventType)

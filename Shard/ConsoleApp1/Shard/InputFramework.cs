@@ -217,7 +217,7 @@ namespace Shard
                 {
                     keyHeldSeconds[keyCode] = Bootstrap.getCurrentMillis(); // Start tracking hold duration
                 }
-                Console.WriteLine($"Key {keyCode} PRESSED with Action of " + inputName);
+                //Console.WriteLine($"Key {keyCode} PRESSED with Action of " + inputName);
             informListeners(inputEvent, InputType.Pressed);
             }
         }
@@ -231,7 +231,7 @@ namespace Shard
                 if (keyHeldSeconds.TryGetValue(keyCode, out double value))
                 {
                     double duration = (Bootstrap.getCurrentMillis() - value) / 1000.0;
-                    Console.WriteLine($"Key {keyCode} RELEASED after {duration:F2} seconds");
+                    //Console.WriteLine($"Key {keyCode} RELEASED after {duration:F2} seconds");
                     keyHeldSeconds.Remove(keyCode); // Stop tracking
                     informListeners(inputEvent, InputType.Released);
                 }

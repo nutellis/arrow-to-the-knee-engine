@@ -3,6 +3,7 @@ using Shard.Shard;
 using Shard.Shard.Components;
 using System;
 using System.Drawing;
+using System.IO;
 
 namespace SpaceInvaders
 {
@@ -26,11 +27,6 @@ namespace SpaceInvaders
             this.transform.Ht = 20;
 
             physics.addRectCollider();
-
-            
-
-            tags.addTag("Bullet");
-
             physics.PassThrough = true;
 
         }
@@ -43,6 +39,8 @@ namespace SpaceInvaders
             this.Transient = true;
 
             tags = new Tags();
+            tags.addTag("Bullet");
+
         }
 
 
@@ -67,13 +65,17 @@ namespace SpaceInvaders
 
             if (ToBeDestroyed) return;
 
-            // Ensure the object has a TagComponent before checking tags
-            if (tags != null && (tags.checkTag(destroyTag) || tags.checkTag("BunkerBit")))
+            //if (tags != null && (tags.checkTag(destroyTag) || tags.checkTag("BunkerBit"))) // This is how it was before
+            if (x.Owner.Tags != null && (x.Owner.Tags.checkTag(destroyTag) || x.Owner.Tags.checkTag("BunkerBit")))
             {
+                Debug.Log(x.Owner + "Needs to be Destroyed");
+                Debug.Log(x.Owner + "ToBeDestroyed: " + x.Owner.ToBeDestroyed);
+
+
                 ToBeDestroyed = true;
                 x.Owner.ToBeDestroyed = true;
 
-                if (tags.checkTag("Player"))
+                if (x.Owner.Tags.checkTag("Player"))
                 {
                     g = (GameSpaceInvaders)Bootstrap.getRunningGame();
                     g.Dead = true;

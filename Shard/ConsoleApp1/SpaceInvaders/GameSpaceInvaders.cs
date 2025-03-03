@@ -1,4 +1,5 @@
-﻿using SpaceInvaders;
+﻿using Shard.Shard.Components;
+using SpaceInvaders;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -175,8 +176,6 @@ namespace Shard
             createObjects();
 
             Debug.Log("Bing!");
-
-
         }
 
         public void handleInput(InputEvent inp, string eventType)

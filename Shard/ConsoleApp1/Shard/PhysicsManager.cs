@@ -468,7 +468,7 @@ namespace Shard
                 if (possibleImpulse.HasValue)
                 {
                     impulse = possibleImpulse.Value;
-                    Debug.Log("Col is " + ob + ", impulse " + possibleImpulse);
+                   // Debug.Log("Col is " + ob + ", impulse " + possibleImpulse);
 
                     if (ob.A.PassThrough != true && ob.B.PassThrough != true)
                     {

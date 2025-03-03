@@ -16,6 +16,7 @@ namespace Shard
         {
             assets = new Dictionary<string,string>();
             AssetPath = Bootstrap.getEnvironmentalVariable ("assetpath");
+            Console.WriteLine($"AssetPath: {AssetPath}");
         }
 
         public override void registerAssets() {

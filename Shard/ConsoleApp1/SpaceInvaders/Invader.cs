@@ -19,11 +19,20 @@ namespace SpaceInvaders
         public int Xdir { get => xdir; set => xdir = value; }
 
         //private SpriteComponent sprite;
-        private Tags tags;
         private PhysicsComponent physics;
+
+        ~Invader()
+        {
+            physics = null;
+            tags = null;
+            game = null;
+        }
 
         public override void initialize()
         {
+            tags = new Tags();
+            tags.addTag("Invader");
+
             //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("bunkerBit.png"));
             physics = new PhysicsComponent(this);
 
@@ -44,9 +53,6 @@ namespace SpaceInvaders
             physics.addRectCollider();
 
             rand = new Random();
-
-            tags = new Tags();
-            tags.addTag("Invader");
 
             physics.PassThrough = true;
 

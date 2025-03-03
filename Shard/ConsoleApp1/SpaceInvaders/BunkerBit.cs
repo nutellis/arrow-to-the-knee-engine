@@ -23,6 +23,8 @@ namespace SpaceInvaders
             tags = new Tags();
             tags.addTag("BunkerBit");
 
+            Debug.Log("BunkerBit Tags: " + this.tags.getTags());
+
             physics.PassThrough = true;
 
         }

@@ -158,10 +158,10 @@ namespace Shard
     class GameObject
     {
         private List<BaseComponent> components = new List<BaseComponent>();
-        private Tags tags;
-        private bool visible = true;
-        private bool transient = false;
-        private bool toBeDestroyed = false;
+        protected Tags tags;
+        protected bool visible = true;
+        protected bool transient = false;
+        protected bool toBeDestroyed = false;
 
         public Transform transform { get; private set; }
 
@@ -238,8 +238,10 @@ namespace Shard
         {
             // Handle the cleanup logic when the GameObject is marked for destruction
             //Console.WriteLine("GameObject is being destroyed.");
+
+            this.transform = null;
             GameObjectManager.getInstance().removeGameObject(this);
-            transform = null;
+            
         }
 
     }
