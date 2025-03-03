@@ -8,7 +8,7 @@ namespace Shard
         public IntPtr img;
         public float X, Y;
         public float rotz;
-        public float scaleX, scaleY;
+        public float scaleX = 1, scaleY = 1;
         public int width, height;
         private bool isAnimating = false;
 
@@ -18,30 +18,11 @@ namespace Shard
             this.path = path;
         }
 
-        //Loads texture from file path
-        // TODO: move DisplaySDL loadTexture here!
-        private void loadTexture(Transform trans)
-        {
-            IntPtr surface = SDL_image.SDL_image_load(trans.SpritePath);
-            img = SDL.SDL_CreateTextureFromSurface(Bootstrap.getDisplay().getRenderer(), surface);
-            int w;
-            int h;
-
-            ret = loadTexture(trans.SpritePath);
-
-            SDL.SDL_QueryTexture(ret, out format, out access, out w, out h);
-            trans.Ht = h;
-            trans.Wid = w;
-            trans.recalculateCentre();
-            Console.WriteLine("Loading sprite from: " + path); //placeholder
-        }
-
         //Updates position of sprite
         public void setPosition(float x, float y)
         {
             X = x;
             Y = y;
-          
         }
 
         public int getWidth()

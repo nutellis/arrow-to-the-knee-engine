@@ -53,9 +53,6 @@ namespace Shard
 
     class DisplaySDL : DisplayText
     {
-        //TODO: List of Sprites
-        private List<Transform> _toDraw1;
-
         private List<Sprite> _toDraw;
 
         private List<Line> _linesToDraw;
@@ -97,24 +94,24 @@ namespace Shard
 
         
         //this should be here!
-        public IntPtr loadTexture(string path)
+        public override IntPtr loadTexture(string path)
         {
-            IntPtr img;
+            IntPtr img, result;
 
-            if (spriteBuffer.ContainsKey(path))
-            {
-                return spriteBuffer[path];
-            }
+            //if (spriteBuffer.ContainsKey(path))
+            //{
+            //    return spriteBuffer[path];
+            //}
 
             img = SDL_image.IMG_Load(path);
 
             Debug.getInstance().log("IMG_Load: " + SDL_image.IMG_GetError());
 
-            spriteBuffer[path] = SDL.SDL_CreateTextureFromSurface(_rend, img);
+            result = SDL.SDL_CreateTextureFromSurface(_rend, img);
 
-            SDL.SDL_SetTextureBlendMode(spriteBuffer[path], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
+            SDL.SDL_SetTextureBlendMode(result, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
 
-            return spriteBuffer[path];
+            return result;
 
         }
 

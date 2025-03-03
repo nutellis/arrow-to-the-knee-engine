@@ -54,7 +54,14 @@ namespace Shard
             if (components.ContainsKey(owner))
             {
                 components[owner].Add(component);
+            } else
+            {
+                List<BaseComponent> newListComponent = new List<BaseComponent>();
+                newListComponent.Add(component);
+                components.Add(owner, newListComponent);
             }
+
+
 
         }
 

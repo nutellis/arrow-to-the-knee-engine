@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Shard.Shard.Components
 {
-    public class SpriteComponent : Component
+    internal class SpriteComponent : BaseComponent
     {
         private Sprite sprite; //reference to sprite object
         private List<Sprite> animationFrames; //replace sprite with animationFrames as teh default
@@ -17,13 +17,14 @@ namespace Shard.Shard.Components
         private float frameDuration = 0.1f;
         public bool hasAnimation = false;
 
-        public SpriteComponent(bool hasAnimation = false) 
+        public SpriteComponent(GameObject owner,bool hasAnimation = false) : base(owner)
         {
             this.hasAnimation = hasAnimation;
         }
 
         public override void initialize()
         {
+            base.initialize();
         }
 
         public override void update()
@@ -38,23 +39,27 @@ namespace Shard.Shard.Components
             Bootstrap.getDisplay().addToDraw(this.sprite);
         }
 
-        //TODO: load the sprite from the getSprite function
         private void loadSprite(string spritePath)
         {
-            sprite = Bootstrap.getAssetManager().getSprite(spritePath);  //Should change code, should be something like getSprite() I believe?
+
+            string assetPath = Bootstrap.getAssetManager().getAssetPath(spritePath);
+
+            if(assetPath == null)
+            {
+                Console.WriteLine($"Failed to Load Sprite {spritePath}");
+            }
+
+            sprite = Bootstrap.getAssetManager().getSprite(assetPath); 
 
             if (sprite == null) 
             {
                 Console.WriteLine($"Failed to Load Sprite {spritePath}");
             }
-            
-
         }
 
         public void setSprite(string newAssetName)
         {
             loadSprite(newAssetName);
-
         }
 
         public void changeColor(float r, float g, float b, float a)

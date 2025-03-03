@@ -97,7 +97,7 @@ namespace Shard
                 Debug.Log("Living invaders" + livingInvaders.Count);
 
                 // Pick a random invader to fire.
-                livingInvaders[rand.Next(livingInvaders.Count)].fire();
+                // livingInvaders[rand.Next(livingInvaders.Count)].fire();
 
 
 
@@ -126,11 +126,11 @@ namespace Shard
                     invader.transform.X = 100 + (i * 50);
                     invader.transform.Y = 100 + (ymod * 50);
 
-                    myInvaders[j, i] = invader;
+                   // myInvaders[j, i] = invader;
 
-                    livingInvaders.Add(myInvaders[j, i]);
+                    //livingInvaders.Add(myInvaders[j, i]);
 
-                    invaderCount += 1;
+                   // invaderCount += 1;
                 }
 
                 ymod += 1;
@@ -152,7 +152,7 @@ namespace Shard
 
                 Debug.Log("Setting up bunker " + i + "at " + b.transform.X + ", " + b.transform.Y);
 
-                b.setupBunker();
+                // b.setupBunker();
 
             }
 

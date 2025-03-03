@@ -24,7 +24,12 @@ namespace Shard.Shard.Components
         }
 
         // Optionally override in derived components if needed
-        public virtual void initialize() { }
+        public virtual void initialize() {
+
+            if(owner != null) {
+                registerComponent();
+            }
+        }
 
         // Update is called from the GameObject and checks if enabled
         public virtual void update()
@@ -33,6 +38,11 @@ namespace Shard.Shard.Components
             //{
             //    UpdateComponent();
             //}
+        }
+
+        public void registerComponent()
+        {
+            GameObjectManager.getInstance().addComponent(owner, this);
         }
 
         // Each component must define its own Update logic

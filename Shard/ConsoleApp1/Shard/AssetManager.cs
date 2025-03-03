@@ -1,4 +1,5 @@
 ﻿using SDL2;
+using Shard;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -71,25 +72,28 @@ namespace Shard
         {
             Sprite newSprite = new Sprite(asset);
 
-            IntPtr img;
+            IntPtr img_load, img;
             uint format;
             int access;
             int w;
             int h;
 
-            img = SDL_image.IMG_Load(asset);
+            img_load = SDL_image.IMG_Load(asset);
 
-            SDL.SDL_QueryTexture(img, out format, out access, out w, out h);
+            Debug.getInstance().log("IMG_Load: " + SDL_image.IMG_GetError());
 
+            SDL.SDL_QueryTexture(img_load, out format, out access, out w, out h);
+            
             newSprite.path = asset;
-            newSprite.img = img;
             newSprite.height = h;
             newSprite.width = w;
 
+
+            img = Bootstrap.getDisplay().loadTexture(asset);
             //TODO: lets keep that here for now. We will have to do changes on the game object later
             //trans.recalculateCentre();
 
-            Debug.getInstance().log("IMG_Load: " + SDL_image.IMG_GetError());
+            newSprite.img = img;
 
             return newSprite;
         }

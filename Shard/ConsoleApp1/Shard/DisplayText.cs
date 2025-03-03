@@ -237,5 +237,10 @@ namespace Shard
             }
 
         }
+
+        public override nint loadTexture(string path)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

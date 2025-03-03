@@ -31,7 +31,8 @@ namespace SpaceInvaders
             this.transform.X = 100.0f;
             this.transform.Y = 800.0f;
 
-            this.sprite = new SpriteComponent(false);
+            this.sprite = new SpriteComponent(this, false);
+            this.sprite.initialize();
             this.sprite.setSprite("player.png");
             
             fireDelay = 2;
@@ -163,7 +164,7 @@ namespace SpaceInvaders
             //    input.Fire = false;
             //}
 
-            Bootstrap.getDisplay().addToDraw(this);
+            // Bootstrap.getDisplay().addToDraw(this);
         }
 
         public void onCollisionEnter(PhysicsComponent x)

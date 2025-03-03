@@ -6,6 +6,7 @@
 *   
 */
 
+using System;
 using System.Drawing;
 
 namespace Shard
@@ -94,6 +95,8 @@ namespace Shard
         public abstract void initialize();
         public abstract void clearDisplay();
         public abstract void display();
+
+        public abstract IntPtr loadTexture(string path);
 
         public abstract void showText(string text, double x, double y, int size, int r, int g, int b);
         public abstract void showText(char[,] text, double x, double y, int size, int r, int g, int b);
