@@ -31,7 +31,8 @@ namespace SpaceInvaders
             this.transform.X = 100.0f;
             this.transform.Y = 800.0f;
 
-            this.sprite = new SpriteComponent("player.png");
+            this.sprite = new SpriteComponent(false);
+            this.sprite.setSprite("player.png");
             
             fireDelay = 2;
             fireCounter = fireDelay;
@@ -39,7 +40,6 @@ namespace SpaceInvaders
             tags = new Tags();
             tags.addTag("Player");
 
-            //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("player.png"));
             input = new InputComponent(this);
             input.initialize();
 
