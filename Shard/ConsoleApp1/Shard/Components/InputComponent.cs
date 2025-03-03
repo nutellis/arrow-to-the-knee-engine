@@ -4,24 +4,24 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Shard.Shard.Components
 {
-    internal class InputComponent : BaseComponent
+    internal class InputComponent : BaseComponent, InputListener
     {
+        Dictionary<string, InputAction> actions;
+
+
         public InputComponent(GameObject owner) : base(owner)
         {
+            actions = new Dictionary<string, InputAction>();
         }
-
-        public bool Left { get; set; }
-        public bool Right { get; set; }
-        public bool Up { get; set; }
-        public bool Down { get; set; }
-        public bool Fire { get; set; }
 
         public override void initialize()
         {
-            Left = Right = Up = Down = Fire = false;
+            Bootstrap.getInput().addListener(this);
+            
         }
 
         public override void update()
@@ -29,9 +29,44 @@ namespace Shard.Shard.Components
             // Handle input logic
         }
 
-        //protected override void UpdateComponent()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public void bindInputAction(string name, InputType type, Action<object[]> action, params object[] parameters)
+        {
+            if (!actions.ContainsKey(name))
+            {
+                InputAction inputAction = new InputAction(name, type, action, parameters);
+                actions[name] = inputAction;
+            }
+        }
+
+        public void handleInput(InputEvent inp, InputType eventType)
+        {
+            if (Bootstrap.getRunningGame().isRunning() == false)
+            {
+                return;
+            }
+            // we need to check if the input event is in our list of inputs
+            if (actions.TryGetValue(inp.InputActionName, out InputAction action)){
+                if (action == null)
+                {
+                    return;
+                }
+                
+                if (eventType == action.Type)
+                {
+                    switch (eventType)
+                    {
+                        case InputType.Pressed:
+                            action.Execute();
+                            break;
+                        case InputType.Held:
+                           action.Execute();
+                            break;
+                        case InputType.Released:
+                            action.Execute();
+                            break;
+                    }
+                }
+            }
+        }
     }
 }

@@ -117,6 +117,9 @@ namespace Shard
 
             phys = PhysicsManager.getInstance();
 
+            //made input a singleton
+            input = InputFramework.getInstance();
+
             foreach (KeyValuePair<string, string> kvp in config)
             {
                 t = Type.GetType("Shard." + kvp.Value);
@@ -148,11 +151,6 @@ namespace Shard
                         targetFrameRate = runningGame.getTargetFrameRate();
                         millisPerFrame = 1000 / targetFrameRate;
                         break;
-                    case "input":
-                        input = (InputSystem)ob;
-                        input.initialize();
-                        break;
-
                 }
 
                 Debug.getInstance().log("Config file... setting " + kvp.Key + " to " + kvp.Value);
@@ -276,13 +274,13 @@ namespace Shard
                 // Update 
                 runningGame.update();
                 // Input
+                // Get input, which works at 50 FPS to make sure it doesn't interfere with the 
+                // variable frame rates.
+
+                input.getInput();
 
                 if (runningGame.isRunning() == true)
                 {
-
-                    // Get input, which works at 50 FPS to make sure it doesn't interfere with the 
-                    // variable frame rates.
-                    input.getInput();
 
                     // Update runs as fast as the system lets it.  Any kind of movement or counter 
                     // increment should be based then on the deltaTime variable.

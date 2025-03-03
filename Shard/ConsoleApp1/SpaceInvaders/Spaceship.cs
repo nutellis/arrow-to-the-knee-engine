@@ -4,10 +4,11 @@ using System.Drawing;
 using Shard.Shard.Components;
 using Shard.Shard;
 using Shard.SpaceInvaders;
+using System;
 
 namespace SpaceInvaders
 {
-    class Spaceship : GameObject, InputListener, CollisionHandler
+    class Spaceship : GameObject, CollisionHandler
     {
         //bool left, right;
         //float fireCounter, fireDelay;
@@ -20,6 +21,7 @@ namespace SpaceInvaders
 
         private Tags tags;
         private double fireCounter, fireDelay = 2.0f;
+        private float moveDistance;
 
         public override void initialize()
         {
@@ -29,45 +31,53 @@ namespace SpaceInvaders
             
             this.transform.SpritePath = Bootstrap.getAssetManager().getAssetPath("player.png");
 
-            //fireDelay = 2;
-            //fireCounter = fireDelay;
+            fireDelay = 2;
+            fireCounter = fireDelay;
 
-            //Bootstrap.getInput().addListener(this);
-
-            //setPhysicsEnabled();
-
-            //MyBody.addRectCollider();
             tags = new Tags();
             tags.addTag("Player");
-            
 
-            //transform = new TransformComponent(this, 100.0f, 800.0f, 0f, 1f, 1f);
             //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("player.png"));
             input = new InputComponent(this);
-            //weapon = new WeaponComponent(this);
+            input.initialize();
+
+            input.bindInputAction("Fire", InputType.Pressed, (parameters) => fireBullet());
+            input.bindInputAction("Left", InputType.Pressed, (parameters) => moveLeft());
+            input.bindInputAction("Right", InputType.Pressed, (parameters) => moveRight());
+
             physics = new PhysicsComponent(this);
-
-            //transform.sprite;
-
-            Bootstrap.getInput().addListener(this);
-
             physics.addRectCollider();
 
             tags.addTag("Player");
 
+        }
 
+        // Again a very naive way to implement axis movement
+        public void moveLeft()
+        {
+            moveDistance = (float)(2500 * Bootstrap.getDeltaTime());
+            this.transform.translate(-1 * moveDistance, 0);
+        }
+        public void moveRight()
+        {
+            moveDistance = (float)(2500 * Bootstrap.getDeltaTime());
+            this.transform.translate(1 * moveDistance, 0);
         }
 
         public void fireBullet()
         {
-
+            if (fireCounter < fireDelay)
+            {
+                return;
+            }
 
             Bullet b = new Bullet();
             b.initialize();
-            b.setupBullet(transform.X, transform.Y);
-            b.transform.rotate(this.transform.Rotz);
+            b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y);
+            b.Dir = -1;
+            b.DestroyTag = "Invader";
 
-            Bootstrap.getSound().playSound("fire.wav");
+            fireCounter = 0;
 
         }
 
@@ -79,56 +89,56 @@ namespace SpaceInvaders
                 return;
             }
 
-            if (eventType == "KeyDown")
-            {
+            //if (eventType == "KeyDown")
+            //{
 
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
-                {
-                    //right = true;
-                    input.Right = true;
-                }
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
+            //    {
+            //        //right = true;
+            //        input.Right = true;
+            //    }
 
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
-                {
-                    //left = true;
-                    input.Left = true;
-                }
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
+            //    {
+            //        //left = true;
+            //        input.Left = true;
+            //    }
 
-            }
-            else if (eventType == "KeyUp")
-            {
-
-
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
-                {
-                    //right = false;
-                    input.Right = false;
-                }
-
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
-                {
-                    //left = false;
-                    input.Left = false;
-                }
+            //}
+            //else if (eventType == "KeyUp")
+            //{
 
 
-            }
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
+            //    {
+            //        //right = false;
+            //        input.Right = false;
+            //    }
+
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
+            //    {
+            //        //left = false;
+            //        input.Left = false;
+            //    }
+
+
+            //}
 
 
 
-            if (eventType == "KeyUp")
-            {
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE)
-                {
-                    //fireBullet();
-                    input.Fire = true;
-                }
-            }
+            //if (eventType == "KeyUp")
+            //{
+            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE)
+            //    {
+            //        //fireBullet();
+            //        input.Fire = true;
+            //    }
+            //}
         }
 
         public override void update()
         {
-            float amount = (float)(100 * Bootstrap.getDeltaTime());
+            
 
             fireCounter += (float)Bootstrap.getDeltaTime();
 
@@ -142,14 +152,14 @@ namespace SpaceInvaders
             //    this.Transform.translate(1 * amount, 0);
             //}
 
-            if (input.Left) transform.translate(-1 * amount, 0);
-            if (input.Right) transform.translate(1 * amount, 0);
-            if (input.Fire)
-            {
-                fireBullet();
-                //weapon.Fire();
-                input.Fire = false;
-            }
+            //if (input.Left) transform.translate(-1 * amount, 0);
+            //if (input.Right) transform.translate(1 * amount, 0);
+            //if (input.Fire)
+            //{
+            //    fireBullet();
+            //    //weapon.Fire();
+            //    input.Fire = false;
+            //}
 
             Bootstrap.getDisplay().addToDraw(this);
         }
