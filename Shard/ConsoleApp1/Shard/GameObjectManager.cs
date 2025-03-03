@@ -9,6 +9,7 @@
 */
 
 using Shard.Shard.Components;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -81,11 +82,11 @@ namespace Shard
         {
             foreach (var gob in myObjects)
             {
-                PhysicsComponent physics = gob.getComponent<PhysicsComponent>();
-                if (physics != null)
-                {
-                    physics.physicsUpdate();
-                }
+                //PhysicsComponent physics = gob.getComponent<PhysicsComponent>();
+                //if (physics != null)
+                //{
+                //    physics.physicsUpdate();
+                //}
             }
         }
 
@@ -104,67 +105,44 @@ namespace Shard
         {
             foreach (var gob in myObjects)
             {
-                PhysicsComponent physics = gob.getComponent<PhysicsComponent>();
-                if (physics != null)
-                {
-                    physics.prePhysicsUpdate();
-                }
+                //PhysicsComponent physics = gob.getComponent<PhysicsComponent>();
+                //if (physics != null)
+                //{
+                //    physics.prePhysicsUpdate();
+                //}
             }
         }
 
-        //public void update()
-        //{
-        //    List<int> toDestroy = new List<int>();
-        //    GameObject gob;
-        //    for (int i = 0; i < myObjects.Count; i++)
-        //    {
-        //        gob = myObjects[i];
-
-        //        gob.update();
-
-        //        gob.checkDestroyMe();
-
-        //        if (gob.ToBeDestroyed == true)
-        //        {
-        //            toDestroy.Add(i);
-        //        }
-        //    }
-
-        //    if (toDestroy.Count > 0)
-        //    {
-        //        for (int i = toDestroy.Count - 1; i >= 0; i--)
-        //        {
-        //            gob = myObjects[toDestroy[i]];
-        //            myObjects[toDestroy[i]].killMe();
-        //            myObjects.RemoveAt(toDestroy[i]);
-
-        //        }
-        //    }
-
-        //    toDestroy.Clear();
-        //    //Debug.Log ("NUm Objects is " + myObjects.Count);
-        //}
-
         public void update()
         {
-            List<GameObject> toDestroy = new List<GameObject>();
+            List<int> toDestroy = new List<int>();
 
-            foreach (var gob in myObjects)
+            for (int i = 0; i < myObjects.Count; i++)
             {
+                GameObject gob = myObjects[i];
+
                 gob.update();
 
-               if (gob.ToBeDestroyed)
+                gob.checkDestroyMe();
+
+                if (gob.ToBeDestroyed == true)
                 {
-                    toDestroy.Add(gob);
+                    toDestroy.Add(i);
                 }
             }
 
-            // Destroy marked objects
-            foreach (var gob in toDestroy)
+            if (toDestroy.Count > 0)
             {
-                gob.Destroy();
-                myObjects.Remove(gob);
+                for (int i = toDestroy.Count - 1; i >= 0; i--)
+                {
+                    GameObject gob = myObjects[toDestroy[i]];
+                    myObjects[toDestroy[i]].killMe();
+                    myObjects.RemoveAt(toDestroy[i]);
+                }
             }
+
+            toDestroy.Clear();
+            //Debug.Log ("NUm Objects is " + myObjects.Count);
         }
 
         public void tickComponents(GameObject owner)

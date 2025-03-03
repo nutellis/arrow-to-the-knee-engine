@@ -67,9 +67,9 @@ namespace Shard
         }
 
         //TODO: create an IntPtr (img) from the path and store it for future use.
-        public Sprite getSprite(string asset)
+        public override Sprite getSprite(string asset)
         {
-            Sprite newSprite = new Sprite();
+            Sprite newSprite = new Sprite(asset);
 
             IntPtr img;
             uint format;
@@ -91,8 +91,7 @@ namespace Shard
 
             Debug.getInstance().log("IMG_Load: " + SDL_image.IMG_GetError());
 
-
+            return newSprite;
         }
-
     }
 }

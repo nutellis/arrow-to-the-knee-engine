@@ -28,8 +28,8 @@ namespace SpaceInvaders
 
         public override void initialize()
         {
-            this.Transform.X = 100.0f;
-            this.Transform.Y = 800.0f;
+            this.transform.X = 100.0f;
+            this.transform.Y = 800.0f;
 
             this.sprite = new SpriteComponent("player.png");
             

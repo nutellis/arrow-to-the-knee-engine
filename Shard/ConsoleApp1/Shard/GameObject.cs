@@ -123,40 +123,11 @@ namespace Shard
 
     //    }
 
-    //    public void checkDestroyMe()
-    //    {
-
-    //        if (!transient)
-    //        {
-    //            return;
-    //        }
-
-    //        if (Transform.X > 0 && Transform.X < Bootstrap.getDisplay().getWidth())
-    //        {
-    //            if (Transform.Y > 0 && Transform.Y < Bootstrap.getDisplay().getHeight())
-    //            {
-    //                return;
-    //            }
-    //        }
-
-
-    //        ToBeDestroyed = true;
-
-    //    }
-
-    //    public virtual void killMe()
-    //    {
-    //        PhysicsManager.getInstance().removePhysicsObject(myBody);
-
-    //        myBody = null;
-    //        transform = null;
-    //    }
-
-
     //}
 
     class GameObject
     {
+        public Guid uuid;
         private Tags tags;
         private bool visible = true;
         private bool transient = false;
@@ -191,6 +162,8 @@ namespace Shard
 
         public GameObject()
         {
+            uuid = Guid.NewGuid();
+
             GameObjectManager.getInstance().addGameObject(this);  // Manage game object
             transform = new Transform(this);
             tags = new Tags();
@@ -204,7 +177,7 @@ namespace Shard
         public virtual void update()
         {
 
-            GameObjectManager.tickComponents(this);
+            GameObjectManager.getInstance().tickComponents(this);
             //TODO: check previous code here
             //PhysicsComponent physics = getComponent<PhysicsComponent>();
             //if (physics != null)
@@ -226,5 +199,32 @@ namespace Shard
             transform = null;
         }
 
+        public void checkDestroyMe()
+        {
+
+            if (!transient)
+            {
+                return;
+            }
+
+            if (transform.X > 0 && transform.X < Bootstrap.getDisplay().getWidth())
+            {
+                if (transform.Y > 0 && transform.Y < Bootstrap.getDisplay().getHeight())
+                {
+                    return;
+                }
+            }
+
+            ToBeDestroyed = true;
+        }
+
+        //TODO: check if this should be on physics compponent only
+        public virtual void killMe()
+        {
+            //PhysicsManager.getInstance().removePhysicsObject(myBody);
+
+            //myBody = null;
+            //transform = null;
+        }
     }
 }
