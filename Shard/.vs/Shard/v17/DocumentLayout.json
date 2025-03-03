@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "C:\\Users\\xrist\\OneDrive\\Doc\\GitHub\\arrow-to-the-knee-engine\\Shard\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|c:\\users\\xrist\\onedrive\\doc\\github\\arrow-to-the-knee-engine\\shard\\consoleapp1\\spaceinvaders\\bunkerbit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\spaceinvaders\\bunkerbit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|c:\\users\\xrist\\onedrive\\doc\\github\\arrow-to-the-knee-engine\\shard\\consoleapp1\\shard\\inputevent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\shard\\inputevent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|c:\\users\\xrist\\onedrive\\doc\\github\\arrow-to-the-knee-engine\\shard\\consoleapp1\\shard\\inputbasic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\shard\\inputbasic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|c:\\users\\xrist\\onedrive\\doc\\github\\arrow-to-the-knee-engine\\shard\\consoleapp1\\spaceinvaders\\weaponcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{00D677B6-B5C6-4F5E-B8BB-663F2FC31C9E}|ConsoleApp1\\Shard.csproj|solutionrelative:consoleapp1\\spaceinvaders\\weaponcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -23,6 +35,43 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "BunkerBit.cs",
+              "DocumentMoniker": "C:\\Users\\xrist\\OneDrive\\Doc\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\SpaceInvaders\\BunkerBit.cs",
+              "RelativeDocumentMoniker": "ConsoleApp1\\SpaceInvaders\\BunkerBit.cs",
+              "ToolTip": "C:\\Users\\xrist\\OneDrive\\Doc\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\SpaceInvaders\\BunkerBit.cs",
+              "RelativeToolTip": "ConsoleApp1\\SpaceInvaders\\BunkerBit.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAQwCgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-28T14:35:23.218Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "InputEvent.cs",
+              "DocumentMoniker": "C:\\Users\\xrist\\OneDrive\\Doc\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputEvent.cs",
+              "RelativeDocumentMoniker": "ConsoleApp1\\Shard\\InputEvent.cs",
+              "ToolTip": "C:\\Users\\xrist\\OneDrive\\Doc\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputEvent.cs",
+              "RelativeToolTip": "ConsoleApp1\\Shard\\InputEvent.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-28T14:30:16.73Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "InputBasic.cs",
+              "DocumentMoniker": "C:\\Users\\xrist\\OneDrive\\Doc\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputBasic.cs",
+              "RelativeDocumentMoniker": "ConsoleApp1\\Shard\\InputBasic.cs",
+              "ToolTip": "C:\\Users\\xrist\\OneDrive\\Doc\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\Shard\\InputBasic.cs",
+              "RelativeToolTip": "ConsoleApp1\\Shard\\InputBasic.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-28T14:30:14.955Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "WeaponComponent.cs",
               "DocumentMoniker": "C:\\Users\\xrist\\OneDrive\\Doc\\GitHub\\arrow-to-the-knee-engine\\Shard\\ConsoleApp1\\SpaceInvaders\\WeaponComponent.cs",
               "RelativeDocumentMoniker": "ConsoleApp1\\SpaceInvaders\\WeaponComponent.cs",
@@ -30,8 +79,7 @@
               "RelativeToolTip": "ConsoleApp1\\SpaceInvaders\\WeaponComponent.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T14:25:14.213Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-28T14:25:14.213Z"
             }
           ]
         },
