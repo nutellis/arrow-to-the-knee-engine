@@ -41,13 +41,9 @@ namespace Shard.Shard.Components
         //TODO: load the sprite from the getSprite function
         private void loadSprite(string spritePath)
         {
-            string spriteFilePath = Bootstrap.getAssetManager().getAssetPath(spritePath);  //Should change code, should be something like getSprite() I believe?
+            sprite = Bootstrap.getAssetManager().getSprite(spritePath);  //Should change code, should be something like getSprite() I believe?
 
-            if (!string.IsNullOrEmpty(spriteFilePath))
-            {
-                sprite = new Sprite(spriteFilePath);
-            }
-            else 
+            if (sprite == null) 
             {
                 Console.WriteLine($"Failed to Load Sprite {spritePath}");
             }
