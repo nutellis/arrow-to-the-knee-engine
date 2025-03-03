@@ -20,8 +20,19 @@ namespace Shard
 
         //Loads texture from file path
         // TODO: move DisplaySDL loadTexture here!
-        private void loadTexture()
+        private void loadTexture(Transform trans)
         {
+            IntPtr surface = SDL_image.SDL_image_load(trans.SpritePath);
+            img = SDL.SDL_CreateTextureFromSurface(Bootstrap.getDisplay().getRenderer(), surface);
+            int w;
+            int h;
+
+            ret = loadTexture(trans.SpritePath);
+
+            SDL.SDL_QueryTexture(ret, out format, out access, out w, out h);
+            trans.Ht = h;
+            trans.Wid = w;
+            trans.recalculateCentre();
             Console.WriteLine("Loading sprite from: " + path); //placeholder
         }
 
