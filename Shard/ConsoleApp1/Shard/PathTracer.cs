@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -26,20 +27,36 @@ namespace Shard
                 new int[] { 0, -1 }, // Left
                 new int[] { -1, 0 }  // Up
         };
+        private int displayWidth = Bootstrap.getDisplay().getWidth();
+        private int displayHeight = Bootstrap.getDisplay().getHeight();
+        private int nodeWidth = 16; // deault value
+        private int nodeHeight = 16; // deault value
+        private int[,] grid;
+        private List<Node> path;
+        private Node[,] nodeMap;
 
         // Node class might later put it in a different file
         public class Node
         {
-            public int X, Y;
+            public int minX, minY, maxX, maxY;
+            public int PosX, posY;
+            public int nodeWidth, nodeHeight;
+            public bool walkable = true; // default value
+            public struct isFilled()
+            {
+                public int row, column;
+                
+            }
+            public List<isFilled> filled = new List<isFilled>();
+
             public int G, H;
             public Node Parent;
             public int F => G + H;
-            public bool isWalkable => true;
 
-            public Node(int x, int y, Node parent = null)
+            public Node(int coordinateX, int coordinateY, Node parent = null)
             {
-                X = x;
-                Y = y;
+                PosX = coordinateX;
+                posY = coordinateY;
                 Parent = parent;
                 G = parent != null ? parent.G + 1 : 0;
                 H = 0;
@@ -47,55 +64,103 @@ namespace Shard
 
             public void setBool(bool isWalkable)
             {
-                if (isWalkable == false)
-                {
-                    isWalkable = false;
-                }
+                walkable = isWalkable;
+            }
+            public void setNodeInfo(int minX, int minY, int nodeWidth, int nodeHeight)
+            {
+                this.minX = minX;
+                this.minY = minY;
+                this.maxX = minX+nodeWidth-1;
+                this.maxY = minY+nodeHeight-1;
+            }
+            public void setFilled(int row, int col)
+            {
+                isFilled temp = new isFilled();
+                temp.row = row;
+                temp.column = col;
+                filled.Add(temp);
             }
         }
 
-        public class Tile
-        {
-            public int minX, minY, maxX, maxY; 
-        }
-
-        private int displayWidth = Bootstrap.getDisplay().getWidth();
-        private int displayHeight = Bootstrap.getDisplay().getHeight();
-        private int tileWidth = 16;
-        private int tileHeight = 16;
-        private int[,] grid;
-        private List<Node> path;
 
         public void setGrid()
         {
             grid = new int[displayWidth, displayHeight];
-        }
-       
-        
-        public void transformWorldToGrid()
-        {
-            // Assuming Bootstrap.getGameObjects() returns a list of game objects with X and Y properties  
-            List<GameObject> gameObjects = GameObjectManager.getInstance().getMyObject();
-            int gridWidth = displayWidth / tileWidth;
-            int gridHeight = displayHeight / tileHeight;
-            grid = new int[gridWidth, gridHeight];
-
-            for (int i = 0; i < gridWidth; i++)
+            for (int i = 0; i < displayHeight; i++)
             {
-                for (int j = 0; j < gridHeight; j++)
+                for (int j = 0; j < displayWidth; j++)
                 {
                     grid[i, j] = 0;
                 }
             }
-
+        }
+       public void transformGameObjectsToGrid()
+        {
+            // Assuming Bootstrap.getGameObjects() returns a list of game objects with X and Y properties  
+            List<GameObject> gameObjects = GameObjectManager.getInstance().getMyObject();
             foreach (var gameObject in gameObjects)
             {
-                int x = (int)gameObject.Transform.X / tileWidth;
-                int y = (int)gameObject.Transform.Y / tileHeight;
-                if (x >= 0 && x < gridWidth && y >= 0 && y < gridHeight)
+                int x = (int)gameObject.Transform.X;
+                int y = (int)gameObject.Transform.Y;
+                grid[x, y] = 1;
+            }
+        }
+
+        public void transformWorldToGrid()
+        {
+            setGrid();
+            transformGameObjectsToGrid();
+        }
+
+        public void setNodeMap()
+        {
+            nodeMap = new Node[displayWidth / nodeWidth, displayHeight / nodeHeight];
+
+        }
+        // A little bit of a mess, works best in squere shapes, need to be checked for other shapes
+        public void transformGridToNodeMap()
+        {
+            int posX = 0, posY = 0;
+            int coordianteX = 0, coordinateY = 0;
+
+            setNodeMap();
+
+            for (int rowCounter = 0; rowCounter < displayHeight / nodeHeight; rowCounter++)
+            {
+                posX = rowCounter;
+
+                for(int colCounter = 0; colCounter < displayWidth / nodeWidth; colCounter++)
                 {
-                    grid[x, y] = 1;
+                    posY = colCounter;
+                    coordianteX = rowCounter * nodeHeight;
+                    coordinateY = colCounter * nodeWidth;
+                    Node node = new Node(posX, posY);
+                    node.setNodeInfo(coordianteX, coordinateY, nodeWidth, nodeHeight);
+                    nodeMap[rowCounter, colCounter] = node;
+
+                    for(int i = node.minX; i <= node.maxX; i++)
+                    {
+                        for (int j = node.minY; j <= node.maxY; j++)
+                        {
+                            if (grid[i, j] == 1)
+                            {
+                                node.setBool(false);
+                                node.setFilled(i, j);
+                            }
+                        }
+                    }
                 }
+
+
+            }
+        }
+
+        // this need to be fixed probably
+        public void transformPathToGrid()
+        {
+            foreach (var node in path)
+            {
+                grid[node.PosX, node.posY] = 2;
             }
         }
 
@@ -103,36 +168,41 @@ namespace Shard
 
 
 
-
-        public static List<Node> FindPath(int[,] grid, (int, int) start, (int, int) goal)
+        public List<Node> FindPath((int, int) start, (int, int) goal)
         {
-            int width = grid.GetLength(0), height = grid.GetLength(1);
+            int startX = start.Item1 / nodeWidth;
+            int startY = start.Item2 / nodeHeight;
+            int goalX = goal.Item1 / nodeWidth;
+            int goalY = goal.Item2 / nodeHeight;
+
             List<Node> openList = new List<Node>();
             HashSet<(int, int)> closedList = new HashSet<(int, int)>();
 
-            Node startNode = new Node(start.Item1, start.Item2);
-            Node goalNode = new Node(goal.Item1, goal.Item2);
+            Node startNode = nodeMap[startX, startY];
+            Node goalNode = nodeMap[goalX, goalY];
             openList.Add(startNode);
 
             while (openList.Count > 0)
             {
                 Node current = openList.OrderBy(n => n.F).First();
-                if (current.X == goalNode.X && current.Y == goalNode.Y)
+                if (current.PosX == goalNode.PosX && current.posY == goalNode.posY)
                     return ReconstructPath(current);
 
                 openList.Remove(current);
-                closedList.Add((current.X, current.Y));
+                closedList.Add((current.PosX, current.posY));
 
                 foreach (var direction in Directions)
                 {
-                    int newX = current.X + direction[0], newY = current.Y + direction[1];
-                    if (newX < 0 || newY < 0 || newX >= width || newY >= height || grid[newX, newY] == 1 || closedList.Contains((newX, newY)))
+                    int newX = current.PosX + direction[0], newY = current.posY + direction[1];
+                    if (newX < 0 || newY < 0 || newX >= nodeMap.GetLength(0) || newY >= nodeMap.GetLength(1) || !nodeMap[newX, newY].walkable || closedList.Contains((newX, newY)))
                         continue;
 
-                    Node neighbor = new Node(newX, newY, current);
-                    neighbor.H = Math.Abs(newX - goalNode.X) + Math.Abs(newY - goalNode.Y);
+                    Node neighbor = nodeMap[newX, newY];
+                    neighbor.Parent = current;
+                    neighbor.G = current.G + 1;
+                    neighbor.H = Math.Abs(newX - goalNode.PosX) + Math.Abs(newY - goalNode.posY);
 
-                    if (openList.Any(n => n.X == neighbor.X && n.Y == neighbor.Y && n.G <= neighbor.G))
+                    if (openList.Any(n => n.PosX == neighbor.PosX && n.posY == neighbor.posY && n.G <= neighbor.G))
                         continue;
 
                     openList.Add(neighbor);
@@ -151,6 +221,15 @@ namespace Shard
             }
             path.Reverse();
             return path;
+        }
+
+        public void setNodeWidth(int width)
+        {
+            nodeWidth = width;
+        }
+        public void setNodeHeight(int height)
+        {
+            nodeHeight = height;
         }
     }
 }
