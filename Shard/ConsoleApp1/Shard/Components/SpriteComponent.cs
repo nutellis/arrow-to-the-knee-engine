@@ -11,23 +11,19 @@ namespace Shard.Shard.Components
     public class SpriteComponent : Component
     {
         private Sprite sprite; //reference to sprite object
-        public string spritePath { get; set; }
-        private List<Texture2D> animationFrames;
+        private List<Sprite> animationFrames; //replace sprite with animationFrames as teh default
         private int currentFrame;
         private double frameTimer;
         private float frameDuration = 0.1f;
+        public bool hasAnimation = false;
 
-        public SpriteComponent(string spritePath) 
+        public SpriteComponent(bool hasAnimation = false) 
         {
-            spritePath = spritePath;
+            this.hasAnimation = hasAnimation;
         }
 
         public override void initialize()
         {
-            if(!string.IsNullOrEmpty(spritePath))
-            {
-                loadSprite();
-            }
         }
 
         public override void update()
@@ -39,10 +35,11 @@ namespace Shard.Shard.Components
                 currentFrame = (currentFrame + 1) % animationFrames.Count;
                 sprite = animationFrames[currentFrame];
             }
+            Bootstrap.getDisplay().addToDraw(this.sprite);
         }
 
         //TODO: load the sprite from the getSprite function
-        private void loadSprite()
+        private void loadSprite(string spritePath)
         {
             string spriteFilePath = Bootstrap.getAssetManager().getAssetPath(spritePath);  //Should change code, should be something like getSprite() I believe?
 
@@ -60,8 +57,7 @@ namespace Shard.Shard.Components
 
         public void setSprite(string newAssetName)
         {
-            spritePath = newAssetName;
-            loadSprite();
+            loadSprite(newAssetName);
 
         }
 
@@ -74,17 +70,7 @@ namespace Shard.Shard.Components
 
         }
 
-        public void draw()
-        {
-            if (sprite != null)
-            {
-                sprite.setPosition();
-                sprite.draw();
-            }
-
-        }
     }
-
 
 }
 

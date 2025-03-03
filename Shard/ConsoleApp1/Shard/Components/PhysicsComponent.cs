@@ -68,11 +68,17 @@ namespace Shard.Shard.Components
         public override void update()
         {
             base.update();
+
             // Handle physics logic here if physics is enabled
             if (physicsEnabled)
             {
                 // Physics-related updates, e.g., movement, collision, etc.
             }
+
+            //TODO: moved from  gameobject manager. Will have to see if there is a change in call priority
+            checkDestroyMe();
+            
+
         }
         public void applyGravity(float modifier, Vector2 dir)
         {
@@ -398,11 +404,11 @@ namespace Shard.Shard.Components
             return null;
         }
 
-        public void checkDestroyMe(GameObject gameObject)
+        public void checkDestroyMe()
         {
-            Transform transform = gameObject.transform;
+            Transform transform = owner.transform;
 
-            if (!gameObject.Transient)
+            if (!owner.Transient)
             {
                 return;
             }
@@ -414,7 +420,7 @@ namespace Shard.Shard.Components
 
             if (transform.X < 0 || transform.X > screenWidth || transform.Y < 0 || transform.Y > screenHeight)
             {
-                gameObject.ToBeDestroyed = true;
+                owner.ToBeDestroyed = true;
             }
         }
 

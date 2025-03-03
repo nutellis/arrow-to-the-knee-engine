@@ -54,8 +54,9 @@ namespace Shard
     class DisplaySDL : DisplayText
     {
         //TODO: List of Sprites
-        private List<Transform> _toDraw;
+        private List<Transform> _toDraw1;
 
+        private List<Sprite> _toDraw;
 
         private List<Line> _linesToDraw;
         private List<Circle> _circlesToDraw;
@@ -66,7 +67,7 @@ namespace Shard
 
             base.initialize();
 
-            _toDraw = new List<Transform>();
+            _toDraw = new List<Sprite>();
             _linesToDraw = new List<Line>();
             _circlesToDraw = new List<Circle>();
 
@@ -118,34 +119,63 @@ namespace Shard
         }
 
 
-        public override void addToDraw(GameObject gob)
+        //public override void addToDraw(GameObject gob)
+        //{
+        //    //TODO: gob.SpriteComponent.Sprite
+        //    _toDraw.Add(gob.sprite);
+
+        //    if (gob.transform.SpritePath == null)
+        //    {
+        //        return;
+        //    }
+        //    //if the sprite exists and it is valid, try and see if it is contained on the draw buffer
+        //    // if its already there return the buffer
+        //    if (spriteBuffer.ContainsKey(path))
+        //    {
+        //        return;
+        //    }
+
+        //    spriteBuffer[path] = SDL.SDL_CreateTextureFromSurface(_rend, img);
+
+        //    SDL.SDL_SetTextureBlendMode(spriteBuffer[path], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
+
+        //    return spriteBuffer[path];
+
+        //}
+
+        public override void addToDraw(Sprite sprite)
         {
             //TODO: gob.SpriteComponent.Sprite
-            _toDraw.Add(gob.sprite);
+            _toDraw.Add(sprite);
 
-            if (gob.transform.SpritePath == null)
+            if (sprite.path == null)
             {
                 return;
             }
             //if the sprite exists and it is valid, try and see if it is contained on the draw buffer
             // if its already there return the buffer
-            if (spriteBuffer.ContainsKey(path))
+            if (spriteBuffer.ContainsKey(sprite.path))
             {
                 return;
             }
 
-            spriteBuffer[path] = SDL.SDL_CreateTextureFromSurface(_rend, img);
+            spriteBuffer[sprite.path] = SDL.SDL_CreateTextureFromSurface(_rend, sprite.img);
 
-            SDL.SDL_SetTextureBlendMode(spriteBuffer[path], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
+            SDL.SDL_SetTextureBlendMode(spriteBuffer[sprite.path], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
 
-            return spriteBuffer[path];
+            //return spriteBuffer[sprite.path];
 
         }
 
-        public override void removeToDraw(GameObject gob)
+        public override void removeToDraw(Sprite sprite)
         {
-            _toDraw.Remove(gob.transform);
+            _toDraw.Remove(sprite);
         }
+
+        //public override void removeToDraw(GameObject gob)
+        //{
+        //    _toDraw.Remove(gob.transform);
+        //}
 
 
         void renderCircle(int centreX, int centreY, int rad)
@@ -229,30 +259,25 @@ namespace Shard
             SDL.SDL_Rect sRect;
             SDL.SDL_Rect tRect;
 
-
-
-            foreach (Transform trans in _toDraw)
+            foreach (Sprite sprite in _toDraw)
             {
 
-                if (trans.SpritePath == null)
+                if (sprite.path == null)
                 {
                     continue;
                 }
 
-                // TODO: dont load again every frame
-                var sprite = loadTexture(trans);
-
                 sRect.x = 0;
                 sRect.y = 0;
-                sRect.w = (int)(trans.Wid * trans.Scalex);
-                sRect.h = (int)(trans.Ht * trans.Scaley);
+                sRect.w = (int)(sprite.width * sprite.scaleX);
+                sRect.h = (int)(sprite.height * sprite.scaleY);
 
-                tRect.x = (int)trans.X;
-                tRect.y = (int)trans.Y;
+                tRect.x = (int)sprite.X;
+                tRect.y = (int)sprite.Y;
                 tRect.w = sRect.w;
                 tRect.h = sRect.h;
 
-                SDL.SDL_RenderCopyEx(_rend, sprite, ref sRect, ref tRect, (int)trans.Rotz, IntPtr.Zero, SDL.SDL_RendererFlip.SDL_FLIP_NONE);
+                SDL.SDL_RenderCopyEx(_rend, sprite.img, ref sRect, ref tRect, (int)sprite.rotz, IntPtr.Zero, SDL.SDL_RendererFlip.SDL_FLIP_NONE);
             }
 
             foreach (Circle c in _circlesToDraw)
@@ -269,7 +294,6 @@ namespace Shard
 
             // Show it off.
             base.display();
-
 
         }
 

@@ -7,14 +7,15 @@ namespace Shard
         public string path;
         public IntPtr img;
         public float X, Y;
+        public float rotz;
         public float scaleX, scaleY;
-        public float width, height;
+        public int width, height;
         private bool isAnimating = false;
 
 
-        public Sprite()
+        public Sprite(string path)
         {
-            
+            this.path = path;
         }
 
         //Loads texture from file path
@@ -23,14 +24,6 @@ namespace Shard
         {
             Console.WriteLine("Loading sprite from: " + path); //placeholder
         }
-
-        //Draw the sprite on the screen
-        //TODO: not needed for now comment it
-        public void draw()
-        {
-            Console.WriteLine($"Drawing sprite {path} at ({X}, {Y}) with scale {scale}"); //placeholder
-        }
-
 
         //Updates position of sprite
         public void setPosition(float x, float y)
@@ -42,12 +35,12 @@ namespace Shard
 
         public int getWidth()
         {
-            return width ?? 0.0;
+            return width;
         }
 
         public int getHeight()
         {
-            return height ?? 0.0;
+            return height;
         }
 
         //Change scale of sprite

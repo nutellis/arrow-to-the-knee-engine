@@ -10,6 +10,7 @@
 
 using Shard.Shard.Components;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Shard
 {
@@ -18,9 +19,12 @@ namespace Shard
         private static GameObjectManager me;
         List<GameObject> myObjects;
 
+        Dictionary<GameObject, List<BaseComponent>> components;
+
         private GameObjectManager()
         {
             myObjects = new List<GameObject>();
+            components = new Dictionary<GameObject, List<BaseComponent>>();
         }
 
         public static GameObjectManager getInstance()
@@ -43,6 +47,24 @@ namespace Shard
         {
             myObjects.Remove(gob);
         }
+
+        public void addComponent(GameObject owner, BaseComponent component)
+        {
+            if (components.ContainsKey(owner))
+            {
+                components[owner].Add(component);
+            }
+
+        }
+
+        public void removeComponent(GameObject owner, BaseComponent component)
+        {
+            if (components.ContainsKey(owner))
+            {
+                components[owner].Remove(component);
+            }
+        }
+
 
 
         //public void physicsUpdate()
@@ -131,14 +153,7 @@ namespace Shard
             {
                 gob.update();
 
-                // Only check destruction for objects with a PhysicsComponent
-                PhysicsComponent physics = gob.getComponent<PhysicsComponent>();
-                if (physics != null)
-                {
-                    physics.checkDestroyMe(gob);
-                }
-
-                if (gob.ToBeDestroyed)
+               if (gob.ToBeDestroyed)
                 {
                     toDestroy.Add(gob);
                 }
@@ -149,6 +164,17 @@ namespace Shard
             {
                 gob.Destroy();
                 myObjects.Remove(gob);
+            }
+        }
+
+        public void tickComponents(GameObject owner)
+        {
+            if(components.ContainsKey(owner))
+            {
+                foreach (BaseComponent component in components[owner])
+                {
+                    component.update();
+                }
             }
         }
 

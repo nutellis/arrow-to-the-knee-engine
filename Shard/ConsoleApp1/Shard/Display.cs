@@ -62,9 +62,19 @@ namespace Shard
         {
         }
 
+        public virtual void addToDraw(Sprite sprite)
+        {
+        }
+
+        public virtual void removeToDraw(Sprite sprite)
+        {
+        }
+
         public virtual void removeToDraw(GameObject gob)
         {
         }
+
+
         public int getHeight()
         {
             return _height;

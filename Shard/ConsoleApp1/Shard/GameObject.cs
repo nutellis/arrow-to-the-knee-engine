@@ -157,7 +157,6 @@ namespace Shard
 
     class GameObject
     {
-        private List<BaseComponent> components = new List<BaseComponent>();
         private Tags tags;
         private bool visible = true;
         private bool transient = false;
@@ -204,34 +203,19 @@ namespace Shard
         // Called each frame to update all enabled components
         public virtual void update()
         {
-            foreach (var component in components)
-            {
-                component.update();
-            }
 
-            PhysicsComponent physics = getComponent<PhysicsComponent>();
-            if (physics != null)
-            {
-                physics.checkDestroyMe(this);
-            }
+            GameObjectManager.tickComponents(this);
+            //TODO: check previous code here
+            //PhysicsComponent physics = getComponent<PhysicsComponent>();
+            //if (physics != null)
+            //{
+            //    physics.checkDestroyMe(this);
+            //}
 
             if (ToBeDestroyed)
             {
                 Destroy();
             }
-        }
-
-        // Add a new component to the GameObject
-        public void addComponent(BaseComponent component)
-        {
-            components.Add(component);
-            component.initialize();  // Initialize the component as it's added
-        }
-
-        // Get a specific component of type T from the GameObject
-        public T getComponent<T>() where T : BaseComponent
-        {
-            return components.OfType<T>().FirstOrDefault();  // More efficient search using LINQ
         }
 
         public void Destroy()
