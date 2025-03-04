@@ -18,6 +18,7 @@ namespace Shard
         private List<Invader> livingInvaders;
         private Random rand;
         private GameObject ship;
+
         public int Xdir { get => xdir; set => xdir = value; }
         public bool Dead { get => dead; set => dead = value; }
 
@@ -31,6 +32,7 @@ namespace Shard
             return true;
 
         }
+
         public override void update()
         {
             Bootstrap.getDisplay().showText("FPS: " + Bootstrap.getFPS(), 10, 10, 12, 255, 255, 255);
@@ -98,8 +100,6 @@ namespace Shard
 
                 // Pick a random invader to fire.
                 livingInvaders[rand.Next(livingInvaders.Count)].fire();
-
-
 
 
             }

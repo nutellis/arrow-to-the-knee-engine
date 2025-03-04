@@ -8,7 +8,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace Shard
@@ -35,6 +37,10 @@ namespace Shard
         private static string baseDir;
         private static Dictionary<string,string> enVars;
 
+        // Debugging Pathtracer
+
+        public static PathTracer tracer;
+        
         public static bool checkEnvironmentalVariable (string id) {
             return enVars.ContainsKey (id);
         }
@@ -62,7 +68,6 @@ namespace Shard
 
             setupEnvironmentalVariables(baseDir + "\\" + "envar.cfg");
             setup(baseDir + "\\" + DEFAULT_CONFIG);
-
         }
 
         public static void setupEnvironmentalVariables (String path) {
@@ -265,6 +270,15 @@ namespace Shard
                 physDebug = true;
             }
 
+            // Debugging Pathtracer
+
+           
+            tracer = new PathTracer();
+            //tracer.testRun(16, 16, (0,0), (Bootstrap.getDisplay().getHeight(), Bootstrap.getDisplay().getWidth()));
+            tracer.testRun(16, 16, (Bootstrap.getDisplay().getHeight(), Bootstrap.getDisplay().getWidth()), (16,16));
+
+            //////////////
+
             while (true)
             {
                 frames += 1;
@@ -274,6 +288,7 @@ namespace Shard
                 // Clear the screen.
                 Bootstrap.getDisplay().clearDisplay();
 
+                
                 // Update 
                 runningGame.update();
                 // Input
@@ -327,6 +342,8 @@ namespace Shard
 
                 TimeElapsed += deltaTime;
 
+
+                ///
                 if (sleep >= 0)
                 {
                     // Frame rate regulator.  Bear in mind since this is millisecond precision, and we 
@@ -344,7 +361,9 @@ namespace Shard
 
                 lastTick = timeInMillisecondsStart;
 
-            } 
+
+
+            }
 
 
         }

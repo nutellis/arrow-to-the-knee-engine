@@ -85,7 +85,7 @@ namespace Shard
 
         public void setGrid()
         {
-            grid = new int[displayWidth, displayHeight];
+            grid = new int[displayHeight, displayWidth];
             for (int i = 0; i < displayHeight; i++)
             {
                 for (int j = 0; j < displayWidth; j++)
@@ -114,7 +114,7 @@ namespace Shard
 
         public void setNodeMap()
         {
-            nodeMap = new Node[displayWidth / nodeWidth, displayHeight / nodeHeight];
+            nodeMap = new Node[displayHeight / nodeHeight, displayWidth / nodeWidth];
 
         }
         // A little bit of a mess, works best in squere shapes, need to be checked for other shapes
@@ -160,7 +160,13 @@ namespace Shard
         {
             foreach (var node in path)
             {
-                grid[node.PosX, node.posY] = 2;
+                for (int i = node.minX; i <= node.maxX; i++)
+                {
+                    for (int j = node.minY; j <= node.maxY; j++)
+                    {
+                        grid[i, j] = 2;
+                    }
+                }
             }
         }
 
@@ -170,16 +176,19 @@ namespace Shard
 
         public List<Node> FindPath((int, int) start, (int, int) goal)
         {
-            int startX = start.Item1 / nodeWidth;
-            int startY = start.Item2 / nodeHeight;
-            int goalX = goal.Item1 / nodeWidth;
-            int goalY = goal.Item2 / nodeHeight;
+            int startX = start.Item1 / nodeHeight;
+            int startY = start.Item2 / nodeWidth;
+            int goalX = goal.Item1 / nodeHeight;
+            int goalY = goal.Item2 / nodeWidth;
 
             List<Node> openList = new List<Node>();
             HashSet<(int, int)> closedList = new HashSet<(int, int)>();
 
+            // I hard coded the the transformation of the start and goal to the nodeMap
+            // I need to fix this later
+
             Node startNode = nodeMap[startX, startY];
-            Node goalNode = nodeMap[goalX, goalY];
+            Node goalNode = nodeMap[goalX , goalY];
             openList.Add(startNode);
 
             while (openList.Count > 0)
@@ -231,5 +240,64 @@ namespace Shard
         {
             nodeHeight = height;
         }
+        public void setPath(List<Node> path)
+        {
+            this.path = path;
+        }
+
+        public void printGrid()
+        {
+            for (int i = 0; i < grid.GetLength(0); i++)
+            {
+                for (int j = 0; j < grid.GetLength(1); j++)
+                {
+                    Console.Write(grid[i, j]);
+                }
+                Console.WriteLine();
+            }
+        }
+        public void printNodeMap()
+        {
+            for (int i = 0; i < nodeMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < nodeMap.GetLength(1); j++)
+                {
+                    if(nodeMap[i, j].walkable == false)
+                    {
+                        Console.Write(0);
+                    }
+                    else
+                    {
+                        Console.Write(1);
+                    }
+
+                }
+                Console.WriteLine();
+            }
+        }
+        public void printPath()
+        {
+            foreach (var node in path)
+            {
+                Console.WriteLine(node.PosX + " " + node.posY);
+            }
+        }
+
+        public void testRun(int nodeWidth, int nodeHeight, (int,int) start, (int,int) goal)
+        {
+            setNodeWidth(nodeWidth);
+            setNodeHeight(nodeHeight);
+            transformWorldToGrid();
+            transformGridToNodeMap();
+            path = FindPath(start, goal);
+            transformPathToGrid();
+            printNodeMap();
+            //printGrid();
+            printPath();
+
+        }
+
+
+
     }
 }
