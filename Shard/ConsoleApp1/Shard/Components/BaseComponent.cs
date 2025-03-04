@@ -11,9 +11,8 @@ namespace Shard.Shard.Components
         protected GameObject owner;
         protected Tags tags;
 
-        protected bool enabled = true; // Default: enabled
-       
-        // Constructor to initialize the component with a GameObject reference
+        protected bool enabled = true; 
+
         public BaseComponent(GameObject owner)
         {
             this.owner = owner;
@@ -31,7 +30,6 @@ namespace Shard.Shard.Components
             enabled = false;
         }
 
-        // Optionally override in derived components if needed
         public virtual void initialize() {
 
             if(owner != null) {
@@ -39,13 +37,9 @@ namespace Shard.Shard.Components
             }
         }
 
-        // Update is called from the GameObject and checks if enabled
         public virtual void update()
         {
-            //if (enabled)
-            //{
-            //    UpdateComponent();
-            //}
+
         }
 
         public void registerComponent()
@@ -53,13 +47,8 @@ namespace Shard.Shard.Components
             GameObjectManager.getInstance().addComponent(owner, this);
         }
 
-        // Each component must define its own Update logic
-        //protected abstract void UpdateComponent();
-
-        // Accessor for the GameObject owner
         public GameObject Owner => owner;
 
-        // Enable and disable functionality for the component
         public bool IsEnabled => enabled;
 
         public void Enable() => enabled = true;

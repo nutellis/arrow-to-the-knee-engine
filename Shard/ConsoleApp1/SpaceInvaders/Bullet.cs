@@ -9,7 +9,6 @@ namespace SpaceInvaders
     class Bullet : GameObject, CollisionHandler
     {
 
-        private Tags tags;
         private PhysicsComponent physics;
 
         private string destroyTag;
@@ -35,7 +34,6 @@ namespace SpaceInvaders
 
         public override void initialize()
         {
-
             physics = new PhysicsComponent(this);
 
             this.Transient = true;
@@ -59,19 +57,18 @@ namespace SpaceInvaders
                 col);
         }
 
-         public void onCollisionEnter(PhysicsComponent x)
+         public void onCollisionEnter(PhysicsComponent other)
         {
             GameSpaceInvaders g;
 
             if (ToBeDestroyed) return;
 
-            // Ensure the object has a TagComponent before checking tags
-            if (x.Owner.Tags != null && (x.Owner.Tags.checkTag(destroyTag) || x.Owner.Tags.checkTag("BunkerBit")))
+            if (other.Owner.Tags != null && (other.Owner.Tags.checkTag(destroyTag) || other.Owner.Tags.checkTag("BunkerBit")))
             {
                 ToBeDestroyed = true;
-                x.Owner.ToBeDestroyed = true;
+                other.Owner.ToBeDestroyed = true;
 
-                if (x.Owner.Tags.checkTag("Player"))
+                if (other.Owner.Tags.checkTag("Player"))
                 {
                     g = (GameSpaceInvaders)Bootstrap.getRunningGame();
                     g.Dead = true;

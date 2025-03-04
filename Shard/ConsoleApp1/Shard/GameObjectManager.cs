@@ -99,6 +99,18 @@ namespace Shard
         {
             foreach (var gob in myObjects)
             {
+                if (components.TryGetValue(gob, out List<BaseComponent> value))
+                {
+                    PhysicsComponent physics = (PhysicsComponent)value.Find(
+                    delegate (BaseComponent physics)
+                    {
+                        return physics is PhysicsComponent;
+                    }
+                    );
+                    physics?.physicsUpdate();
+                }
+
+
                 //PhysicsComponent physics = gob.getComponent<PhysicsComponent>();
                 //if (physics != null)
                 //{
@@ -133,10 +145,10 @@ namespace Shard
         public void update()
         {
             List<int> toDestroy = new List<int>();
-
+            GameObject gob;
             for (int i = 0; i < myObjects.Count; i++)
             {
-                GameObject gob = myObjects[i];
+                 gob = myObjects[i];
 
                 gob.update();
 
@@ -152,7 +164,7 @@ namespace Shard
             {
                 for (int i = toDestroy.Count - 1; i >= 0; i--)
                 {
-                    GameObject gob = myObjects[toDestroy[i]];
+                    gob = myObjects[toDestroy[i]];
                     myObjects[toDestroy[i]].killMe();
                     myObjects.RemoveAt(toDestroy[i]);
                 }

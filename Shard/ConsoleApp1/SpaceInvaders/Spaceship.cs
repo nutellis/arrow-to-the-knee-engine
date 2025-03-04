@@ -16,7 +16,6 @@ namespace SpaceInvaders
 
         private PhysicsComponent physics;
 
-        private Tags tags;
         private double fireCounter, fireDelay = 2.0f;
         private float moveDistance;
 

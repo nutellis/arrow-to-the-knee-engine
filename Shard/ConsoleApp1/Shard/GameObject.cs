@@ -128,10 +128,10 @@ namespace Shard
     class GameObject
     {
         public Guid uuid;
-        private Tags tags;
-        private bool visible = true;
-        private bool transient = false;
-        private bool toBeDestroyed = false;
+        protected Tags tags;
+        protected bool visible = true;
+        protected bool transient = false;
+        protected bool toBeDestroyed = false;
 
         public Transform transform { get; private set; }
 
@@ -167,7 +167,11 @@ namespace Shard
             GameObjectManager.getInstance().addGameObject(this);  // Manage game object
             transform = new Transform(this);
             tags = new Tags();
-            //this.initialize();  // Optional: Custom initialization logic for derived classes
+
+            visible = false;
+            toBeDestroyed = false;
+
+            this.initialize();
         }
 
         // Optional: Can be overridden in derived classes to add more specific logic
@@ -178,30 +182,6 @@ namespace Shard
         {
 
             GameObjectManager.getInstance().tickComponents(this);
-            //TODO: check previous code here
-            //PhysicsComponent physics = getComponent<PhysicsComponent>();
-            //if (physics != null)
-            //{
-            //    physics.checkDestroyMe(this);
-            //}
-
-            if (ToBeDestroyed)
-            {
-                Destroy();
-            }
-        }
-
-        public void Destroy()
-        {
-            // Handle the cleanup logic when the GameObject is marked for destruction
-            //Console.WriteLine("GameObject is being destroyed.");
-            
-            transform = null;
-            tags = null;
-
-            GameObjectManager.getInstance().removeAllComponents(this);
-            GameObjectManager.getInstance().removeGameObject(this);
-            
         }
 
         public void checkDestroyMe()
@@ -226,10 +206,10 @@ namespace Shard
         //TODO: check if this should be on physics compponent only
         public virtual void killMe()
         {
-            //PhysicsManager.getInstance().removePhysicsObject(myBody);
+            transform = null;
+            tags = null;
 
-            //myBody = null;
-            //transform = null;
+            GameObjectManager.getInstance().removeAllComponents(this);
         }
     }
 }

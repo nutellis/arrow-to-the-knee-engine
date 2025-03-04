@@ -33,6 +33,22 @@ namespace Shard.Shard.Components
         private float[] minAndMaxX;
         private float[] minAndMaxY;
 
+        public float AngularDrag { get => angularDrag; set => angularDrag = value; }
+        public float Drag { get => drag; set => drag = value; }
+        internal Transform Trans { get => trans; set => trans = value; }
+        public float Mass { get => mass; set => mass = value; }
+        public float[] MinAndMaxX { get => minAndMaxX; set => minAndMaxX = value; }
+        public float[] MinAndMaxY { get => minAndMaxY; set => minAndMaxY = value; }
+        public float MaxForce { get => maxForce; set => maxForce = value; }
+        public float MaxTorque { get => maxTorque; set => maxTorque = value; }
+        public bool Kinematic { get => kinematic; set => kinematic = value; }
+        public bool PassThrough { get => passThrough; set => passThrough = value; }
+        public bool UsesGravity { get => usesGravity; set => usesGravity = value; }
+        public bool StopOnCollision { get => stopOnCollision; set => stopOnCollision = value; }
+        public bool ReflectOnCollision { get => reflectOnCollision; set => reflectOnCollision = value; }
+        public bool ImpartForce { get => this.impartForce; set => this.impartForce = value; }
+        internal CollisionHandler Colh { get => colh; set => colh = value; }
+
         public PhysicsComponent(GameObject owner) : base(owner)
         {
             physicsEnabled = true;  // Default: Physics enabled
@@ -75,6 +91,8 @@ namespace Shard.Shard.Components
             MinAndMaxX = null;
             MinAndMaxY = null;
 
+            PhysicsManager.getInstance().removePhysicsObject(this);
+
         }
         public override void initialize() { }
 
@@ -86,11 +104,7 @@ namespace Shard.Shard.Components
             if (physicsEnabled)
             {
                 // Physics-related updates, e.g., movement, collision, etc.
-            }
-
-            //TODO: moved from  gameobject manager. Will have to see if there is a change in call priority
-            checkDestroyMe();
-            
+            }         
 
         }
         public void applyGravity(float modifier, Vector2 dir)
@@ -101,22 +115,6 @@ namespace Shard.Shard.Components
             addForce(gf);
 
         }
-
-        public float AngularDrag { get => angularDrag; set => angularDrag = value; }
-        public float Drag { get => drag; set => drag = value; }
-        internal Transform Trans { get => trans; set => trans = value; }
-        public float Mass { get => mass; set => mass = value; }
-        public float[] MinAndMaxX { get => minAndMaxX; set => minAndMaxX = value; }
-        public float[] MinAndMaxY { get => minAndMaxY; set => minAndMaxY = value; }
-        public float MaxForce { get => maxForce; set => maxForce = value; }
-        public float MaxTorque { get => maxTorque; set => maxTorque = value; }
-        public bool Kinematic { get => kinematic; set => kinematic = value; }
-        public bool PassThrough { get => passThrough; set => passThrough = value; }
-        public bool UsesGravity { get => usesGravity; set => usesGravity = value; }
-        public bool StopOnCollision { get => stopOnCollision; set => stopOnCollision = value; }
-        public bool ReflectOnCollision { get => reflectOnCollision; set => reflectOnCollision = value; }
-        public bool ImpartForce { get => this.impartForce; set => this.impartForce = value; }
-        internal CollisionHandler Colh { get => colh; set => colh = value; }
 
         public void drawMe()
         {
@@ -292,12 +290,8 @@ namespace Shard.Shard.Components
 
         public void physicsTick()
         {
-            List<Vector2> toRemove;
             float force;
             float rot = 0;
-
-
-            toRemove = new List<Vector2>();
 
             rot = torque;
 
@@ -309,8 +303,6 @@ namespace Shard.Shard.Components
             {
                 torque -= Math.Sign(torque) * AngularDrag;
             }
-
-
 
             trans.rotate(rot);
 
@@ -326,9 +318,6 @@ namespace Shard.Shard.Components
             {
                 this.force = (this.force / force) * (force - Drag);
             }
-
-
-
         }
 
 
@@ -415,26 +404,6 @@ namespace Shard.Shard.Components
             }
 
             return null;
-        }
-
-        public void checkDestroyMe()
-        {
-            Transform transform = owner.transform;
-
-            if (!owner.Transient)
-            {
-                return;
-            }
-
-            if (transform == null) return;
-
-            int screenWidth = Bootstrap.getDisplay().getWidth();
-            int screenHeight = Bootstrap.getDisplay().getHeight();
-
-            if (transform.X < 0 || transform.X > screenWidth || transform.Y < 0 || transform.Y > screenHeight)
-            {
-                owner.ToBeDestroyed = true;
-            }
         }
 
         public bool queryPhysicsEnabled()

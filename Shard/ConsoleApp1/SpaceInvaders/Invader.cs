@@ -18,7 +18,6 @@ namespace SpaceInvaders
         public int Xdir { get => xdir; set => xdir = value; }
 
         private SpriteComponent sprite;
-        private Tags tags;
         private PhysicsComponent physics;
 
         public override void initialize()
