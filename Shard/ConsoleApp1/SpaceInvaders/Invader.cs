@@ -20,6 +20,7 @@ namespace SpaceInvaders
 
         //private SpriteComponent sprite;
         private PhysicsComponent physics;
+        private SoundComponent sound;
 
         ~Invader()
         {
@@ -35,6 +36,7 @@ namespace SpaceInvaders
 
             //sprite = new SpriteComponent(Bootstrap.getAssetManager().getAssetPath("bunkerBit.png"));
             physics = new PhysicsComponent(this);
+            sound = new SoundComponent(this);
 
             sprites = new string[2];
 
@@ -56,6 +58,8 @@ namespace SpaceInvaders
 
             physics.PassThrough = true;
 
+            sound.loadSound("InvaderAttack", "invaderfire.wav");
+            sound.loadSound("InvaderMove", "invadermove.wav");
         }
 
 
@@ -69,7 +73,7 @@ namespace SpaceInvaders
             }
 
             this.transform.SpritePath = Bootstrap.getAssetManager().getAssetPath(sprites[spriteToUse]);
-
+            sound.playSoundForSomeTime("InvaderMove", 2);
         }
 
         public override void update()
@@ -132,6 +136,8 @@ namespace SpaceInvaders
             b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y);
             b.Dir = 1;
             b.DestroyTag = "Player";
+
+            sound.playSound("InvaderAttack");
         }
     }
 }

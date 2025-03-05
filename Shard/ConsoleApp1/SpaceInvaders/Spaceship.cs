@@ -51,8 +51,8 @@ namespace SpaceInvaders
             sound = new SoundComponent(this);
             sound.loadSound("SpaceShipAttack", "fire.wav");
             sound.loadSound("BackgroundMusic", "background.wav");
-            sound.loadSound("SpaceShipMove", "spaceship_move.wav");
-            sound.loadSound("BackgroundEngine", "spaceship_engine_just_noise.wav");
+            sound.loadSound("SpaceShipMove", "spaceshipmove.wav");
+            sound.loadSound("BackgroundEngine", "spaceshipengine.wav");
 
             physics.addRectCollider();
 

@@ -55,7 +55,7 @@ namespace Shard.Shard
             Console.WriteLine($"Sound {soundName} loaded successfully!");
         }
 
-        public void playSound(string soundName, bool loop = false)
+        public void playSound(string soundName, bool loop = false, int time = 0)
         {
             var soundEntry = soundLibrary.FirstOrDefault(s => s.name == soundName);
             if (soundEntry.sound == IntPtr.Zero)
@@ -74,6 +74,10 @@ namespace Shard.Shard
             else
             {
                 Console.WriteLine($"Playing sound {soundName} on channel {channel}");
+                if (time > 0)
+                {
+                    Task.Delay(time).ContinueWith(_ => SDL_mixer.Mix_HaltChannel(channel));
+                }
             }
         }
 

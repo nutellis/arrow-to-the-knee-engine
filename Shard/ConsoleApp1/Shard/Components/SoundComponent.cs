@@ -24,11 +24,11 @@ namespace Shard.Shard.Components
             }
         }
 
-        public void playSound(string soundName, bool loop = false)
+        public void playSound(string soundName, bool loop = false, int time = 0)
         {
             if (loadedSounds.ContainsKey(soundName))
             {
-                SoundManager.getInstance().playSound(soundName, loop);
+                SoundManager.getInstance().playSound(soundName, loop, time);
                 currentSound = soundName;
             }
             else
@@ -40,6 +40,11 @@ namespace Shard.Shard.Components
         public void playSoundOnRepeat(string soundName)
         {
             playSound(soundName, true);
+        }
+
+        public void playSoundForSomeTime(string soundName, int time)
+        {
+            playSound(soundName, false, time);
         }
 
         public void stopSound(string soundName)
