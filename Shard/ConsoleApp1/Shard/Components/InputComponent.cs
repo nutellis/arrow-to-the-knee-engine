@@ -13,6 +13,7 @@ namespace Shard.Shard.Components
         Dictionary<string, InputAction> actions;
 
 
+
         public InputComponent(GameObject owner) : base(owner)
         {
             actions = new Dictionary<string, InputAction>();
@@ -33,14 +34,23 @@ namespace Shard.Shard.Components
         {
             if (!actions.ContainsKey(name))
             {
-                InputAction inputAction = new InputAction(name, type, action, parameters);
+                InputAction inputAction = new InputAction(name, type, false, action, parameters);
                 actions[name] = inputAction;
             }
         }
 
+        //public void bindAxisAction(AxisType type, Action<object[]> action, params object[] parameters)
+        //{
+        //    if (!actions.ContainsKey(name))
+        //    {
+        //        InputAction inputAction = new InputAction(name, type, true, action, parameters);
+        //        actions[name] = inputAction;
+        //    }
+        //}
+
         public void handleInput(InputEvent inp, InputType eventType)
         {
-            if (Bootstrap.getRunningGame().isRunning() == false)
+            if (Bootstrap.getRunningGame().isRunning() == false || inp.InputActionName == null)
             {
                 return;
             }

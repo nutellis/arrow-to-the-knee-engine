@@ -29,6 +29,12 @@ namespace Shard
         MouseWheel
     }
 
+    public enum Axis
+    {
+        Horizontal,
+        Vertical
+    }
+
     // We'll be using SDL2 here to provide our underlying input system.
     class InputFramework : InputSystem
     {
@@ -36,6 +42,7 @@ namespace Shard
         double tick, timeInterval, lastUpdate;
         private Dictionary<int, double> keyHeldSeconds;
         private Dictionary<int, string> registeredInputActions;
+        private Dictionary<int, InputAxis> axisBindings;
 
         const double HOLD_THRESHOLD = 0.25;
 
@@ -43,6 +50,8 @@ namespace Shard
         {
             keyHeldSeconds = [];
             registeredInputActions = [];
+            axisBindings = [];
+
             lastUpdate = Bootstrap.getCurrentMillis();
             timeInterval = 1 / 60.0;
         }
@@ -57,10 +66,17 @@ namespace Shard
             return me;
         }
 
-        public void setInputMapping(string inputActionName, SDL.SDL_Scancode Key)
+        public void setInputMapping(string inputActionName, SDL.SDL_Scancode key)
         {
-            registeredInputActions[(int)Key] = inputActionName;
+            registeredInputActions[(int)key] = inputActionName;
         }
+
+        public void setAxisMapping(Axis axis, SDL.SDL_Scancode key, float direction)
+        {
+            axisBindings[(int)key] = new InputAxis(axis,direction, null);
+        }
+
+
 
         // slow!
         public double getActionTimeHeld(InputAction action)
@@ -209,7 +225,12 @@ namespace Shard
         private void handleKeyPress(InputEvent inputEvent)
         {
             int keyCode = inputEvent.Key;
-            if (registeredInputActions.TryGetValue(keyCode, out string inputName)) {
+            if (axisBindings.TryGetValue(keyCode, out InputAxis value))
+            {
+                Console.WriteLine($"Key {keyCode} PRESSED with axis movement on " + value.axis);
+                informListeners(inputEvent, InputType.Pressed);
+            }
+            else if(registeredInputActions.TryGetValue(keyCode, out string inputName)) {
 
                 inputEvent.InputActionName = registeredInputActions[keyCode];
 
@@ -218,13 +239,19 @@ namespace Shard
                     keyHeldSeconds[keyCode] = Bootstrap.getCurrentMillis(); // Start tracking hold duration
                 }
                 Console.WriteLine($"Key {keyCode} PRESSED with Action of " + inputName);
-            informListeners(inputEvent, InputType.Pressed);
-            }
+                informListeners(inputEvent, InputType.Pressed);
+            } 
+
         }
 
         void handleKeyRelease(InputEvent inputEvent)
         {
             int keyCode = inputEvent.Key;
+            if (axisBindings.ContainsKey(keyCode))
+            {
+                Console.WriteLine($"Key {keyCode} RELEASED with axis movement on " + axisBindings[keyCode].axis);
+                informListeners(inputEvent, InputType.Released);
+            }
             if (registeredInputActions.ContainsKey(keyCode))
             {
                 inputEvent.InputActionName = registeredInputActions[keyCode];
@@ -255,5 +282,29 @@ namespace Shard
             //    }
             //}
         }
+        //private void processAxisInput()
+        //{
+        //    foreach (var axis in axisBindings.Values)
+        //    {
+        //        float axisValue = 0.0f;
+
+        //        foreach (var keyPair in axis.KeyMappings)
+        //        {
+        //            if (keyHeldSeconds.ContainsKey(keyPair.Key))
+        //            {
+        //                axisValue += keyPair.Value;
+        //            }
+        //        }
+
+        //        axisValue = Math.Clamp(axisValue, -1.0f, 1.0f);
+
+        //        if (Math.Abs(axis.CurrentValue - axisValue) > 0.001f)
+        //        {
+        //            axis.CurrentValue = axisValue;
+        //            axis.Callback(axisValue);
+        //        }
+        //    }
+        //}
     }
+    
 }

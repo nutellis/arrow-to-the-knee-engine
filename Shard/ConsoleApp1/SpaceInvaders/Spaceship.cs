@@ -39,8 +39,8 @@ namespace SpaceInvaders
             input.initialize();
 
             input.bindInputAction("Fire", InputType.Pressed, (parameters) => fireBullet());
-            input.bindInputAction("Left", InputType.Pressed, (parameters) => moveLeft());
-            input.bindInputAction("Right", InputType.Pressed, (parameters) => moveRight());
+            //input.bindInputAction("Left", InputType.Pressed, (parameters) => moveLeft());
+            //input.bindInputAction("Right", InputType.Pressed, (parameters) => moveRight());
 
             physics = new PhysicsComponent(this);
             physics.addRectCollider();

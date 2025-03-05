@@ -161,8 +161,10 @@ namespace Shard
             //Setup input key mappings. The naive way for now
             InputFramework.getInstance().setInputMapping("Fire", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_SPACE);
             InputFramework.getInstance().setInputMapping("Fire", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_Q);
-            InputFramework.getInstance().setInputMapping("Left", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_A);
-            InputFramework.getInstance().setInputMapping("Right", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_D);
+
+            InputFramework.getInstance().setAxisMapping(Axis.Horizontal, SDL2.SDL.SDL_Scancode.SDL_SCANCODE_A, -1);
+            InputFramework.getInstance().setAxisMapping(Axis.Horizontal, SDL2.SDL.SDL_Scancode.SDL_SCANCODE_D, 1);
+
 
             rows = 6;
             columns = 11;
