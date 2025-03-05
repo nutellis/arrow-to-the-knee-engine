@@ -176,10 +176,29 @@ namespace Shard
 
         public List<Node> FindPath((int, int) start, (int, int) goal)
         {
-            int startX = start.Item1 / nodeHeight;
-            int startY = start.Item2 / nodeWidth;
-            int goalX = goal.Item1 / nodeHeight;
-            int goalY = goal.Item2 / nodeWidth;
+            int startX, startY, goalX, goalY;
+
+            if (start.Item1 == displayHeight || start.Item2 == displayWidth)
+            {
+                startX = (start.Item1 / nodeHeight) - 1;
+                startY = (start.Item2 / nodeWidth) - 1;
+            }
+            else
+            {
+                startX = start.Item1 / nodeHeight;
+                startY = start.Item2 / nodeWidth;
+            }
+            if (goal.Item1 == displayHeight || goal.Item2 == displayWidth)
+            {
+                goalX = (goal.Item1 / nodeHeight) - 1;
+                goalY = (goal.Item2 / nodeWidth) - 1;
+            }
+            else
+            {
+                goalX = goal.Item1 / nodeHeight;
+                goalY = goal.Item2 / nodeWidth;
+            }
+
 
             List<Node> openList = new List<Node>();
             HashSet<(int, int)> closedList = new HashSet<(int, int)>();
@@ -283,6 +302,30 @@ namespace Shard
             }
         }
 
+        public void printPathVisual()
+        {
+            for (int i = 0; i < nodeMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < nodeMap.GetLength(1); j++)
+                {
+                    if (nodeMap[j, i].walkable == false)
+                    {
+                        Console.Write(0);
+                    }
+                    if (path.Contains(nodeMap[j, i]))
+                    {
+                        Console.Write("*");
+                    }
+                    else
+                    {
+                        Console.Write(1);
+                    }
+
+                }
+                Console.WriteLine();
+            }
+        }
+
         public void testRun(int nodeWidth, int nodeHeight, (int,int) start, (int,int) goal)
         {
             setNodeWidth(nodeWidth);
@@ -294,6 +337,7 @@ namespace Shard
             printNodeMap();
             //printGrid();
             printPath();
+            printPathVisual();
 
         }
 
