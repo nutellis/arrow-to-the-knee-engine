@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Shard.Shard;
 
 namespace Shard.Shard.Components
@@ -24,8 +25,14 @@ namespace Shard.Shard.Components
             }
         }
 
-        public void playSound(string soundName, bool loop = false, int time = 0)
+        public void playSoundOnRepeat(string soundName)
         {
+            playSound(soundName, true);
+        }
+
+        public void playSoundForSomeTime(string soundName, int time)
+        {
+            bool loop = false;  
             if (loadedSounds.ContainsKey(soundName))
             {
                 SoundManager.getInstance().playSound(soundName, loop, time);
@@ -37,14 +44,22 @@ namespace Shard.Shard.Components
             }
         }
 
-        public void playSoundOnRepeat(string soundName)
+        public Task playSoundWithDelay(string soundName, int delay)
         {
-            playSound(soundName, true);
+            return SoundManager.getInstance().playSoundWithDelay(soundName, delay);
         }
 
-        public void playSoundForSomeTime(string soundName, int time)
+        public void playSound(string soundName, bool loop = false)
         {
-            playSound(soundName, false, time);
+            if (loadedSounds.ContainsKey(soundName))
+            {
+                SoundManager.getInstance().playSound(soundName, loop);
+                currentSound = soundName;
+            }
+            else
+            {
+                Console.WriteLine($"Sound {soundName} not found in loaded sounds.");
+            }
         }
 
         public void stopSound(string soundName)

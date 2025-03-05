@@ -55,6 +55,12 @@ namespace Shard.Shard
             Console.WriteLine($"Sound {soundName} loaded successfully!");
         }
 
+        public async Task playSoundWithDelay(string soundName, int delay, bool loop = false, int time = 0)
+        {
+            await Task.Delay(delay); // Ensure the delay is awaited properly
+            playSound(soundName, loop, time);
+        }
+
         public void playSound(string soundName, bool loop = false, int time = 0)
         {
             var soundEntry = soundLibrary.FirstOrDefault(s => s.name == soundName);

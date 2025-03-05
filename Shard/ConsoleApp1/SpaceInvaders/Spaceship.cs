@@ -59,6 +59,7 @@ namespace SpaceInvaders
             tags.addTag("Player");
 
             //background music
+            sound.setVolume("BackgroundMusic", 0.1f);
             //sound.playSoundOnRepeat("BackgroundMusic");
             sound.playSoundOnRepeat("BackgroundEngine");
         }
@@ -92,8 +93,21 @@ namespace SpaceInvaders
 
             fireCounter = 0;
 
-            Console.WriteLine("Firing bullet. Playing sound");
-            sound.playSound("SpaceShipAttack");
+            //Console.WriteLine("Firing bullet. Playing sound");
+
+            //sound.playSound("SpaceShipAttack");
+            for (int i = 0; i < 8; i++)
+            {
+                int delay = (i + 1) * 200; // Adjust delay as needed (e.g., 200ms per step)
+                sound.playSoundWithDelay("SpaceShipAttack", delay);
+            }
+
+            // Play the sound multiple times with increasing delay
+            for (int i = 0; i < 10; i++)
+            {
+                int delay = (i + 1) * 100; // Adjust delay as needed (e.g., 200ms per step)
+                sound.playSoundWithDelay("SpaceShipAttack", delay);
+            }
         }
 
         public void handleInput(InputEvent inp, string eventType)
