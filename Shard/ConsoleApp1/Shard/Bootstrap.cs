@@ -275,8 +275,11 @@ namespace Shard
            
             tracer = new PathTracer();
             //tracer.testRun(16, 16, (0,0), (Bootstrap.getDisplay().getHeight(), Bootstrap.getDisplay().getWidth()));
-            tracer.testRun(16, 16, (Bootstrap.getDisplay().getHeight(), Bootstrap.getDisplay().getWidth()), (0,0));
-
+            Console.WriteLine("Test Run 0");
+            tracer.testRun(16, 16, (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()), (0,0));
+            Console.WriteLine("Test Run 1");
+            tracer.testRun(16, 16, (400,500), (700, 600));
+            Console.WriteLine("Test Run End");
             //////////////
 
             while (true)

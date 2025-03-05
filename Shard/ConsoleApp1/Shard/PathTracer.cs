@@ -85,10 +85,10 @@ namespace Shard
 
         public void setGrid()
         {
-            grid = new int[displayHeight, displayWidth];
-            for (int i = 0; i < displayHeight; i++)
+            grid = new int[displayWidth, displayHeight];
+            for (int i = 0; i < displayWidth; i++)
             {
-                for (int j = 0; j < displayWidth; j++)
+                for (int j = 0; j < displayHeight; j++)
                 {
                     grid[i, j] = 0;
                 }
@@ -114,7 +114,7 @@ namespace Shard
 
         public void setNodeMap()
         {
-            nodeMap = new Node[displayHeight / nodeHeight, displayWidth / nodeWidth];
+            nodeMap = new Node[displayWidth / nodeWidth, displayHeight / nodeHeight];
 
         }
         // A little bit of a mess, works best in squere shapes, need to be checked for other shapes
@@ -125,15 +125,15 @@ namespace Shard
 
             setNodeMap();
 
-            for (int rowCounter = 0; rowCounter < displayHeight / nodeHeight; rowCounter++)
+            for (int rowCounter = 0; rowCounter < displayWidth / nodeHeight; rowCounter++)
             {
                 posX = rowCounter;
 
-                for(int colCounter = 0; colCounter < displayWidth / nodeWidth; colCounter++)
+                for(int colCounter = 0; colCounter < displayHeight / nodeHeight; colCounter++)
                 {
                     posY = colCounter;
-                    coordianteX = rowCounter * nodeHeight;
-                    coordinateY = colCounter * nodeWidth;
+                    coordianteX = rowCounter * nodeWidth;
+                    coordinateY = colCounter * nodeHeight;
                     Node node = new Node(posX, posY);
                     node.setNodeInfo(coordianteX, coordinateY, nodeWidth, nodeHeight);
                     nodeMap[rowCounter, colCounter] = node;
@@ -178,25 +178,27 @@ namespace Shard
         {
             int startX, startY, goalX, goalY;
 
-            if (start.Item1 == displayHeight || start.Item2 == displayWidth)
+            // This need fixing, cuz right now it only checks if its the last node
+            // I might need to check other wierd cases that might make it go out of bounds
+            if (start.Item1 == displayWidth || start.Item2 == displayHeight)
             {
-                startX = (start.Item1 / nodeHeight) - 1;
-                startY = (start.Item2 / nodeWidth) - 1;
+                startX = (start.Item1 / nodeWidth) - 1;
+                startY = (start.Item2 / nodeHeight) - 1;
             }
             else
             {
-                startX = start.Item1 / nodeHeight;
-                startY = start.Item2 / nodeWidth;
+                startX = start.Item1 / nodeWidth;
+                startY = start.Item2 / nodeHeight;
             }
-            if (goal.Item1 == displayHeight || goal.Item2 == displayWidth)
+            if (goal.Item1 == displayWidth || goal.Item2 == displayHeight)
             {
-                goalX = (goal.Item1 / nodeHeight) - 1;
-                goalY = (goal.Item2 / nodeWidth) - 1;
+                goalX = (goal.Item1 / nodeWidth) - 1;
+                goalY = (goal.Item2 / nodeHeight) - 1;
             }
             else
             {
-                goalX = goal.Item1 / nodeHeight;
-                goalY = goal.Item2 / nodeWidth;
+                goalX = goal.Item1 / nodeWidth;
+                goalY = goal.Item2 / nodeHeight;
             }
 
 
@@ -308,11 +310,11 @@ namespace Shard
             {
                 for (int j = 0; j < nodeMap.GetLength(1); j++)
                 {
-                    if (nodeMap[j, i].walkable == false)
+                    if (nodeMap[i, j].walkable == false)
                     {
                         Console.Write(0);
                     }
-                    if (path.Contains(nodeMap[j, i]))
+                    if (path.Contains(nodeMap[i, j]))
                     {
                         Console.Write("*");
                     }
@@ -334,9 +336,12 @@ namespace Shard
             transformGridToNodeMap();
             path = FindPath(start, goal);
             transformPathToGrid();
+            Console.WriteLine("The nodeMap for Debugging");
             printNodeMap();
             //printGrid();
+            Console.WriteLine("The path for Debugging");
             printPath();
+            Console.WriteLine("The path visual for Debugging");
             printPathVisual();
 
         }
