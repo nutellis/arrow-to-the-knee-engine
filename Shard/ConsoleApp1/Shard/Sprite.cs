@@ -58,6 +58,17 @@ namespace Shard
             Console.WriteLine($"Animating sprite {path}"); //placeholder
         }
 
+        public void stopAnimate()
+        {
+            isAnimating = false;
+            Console.WriteLine($"Stopped animating sprite {path}"); //placeholder
+        }
+
+        public bool isAnimationPlaying()
+        {
+            return isAnimating;
+        }
+
         //Plays the animation once.
         public void repeatOnce()
         {

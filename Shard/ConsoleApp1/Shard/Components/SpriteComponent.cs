@@ -16,6 +16,7 @@ namespace Shard.Shard.Components
         private double frameTimer;
         private float frameDuration = 0.1f;
         public bool hasAnimation = false;
+        private bool isMoving = false;
 
         public SpriteComponent(GameObject owner,bool hasAnimation = false) : base(owner)
         {
@@ -29,17 +30,18 @@ namespace Shard.Shard.Components
 
         public override void update()
         {
-           // frameTimer += Bootstrap.getDeltaTime();
-            //if (frameTimer >= frameDuration)
-            //{
-            //    frameTimer = 0;
-            //    currentFrame = (currentFrame + 1) % animationFrames.Count;
-            //    sprite = animationFrames[currentFrame];
-            //}
+            if (isMoving && hasAnimation)
+            {
+                frameTimer += Bootstrap.getDeltaTime();
+                if (frameTimer >= frameDuration)
+                {
+                    frameTimer = 0;
+                    currentFrame = (currentFrame + 1) % animationFrames.Count;
+                    sprite = animationFrames[currentFrame];
+                }
+            }
 
-            sprite.X = owner.transform.X;
-            sprite.Y = owner.transform.Y;
-
+            sprite.setPosition(owner.transform.X, owner.transform.Y);
             Bootstrap.getDisplay().addToDraw(this.sprite);
         }
 
@@ -86,6 +88,27 @@ namespace Shard.Shard.Components
         internal void setSprite(int spriteToUse)
         {
             sprite = animationFrames[spriteToUse];
+        }
+
+        public void startAnimation()
+        {
+            if(!sprite.isAnimationPlaying())
+            {
+                sprite.animate();
+                isMoving = true;
+
+            }
+
+        }
+
+        public void stopAnimation()
+        {
+            if(sprite.isAnimationPlaying())
+            {
+                sprite.stopAnimate();
+                isMoving = false;
+                setSprite(0);
+            }
         }
     }
 

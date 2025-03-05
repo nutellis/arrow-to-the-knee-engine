@@ -28,7 +28,22 @@ namespace SpaceInvaders
             this.sprite = new SpriteComponent(this, false);
             this.sprite.initialize();
             this.sprite.addSprite("player.png");
-            
+            //this.sprite.addSprite("enemyright4.png");
+            //this.sprite.addSprite("city.png");
+            //this.sprite.addSprite("brick1.png");
+            //this.sprite.addSprite("brick2.png");
+            //this.sprite.addSprite("brick3.png");
+            //this.sprite.addSprite("right1.png");
+            //this.sprite.addSprite("right2.png");
+            //this.sprite.addSprite("right3.png");
+            //this.sprite.addSprite("right4.png");
+            //this.sprite.addSprite("ball.png");
+            //this.sprite.addSprite("missile.png");
+            //this.sprite.addSprite("missilecommandback.png");
+            //this.sprite.addSprite("platform.png");
+            //this.sprite.addSprite("test.png");
+            //this.sprite.addSprite("invader2.png");
+
             fireDelay = 2;
             fireCounter = fireDelay;
 
