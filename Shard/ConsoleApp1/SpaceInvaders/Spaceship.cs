@@ -16,13 +16,16 @@ namespace SpaceInvaders
 
         private PhysicsComponent physics;
 
+        private SoundComponent sound;
+
         private double fireCounter, fireDelay = 2.0f;
         private float moveDistance;
 
 
+
         public override void initialize()
         {
-            this.transform.X = 100.0f;
+            this.transform.X = 400.0f;
             this.transform.Y = 800.0f;
 
             this.sprite = new SpriteComponent(this, false);
@@ -47,6 +50,16 @@ namespace SpaceInvaders
 
             tags.addTag("Player");
 
+            sound = new SoundComponent(this);
+            sound.loadSound("SpaceShipAttack", "fire.wav");
+            sound.loadSound("BackgroundMusic", "background.wav");
+            sound.loadSound("SpaceShipMove", "spaceshipmove.wav");
+            sound.loadSound("BackgroundEngine", "spaceshipengine.wav");
+
+
+            //sound.setVolume("BackgroundMusic", 0.1f);
+            //sound.playSoundOnRepeat("BackgroundMusic");
+            //sound.playSoundOnRepeat("BackgroundEngine");
         }
 
         // Again a very naive way to implement axis movement
@@ -54,11 +67,13 @@ namespace SpaceInvaders
         {
             moveDistance = (float)(2500 * Bootstrap.getDeltaTime());
             this.transform.translate(-1 * moveDistance, 0);
+            sound.playSound("SpaceShipMove");
         }
         public void moveRight()
         {
             moveDistance = (float)(2500 * Bootstrap.getDeltaTime());
             this.transform.translate(1 * moveDistance, 0);
+            sound.playSound("SpaceShipMove");
         }
 
         public void fireBullet()
@@ -76,6 +91,7 @@ namespace SpaceInvaders
 
             fireCounter = 0;
 
+            sound.playSound("SpaceShipAttack");
         }
 
         public void handleInput(InputEvent inp, string eventType)

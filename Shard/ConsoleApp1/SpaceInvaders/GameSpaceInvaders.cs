@@ -1,4 +1,5 @@
-﻿using SpaceInvaders;
+﻿using Shard.Shard;
+using SpaceInvaders;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -94,6 +95,11 @@ namespace Shard
                     }
                 }
 
+                if(livingInvaders.Count > 0)
+                {
+                    SoundManager.getInstance().playSound("InvaderMove");
+                }
+
                 Debug.Log("Living invaders" + livingInvaders.Count);
 
                 // Pick a random invader to fire.
@@ -174,7 +180,7 @@ namespace Shard
 
             Debug.Log("Bing!");
 
-
+            SoundManager.getInstance().loadSound("InvaderMove", "invadermove.wav");
         }
 
         public void handleInput(InputEvent inp, string eventType)

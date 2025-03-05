@@ -19,11 +19,13 @@ namespace SpaceInvaders
 
         private SpriteComponent sprite;
         private PhysicsComponent physics;
+        private SoundComponent sound;
 
         public override void initialize()
         {
             //sprite = 
             physics = new PhysicsComponent(this);
+            sound = new SoundComponent(this);
 
             sprite = new SpriteComponent(this, true);
             sprite.addSprite("invader1.png");
@@ -43,6 +45,8 @@ namespace SpaceInvaders
 
             physics.PassThrough = true;
 
+            sound.loadSound("InvaderAttack", "invaderfire.wav");
+            sound.loadSound("InvaderMove", "invadermove.wav");
         }
 
 
@@ -117,6 +121,8 @@ namespace SpaceInvaders
             b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y);
             b.Dir = 1;
             b.DestroyTag = "Player";
+
+            sound.playSound("InvaderAttack");
         }
     }
 }

@@ -10,6 +10,7 @@ namespace SpaceInvaders
     {
 
         private PhysicsComponent physics;
+        private SoundComponent sound;
 
         private string destroyTag;
         private int dir;
@@ -35,10 +36,15 @@ namespace SpaceInvaders
         public override void initialize()
         {
             physics = new PhysicsComponent(this);
+            sound = new SoundComponent(this);
 
             this.Transient = true;
 
             tags = new Tags();
+
+            sound.loadSound("GotHit", "hit.wav");
+            sound.loadSound("BunkerExplosion", "bunkerexplosion.wav");
+            sound.setVolume("BunkerExplosion", 1.0f);
         }
 
 
@@ -67,6 +73,8 @@ namespace SpaceInvaders
             {
                 ToBeDestroyed = true;
                 other.Owner.ToBeDestroyed = true;
+
+                sound.playSound("BunkerExplosion");
 
                 if (other.Owner.Tags.checkTag("Player"))
                 {
