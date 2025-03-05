@@ -63,7 +63,7 @@ namespace Shard
                 H = 0;
             }
 
-            public void setBool(bool isWalkable)
+            public void setWalkable(bool isWalkable)
             {
                 walkable = isWalkable;
             }
@@ -101,8 +101,21 @@ namespace Shard
             List<GameObject> gameObjects = GameObjectManager.getInstance().getMyObject();
             foreach (var gameObject in gameObjects)
             {
-                int x = (int)gameObject.Transform.X;
-                int y = (int)gameObject.Transform.Y;
+                //int x = (int)gameObject.Transform.X;
+                //int y = (int)gameObject.Transform.Y;
+                int x = (int)gameObject.Transform.Centre.X;
+                int y = (int)gameObject.Transform.Centre.Y;
+                /*
+                int width = (int)gameObject.Transform.Wid;
+                int height = (int)gameObject.Transform.Ht;
+                for(int i = x; i < x + width; i++)
+                {
+                    for (int j = y; j < y + height; j++)
+                    {
+                        grid[i, j] = 1;
+                    }
+                }
+                */
                 grid[x, y] = 1;
             }
         }
@@ -145,7 +158,7 @@ namespace Shard
                         {
                             if (grid[i, j] == 1)
                             {
-                                node.setBool(false);
+                                node.setWalkable(false);
                                 node.setFilled(i, j);
                             }
                         }
@@ -344,7 +357,7 @@ namespace Shard
             path = FindPath(start, goal);
             transformPathToGrid();
             Console.WriteLine("The nodeMap for Debugging");
-            //printNodeMap();
+            printNodeMap();
             //printGrid();
             Console.WriteLine("The path for Debugging");
             printPath();
