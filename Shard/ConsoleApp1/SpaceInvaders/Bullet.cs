@@ -1,4 +1,6 @@
 ﻿using Shard;
+using Shard.Shard;
+using Shard.Shard.Components;
 using System;
 using System.Drawing;
 
@@ -6,6 +8,9 @@ namespace SpaceInvaders
 {
     class Bullet : GameObject, CollisionHandler
     {
+
+        private PhysicsComponent physics;
+
         private string destroyTag;
         private int dir;
 
@@ -14,25 +19,26 @@ namespace SpaceInvaders
 
         public void setupBullet(float x, float y)
         {
-            this.Transform.X = x;
-            this.Transform.Y = y;
-            this.Transform.Wid = 1;
-            this.Transform.Ht = 20;
+            this.transform.X = x;
+            this.transform.Y = y;
+            this.transform.Wid = 1;
+            this.transform.Ht = 20;
 
+            physics.addRectCollider();
 
-            setPhysicsEnabled();
+            tags.addTag("Bullet");
 
-            MyBody.addRectCollider();
-
-            addTag("Bullet");
-
-            MyBody.PassThrough = true;
+            physics.PassThrough = true;
 
         }
 
         public override void initialize()
         {
+            physics = new PhysicsComponent(this);
+
             this.Transient = true;
+
+            tags = new Tags();
         }
 
 
@@ -41,50 +47,46 @@ namespace SpaceInvaders
             Random r = new Random();
             Color col = Color.FromArgb(r.Next(0, 256), r.Next(0, 256), 0);
 
-            this.Transform.translate(0, dir * 400 * Bootstrap.getDeltaTime());
+            this.transform.translate(0, dir * 400.0 * Bootstrap.getDeltaTime());
 
             Bootstrap.getDisplay().drawLine(
-                (int)Transform.X,
-                (int)Transform.Y,
-                (int)Transform.X,
-                (int)Transform.Y + 20,
+                (int)transform.X,
+                (int)transform.Y,
+                (int)transform.X,
+                (int)transform.Y + 20,
                 col);
-
-
-
-
         }
 
-        public void onCollisionEnter(PhysicsBody x)
+         public void onCollisionEnter(PhysicsComponent other)
         {
             GameSpaceInvaders g;
 
-            if (x.Parent.checkTag(destroyTag) == true || x.Parent.checkTag("BunkerBit"))
+            if (ToBeDestroyed) return;
+
+            if (other.Owner.Tags != null && (other.Owner.Tags.checkTag(destroyTag) || other.Owner.Tags.checkTag("BunkerBit")))
             {
                 ToBeDestroyed = true;
-                x.Parent.ToBeDestroyed = true;
+                other.Owner.ToBeDestroyed = true;
 
-                if (x.Parent.checkTag("Player"))
+                if (other.Owner.Tags.checkTag("Player"))
                 {
                     g = (GameSpaceInvaders)Bootstrap.getRunningGame();
-
                     g.Dead = true;
                 }
-
             }
         }
 
-        public void onCollisionExit(PhysicsBody x)
+        public void onCollisionExit(PhysicsComponent x)
         {
         }
 
-        public void onCollisionStay(PhysicsBody x)
+        public void onCollisionStay(PhysicsComponent x)
         {
         }
 
         public override string ToString()
         {
-            return "Bullet: " + Transform.X + ", " + Transform.X;
+            return "Bullet: " + transform.X + ", " + transform.X;
         }
     }
 }

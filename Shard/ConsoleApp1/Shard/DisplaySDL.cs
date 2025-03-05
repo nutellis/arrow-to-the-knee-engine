@@ -12,8 +12,10 @@
 */
 
 using SDL2;
+using Shard;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 
 namespace Shard
@@ -52,7 +54,8 @@ namespace Shard
 
     class DisplaySDL : DisplayText
     {
-        private List<Transform> _toDraw;
+        private List<Sprite> _toDraw;
+
         private List<Line> _linesToDraw;
         private List<Circle> _circlesToDraw;
         private Dictionary<string, IntPtr> spriteBuffer;
@@ -62,71 +65,58 @@ namespace Shard
 
             base.initialize();
 
-            _toDraw = new List<Transform>();
+            _toDraw = new List<Sprite>();
             _linesToDraw = new List<Line>();
             _circlesToDraw = new List<Circle>();
 
 
         }
 
-        public IntPtr loadTexture(Transform trans)
+        public override IntPtr loadTexture(IntPtr loadedImage)
         {
-            IntPtr ret;
-            uint format;
-            int access;
-            int w;
-            int h;
+            IntPtr result;
 
-            ret = loadTexture(trans.SpritePath);
+            result = SDL.SDL_CreateTextureFromSurface(_rend, loadedImage);
 
-            SDL.SDL_QueryTexture(ret, out format, out access, out w, out h);
-            trans.Ht = h;
-            trans.Wid = w;
-            trans.recalculateCentre();
+            SDL.SDL_SetTextureBlendMode(result, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
 
-            return ret;
+            return result;
 
         }
 
-
-        public IntPtr loadTexture(string path)
+        public override void addToDraw(Sprite sprite)
         {
-            IntPtr img;
+            //TODO: gob.SpriteComponent.Sprite
+            _toDraw.Add(sprite);
 
-            if (spriteBuffer.ContainsKey(path))
+            if (sprite.path == null)
             {
-                return spriteBuffer[path];
+                return;
             }
-
-            img = SDL_image.IMG_Load(path);
-
-            Debug.getInstance().log("IMG_Load: " + SDL_image.IMG_GetError());
-
-            spriteBuffer[path] = SDL.SDL_CreateTextureFromSurface(_rend, img);
-
-            SDL.SDL_SetTextureBlendMode(spriteBuffer[path], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
-
-            return spriteBuffer[path];
-
-        }
-
-
-        public override void addToDraw(GameObject gob)
-        {
-            _toDraw.Add(gob.Transform);
-
-            if (gob.Transform.SpritePath == null)
+            //if the sprite exists and it is valid, try and see if it is contained on the draw buffer
+            // if its already there return the buffer
+            if (spriteBuffer.ContainsKey(sprite.path))
             {
                 return;
             }
 
-            loadTexture(gob.Transform.SpritePath);
+            spriteBuffer[sprite.path] = sprite.img;
+
+            SDL.SDL_SetTextureBlendMode(spriteBuffer[sprite.path], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
+
+            //return spriteBuffer[sprite.path];
+
         }
 
-        public override void removeToDraw(GameObject gob)
+        public override void removeToDraw(Sprite sprite)
         {
-            _toDraw.Remove(gob.Transform);
+            _toDraw.Remove(sprite);
         }
+
+        //public override void removeToDraw(GameObject gob)
+        //{
+        //    _toDraw.Remove(gob.transform);
+        //}
 
 
         void renderCircle(int centreX, int centreY, int rad)
@@ -210,29 +200,25 @@ namespace Shard
             SDL.SDL_Rect sRect;
             SDL.SDL_Rect tRect;
 
-
-
-            foreach (Transform trans in _toDraw)
+            foreach (Sprite sprite in _toDraw)
             {
 
-                if (trans.SpritePath == null)
+                if (sprite.path == null)
                 {
                     continue;
                 }
 
-                var sprite = loadTexture(trans);
-
                 sRect.x = 0;
                 sRect.y = 0;
-                sRect.w = (int)(trans.Wid * trans.Scalex);
-                sRect.h = (int)(trans.Ht * trans.Scaley);
+                sRect.w = (int)(sprite.width * sprite.scaleX);
+                sRect.h = (int)(sprite.height * sprite.scaleY);
 
-                tRect.x = (int)trans.X;
-                tRect.y = (int)trans.Y;
+                tRect.x = (int)sprite.X;
+                tRect.y = (int)sprite.Y;
                 tRect.w = sRect.w;
                 tRect.h = sRect.h;
 
-                SDL.SDL_RenderCopyEx(_rend, sprite, ref sRect, ref tRect, (int)trans.Rotz, IntPtr.Zero, SDL.SDL_RendererFlip.SDL_FLIP_NONE);
+                SDL.SDL_RenderCopyEx(_rend, sprite.img, ref sRect, ref tRect, (int)sprite.rotz, IntPtr.Zero, SDL.SDL_RendererFlip.SDL_FLIP_NONE);
             }
 
             foreach (Circle c in _circlesToDraw)
@@ -249,7 +235,6 @@ namespace Shard
 
             // Show it off.
             base.display();
-
 
         }
 

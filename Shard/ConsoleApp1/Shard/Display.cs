@@ -6,6 +6,7 @@
 *   
 */
 
+using System;
 using System.Drawing;
 
 namespace Shard
@@ -62,9 +63,19 @@ namespace Shard
         {
         }
 
+        public virtual void addToDraw(Sprite sprite)
+        {
+        }
+
+        public virtual void removeToDraw(Sprite sprite)
+        {
+        }
+
         public virtual void removeToDraw(GameObject gob)
         {
         }
+
+
         public int getHeight()
         {
             return _height;
@@ -84,6 +95,8 @@ namespace Shard
         public abstract void initialize();
         public abstract void clearDisplay();
         public abstract void display();
+
+        public abstract IntPtr loadTexture(IntPtr loadedImage);
 
         public abstract void showText(string text, double x, double y, int size, int r, int g, int b);
         public abstract void showText(char[,] text, double x, double y, int size, int r, int g, int b);

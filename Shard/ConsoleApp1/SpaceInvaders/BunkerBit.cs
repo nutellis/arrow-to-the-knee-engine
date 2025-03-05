@@ -1,42 +1,47 @@
 ﻿using Shard;
+using Shard.Shard;
+using Shard.Shard.Components;
 
 namespace SpaceInvaders
 {
     class BunkerBit : GameObject, CollisionHandler
     {
+        private SpriteComponent sprite;
+        private PhysicsComponent physics;
 
         public override void initialize()
         {
 
+            sprite = new SpriteComponent(this,false);
+            sprite.addSprite("bunkerBit.png");
 
-            this.Transform.SpritePath = Bootstrap.getAssetManager().getAssetPath("bunkerBit.png");
+            physics = new PhysicsComponent(this);
 
-            setPhysicsEnabled();
-            MyBody.addRectCollider();
+            physics.addRectCollider();
 
-            addTag("BunkerBit");
+            tags = new Tags();
+            tags.addTag("BunkerBit");
 
-            MyBody.PassThrough = true;
+            physics.PassThrough = true;
 
         }
 
-        public void onCollisionEnter(PhysicsBody x)
+        public void onCollisionEnter(PhysicsComponent x)
         {
         }
 
-        public void onCollisionExit(PhysicsBody x)
+        public void onCollisionExit(PhysicsComponent x)
         {
         }
 
-        public void onCollisionStay(PhysicsBody x)
+        public void onCollisionStay(PhysicsComponent x)
         {
         }
 
         public override void update()
         {
 
-
-            Bootstrap.getDisplay().addToDraw(this);
+            base.update();
         }
     }
 }

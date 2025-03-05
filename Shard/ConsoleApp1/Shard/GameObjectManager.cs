@@ -8,7 +8,10 @@
 *   
 */
 
+using Shard.Shard.Components;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Shard
 {
@@ -17,9 +20,12 @@ namespace Shard
         private static GameObjectManager me;
         List<GameObject> myObjects;
 
+        Dictionary<GameObject, List<BaseComponent>> components;
+
         private GameObjectManager()
         {
             myObjects = new List<GameObject>();
+            components = new Dictionary<GameObject, List<BaseComponent>>();
         }
 
         public static GameObjectManager getInstance()
@@ -45,25 +51,71 @@ namespace Shard
             myObjects.Remove(gob);
         }
 
+        public void addComponent(GameObject owner, BaseComponent component)
+        {
+            if (components.ContainsKey(owner))
+            {
+                components[owner].Add(component);
+            }
+            else
+            {
+                List<BaseComponent> newListComponent = new List<BaseComponent>();
+                newListComponent.Add(component);
+                components.Add(owner, newListComponent);
+            }
+        }
+
+        public void removeAllComponents(GameObject owner)
+        {
+            if (components.ContainsKey(owner))
+            {
+                foreach (BaseComponent component in components[owner])
+                {
+                    component.dispose();
+                }
+                components.Remove(owner);
+            }
+        }
+
+        public void removeComponent(GameObject owner, BaseComponent component)
+        {
+            if (components.ContainsKey(owner))
+            {
+                components[owner].Remove(component);
+            }
+        }
 
         public void physicsUpdate()
         {
-            GameObject gob;
-            for (int i = 0; i < myObjects.Count; i++)
+            foreach (var gob in myObjects)
             {
-                gob = myObjects[i];
-                gob.physicsUpdate();
+                if (components.TryGetValue(gob, out List<BaseComponent> value))
+                {
+                    PhysicsComponent physics = (PhysicsComponent)value.Find(
+                    delegate (BaseComponent physics)
+                    {
+                        return physics is PhysicsComponent;
+                    }
+                    );
+                    physics?.physicsUpdate();
+                }
             }
         }
 
         public void prePhysicsUpdate()
         {
-            GameObject gob;
-            for (int i = 0; i < myObjects.Count; i++)
+            foreach (var gob in myObjects)
             {
-                gob = myObjects[i];
-
-                gob.prePhysicsUpdate();
+                if (components.TryGetValue(gob, out List<BaseComponent> value))
+                {
+                    PhysicsComponent physics = (PhysicsComponent)value.Find(
+                    delegate (BaseComponent physics)
+                    {
+                        return physics is PhysicsComponent;
+                    }
+                    );
+                    physics?.prePhysicsUpdate();
+                }
             }
         }
 
@@ -73,7 +125,7 @@ namespace Shard
             GameObject gob;
             for (int i = 0; i < myObjects.Count; i++)
             {
-                gob = myObjects[i];
+                 gob = myObjects[i];
 
                 gob.update();
 
@@ -89,16 +141,28 @@ namespace Shard
             {
                 for (int i = toDestroy.Count - 1; i >= 0; i--)
                 {
+                   
                     gob = myObjects[toDestroy[i]];
+                    Debug.getInstance().log(gob + " Destroyed");
                     myObjects[toDestroy[i]].killMe();
                     myObjects.RemoveAt(toDestroy[i]);
-
+                    
                 }
             }
 
             toDestroy.Clear();
+            //Debug.Log ("NUm Objects is " + myObjects.Count);
+        }
 
-            //            Debug.Log ("NUm Objects is " + myObjects.Count);
+        public void tickComponents(GameObject owner)
+        {
+            if(components.ContainsKey(owner))
+            {
+                foreach (BaseComponent component in components[owner])
+                {
+                    component.update();
+                }
+            }
         }
 
 

@@ -1,6 +1,7 @@
 ﻿using Shard;
 using System.Collections.Generic;
 using SDL2;
+using Shard.Shard;
 
 namespace ManicMiner
 {
