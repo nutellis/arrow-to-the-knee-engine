@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -303,28 +304,34 @@ namespace Shard
                 Console.WriteLine(node.PosX + " " + node.posY);
             }
         }
-
+        
         public void printPathVisual()
         {
+            Display d = Bootstrap.getDisplay();
             for (int i = 0; i < nodeMap.GetLength(0); i++)
             {
                 for (int j = 0; j < nodeMap.GetLength(1); j++)
                 {
                     if (nodeMap[i, j].walkable == false)
                     {
-                        Console.Write(0);
+                        //Console.Write(0);
                     }
                     if (path.Contains(nodeMap[i, j]))
                     {
-                        Console.Write("*");
+                        int minX = nodeMap[i, j].minX;
+                        int minY = nodeMap[i, j].minY;
+                        int maxX = nodeMap[i, j].maxX;
+                        int maxY = nodeMap[i, j].maxY;
+                        //Console.Write("*");
+                        d.drawLine(minX, minY, maxX, maxY, Color.Red);
                     }
                     else
                     {
-                        Console.Write(1);
+                        //Console.Write(1);
                     }
 
                 }
-                Console.WriteLine();
+                //Console.WriteLine();
             }
         }
 
@@ -337,12 +344,12 @@ namespace Shard
             path = FindPath(start, goal);
             transformPathToGrid();
             Console.WriteLine("The nodeMap for Debugging");
-            printNodeMap();
+            //printNodeMap();
             //printGrid();
             Console.WriteLine("The path for Debugging");
             printPath();
             Console.WriteLine("The path visual for Debugging");
-            printPathVisual();
+            
 
         }
 

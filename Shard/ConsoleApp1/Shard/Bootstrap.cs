@@ -275,21 +275,25 @@ namespace Shard
            
             tracer = new PathTracer();
             //tracer.testRun(16, 16, (0,0), (Bootstrap.getDisplay().getHeight(), Bootstrap.getDisplay().getWidth()));
-            Console.WriteLine("Test Run 0");
-            tracer.testRun(16, 16, (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()), (0,0));
-            Console.WriteLine("Test Run 1");
-            tracer.testRun(16, 16, (400,500), (700, 600));
-            Console.WriteLine("Test Run End");
+            //Console.WriteLine("Test Run 0");
+            //tracer.testRun(16, 16, (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()), (0,0));
+            //Console.WriteLine("Test Run 1");
+            tracer.testRun(16, 16, (200,650), (500, 600));
+            //Console.WriteLine("Test Run End");
             //////////////
 
             while (true)
             {
+               
+                
                 frames += 1;
 
                 timeInMillisecondsStart = getCurrentMillis();
                 
                 // Clear the screen.
                 Bootstrap.getDisplay().clearDisplay();
+
+                tracer.printPathVisual();
 
                 
                 // Update 
@@ -330,10 +334,10 @@ namespace Shard
                     }
 
                 }
-
+                
                 // Render the screen.
                 Bootstrap.getDisplay().display();
-
+                
                 timeInMillisecondsEnd = getCurrentMillis();
 
                 frameTimes.Add (timeInMillisecondsEnd);
@@ -364,7 +368,7 @@ namespace Shard
 
                 lastTick = timeInMillisecondsStart;
 
-
+                
 
             }
 
