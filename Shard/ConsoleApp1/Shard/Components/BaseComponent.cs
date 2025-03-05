@@ -25,7 +25,6 @@ namespace Shard.Shard.Components
 
         public virtual void dispose()
         {
-            owner = null;
             tags = null;
             enabled = false;
         }

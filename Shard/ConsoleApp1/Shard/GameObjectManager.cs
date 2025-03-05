@@ -83,18 +83,6 @@ namespace Shard
             }
         }
 
-
-
-        //public void physicsUpdate()
-        //{
-        //    GameObject gob;
-        //    for (int i = 0; i < myObjects.Count; i++)
-        //    {
-        //        gob = myObjects[i];
-        //        gob.physicsUpdate();
-        //    }
-        //}
-
         public void physicsUpdate()
         {
             foreach (var gob in myObjects)
@@ -109,36 +97,23 @@ namespace Shard
                     );
                     physics?.physicsUpdate();
                 }
-
-
-                //PhysicsComponent physics = gob.getComponent<PhysicsComponent>();
-                //if (physics != null)
-                //{
-                //    physics.physicsUpdate();
-                //}
             }
         }
-
-        //public void prePhysicsUpdate()
-        //{
-        //    GameObject gob;
-        //    for (int i = 0; i < myObjects.Count; i++)
-        //    {
-        //        gob = myObjects[i];
-
-        //        gob.prePhysicsUpdate();
-        //    }
-        //}
 
         public void prePhysicsUpdate()
         {
             foreach (var gob in myObjects)
             {
-                //PhysicsComponent physics = gob.getComponent<PhysicsComponent>();
-                //if (physics != null)
-                //{
-                //    physics.prePhysicsUpdate();
-                //}
+                if (components.TryGetValue(gob, out List<BaseComponent> value))
+                {
+                    PhysicsComponent physics = (PhysicsComponent)value.Find(
+                    delegate (BaseComponent physics)
+                    {
+                        return physics is PhysicsComponent;
+                    }
+                    );
+                    physics?.prePhysicsUpdate();
+                }
             }
         }
 
@@ -164,9 +139,12 @@ namespace Shard
             {
                 for (int i = toDestroy.Count - 1; i >= 0; i--)
                 {
+                   
                     gob = myObjects[toDestroy[i]];
+                    Debug.getInstance().log(gob + " Destroyed");
                     myObjects[toDestroy[i]].killMe();
                     myObjects.RemoveAt(toDestroy[i]);
+                    
                 }
             }
 

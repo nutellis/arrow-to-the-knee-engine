@@ -85,7 +85,6 @@ namespace Shard.Shard.Components
 
             myColliders.Clear();
             collisionCandidates.Clear();
-            colh = null;
             trans = null;
 
             MinAndMaxX = null;

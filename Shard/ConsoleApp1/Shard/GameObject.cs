@@ -16,116 +16,7 @@ using System.Linq;
 
 namespace Shard
 {
-    //class GameObject
-    //{
-    //    private Transform3D transform;
-    //    private bool transient;
-    //    private bool toBeDestroyed;
-    //    private bool visible;
-    //    private PhysicsBody myBody;
-    //    private List<string> tags;
-
-    //    public void addTag(string str)
-    //    {
-    //        if (tags.Contains(str))
-    //        {
-    //            return;
-    //        }
-
-    //        tags.Add(str);
-    //    }
-
-    //    public void removeTag(string str)
-    //    {
-    //        tags.Remove(str);
-    //    }
-
-    //    public bool checkTag(string tag)
-    //    {
-    //        return tags.Contains(tag);
-    //    }
-
-    //    public String getTags()
-    //    {
-    //        string str = "";
-
-    //        foreach (string s in tags)
-    //        {
-    //            str += s;
-    //            str += ";";
-    //        }
-
-    //        return str;
-    //    }
-
-    //    public void setPhysicsEnabled()
-    //    {
-    //        MyBody = new PhysicsBody(this);
-    //    }
-
-
-    //    public bool queryPhysicsEnabled()
-    //    {
-    //        if (MyBody == null)
-    //        {
-    //            return false;
-    //        }
-    //        return true;
-    //    }
-
-    //    internal Transform3D Transform
-    //    {
-    //        get => transform;
-    //    }
-
-    //    internal Transform Transform2D
-    //    {
-    //        get => (Transform)transform;
-    //    }
-
-
-    //    public bool Visible
-    //    {
-    //        get => visible;
-    //        set => visible = value;
-    //    }
-    //    public bool Transient { get => transient; set => transient = value; }
-    //    public bool ToBeDestroyed { get => toBeDestroyed; set => toBeDestroyed = value; }
-    //    internal PhysicsBody MyBody { get => myBody; set => myBody = value; }
-
-    //    public virtual void initialize()
-    //    {
-    //    }
-
-    //    public virtual void update()
-    //    {
-    //    }
-
-    //    public virtual void physicsUpdate()
-    //    {
-    //    }
-
-    //    public virtual void prePhysicsUpdate()
-    //    {
-    //    }
-
-    //    public GameObject()
-    //    {
-    //        GameObjectManager.getInstance().addGameObject(this);
-
-    //        transform = new Transform3D(this);
-    //        visible = false;
-
-    //        ToBeDestroyed = false;
-    //        tags = new List<string>();
-
-    //        this.initialize();
-
-    //    }
-
-    //}
-
-    class GameObject
+     class GameObject
     {
         public Guid uuid;
         protected Tags tags;
@@ -203,7 +94,6 @@ namespace Shard
             ToBeDestroyed = true;
         }
 
-        //TODO: check if this should be on physics compponent only
         public virtual void killMe()
         {
             transform = null;
