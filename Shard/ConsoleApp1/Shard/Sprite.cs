@@ -48,7 +48,7 @@ namespace Shard
         //Change color of sprite
         public void changeColor(float r, float g, float b, float a)
         {
-            Console.WriteLine($"Changing sprite {path} color to RGBA({r}, {g}, {b}, {a})"); //placeholder
+            Console.WriteLine($"Changing sprite {spriteName} color to RGBA({r}, {g}, {b}, {a})"); //placeholder
         }
 
         //Start animation for sprite
