@@ -65,15 +65,19 @@ namespace Shard
             this.initialize();
         }
 
-        // Optional: Can be overridden in derived classes to add more specific logic
         public virtual void initialize() { }
+
+        public virtual void physicsUpdate()
+        {
+        }
+
+        public virtual void prePhysicsUpdate()
+        {
+        }
 
         // Called each frame to update all enabled components
         public virtual void update()
-        {
-
-            GameObjectManager.getInstance().tickComponents(this);
-        }
+        {}
 
         public void checkDestroyMe()
         {

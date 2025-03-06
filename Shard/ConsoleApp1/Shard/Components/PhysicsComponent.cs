@@ -97,12 +97,49 @@ namespace Shard.Shard.Components
 
         public override void update()
         {
-            base.update();
-
             // Handle physics logic here if physics is enabled
             if (physicsEnabled)
             {
+                base.update();
                 // Physics-related updates, e.g., movement, collision, etc.
+
+                if (usesGravity)
+                {
+                    var physicsManager = PhysicsManager.getInstance();
+                    applyGravity(physicsManager.GravityModifier, physicsManager.GravityDirection);
+                }
+
+
+                float force;
+                float rot = 0;
+
+                rot = torque;
+
+                if (Math.Abs(torque) < AngularDrag)
+                {
+                    torque = 0;
+                }
+                else
+                {
+                    torque -= Math.Sign(torque) * AngularDrag;
+                }
+
+                trans.rotate(rot);
+
+                force = this.force.Length();
+
+                trans.translate(this.force);
+
+                if (force < Drag)
+                {
+                    stopForces();
+                }
+                else if (force > 0)
+                {
+                    this.force = (this.force / force) * (force - Drag);
+                }
+
+                recalculateColliders();
             }         
 
         }
@@ -287,38 +324,6 @@ namespace Shard.Shard.Components
             MinAndMaxY = getMinAndMax(false);
         }
 
-        public void physicsTick()
-        {
-            float force;
-            float rot = 0;
-
-            rot = torque;
-
-            if (Math.Abs(torque) < AngularDrag)
-            {
-                torque = 0;
-            }
-            else
-            {
-                torque -= Math.Sign(torque) * AngularDrag;
-            }
-
-            trans.rotate(rot);
-
-            force = this.force.Length();
-
-            trans.translate(this.force);
-
-            if (force < Drag)
-            {
-                stopForces();
-            }
-            else if (force > 0)
-            {
-                this.force = (this.force / force) * (force - Drag);
-            }
-        }
-
 
         public ColliderRect addRectCollider()
         {
@@ -418,20 +423,22 @@ namespace Shard.Shard.Components
         // Check if physics is enabled
         public bool isPhysicsEnabled() => physicsEnabled;
 
-        public virtual void physicsUpdate()
+        public override void physicsUpdate()
         {
+            if(physicsEnabled)
+            {
+                base.physicsUpdate();
+            }
         }
 
-        public virtual void prePhysicsUpdate()
+        public override void prePhysicsUpdate()
         {
+            if (physicsEnabled)
+            {
+                base.prePhysicsUpdate();
+            }
         }
 
-        public virtual void killMe()
-        {
-            PhysicsManager.getInstance().removePhysicsObject(this);
-
-            //this = null; TODO fix this
-        }
     }
 }
 

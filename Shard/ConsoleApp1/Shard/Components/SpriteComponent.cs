@@ -14,7 +14,7 @@ namespace Shard.Shard.Components
         private List<Sprite> animationFrames; //replace sprite with animationFrames as teh default
         private int currentFrame;
         private double frameTimer;
-        private float frameDuration = 0.1f;
+        private float frameDuration = 1.0f;
         public bool hasAnimation = false;
 
         public SpriteComponent(GameObject owner,bool hasAnimation = false) : base(owner)
@@ -29,13 +29,13 @@ namespace Shard.Shard.Components
 
         public override void update()
         {
-           // frameTimer += Bootstrap.getDeltaTime();
-            //if (frameTimer >= frameDuration)
-            //{
-            //    frameTimer = 0;
-            //    currentFrame = (currentFrame + 1) % animationFrames.Count;
-            //    sprite = animationFrames[currentFrame];
-            //}
+            frameTimer += Bootstrap.getDeltaTime();
+            if (frameTimer >= frameDuration)
+            {
+                frameTimer = 0;
+                currentFrame = (currentFrame + 1) % animationFrames.Count;
+                sprite = animationFrames[currentFrame];
+            }
 
             sprite.X = owner.transform.X;
             sprite.Y = owner.transform.Y;
@@ -43,23 +43,9 @@ namespace Shard.Shard.Components
             Bootstrap.getDisplay().addToDraw(this.sprite);
         }
 
-        private Sprite loadSprite(string spritePath)
+        public void addSprite(string assetName)
         {
-
-            string assetPath = Bootstrap.getAssetManager().getAssetPath(spritePath);
-
-            if(assetPath == null)
-            {
-                Console.WriteLine($"Failed to Load Sprite {spritePath}");
-                return null;
-            }
-
-            return Bootstrap.getAssetManager().getSprite(assetPath);
-        }
-
-        public void addSprite(string newAssetName)
-        {
-            Sprite frame = loadSprite(newAssetName);
+            Sprite frame = Bootstrap.getAssetManager().getSprite(assetName);
             if (frame != null)
             {
                 animationFrames.Add(frame);

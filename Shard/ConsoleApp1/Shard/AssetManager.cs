@@ -13,10 +13,13 @@ namespace Shard
     {
 
         Dictionary<string,string> assets;
+        Dictionary<string,Sprite> sprites;
 
         public AssetManager()
         {
             assets = new Dictionary<string,string>();
+            sprites = new Dictionary<string,Sprite>();
+
             AssetPath = Bootstrap.getEnvironmentalVariable ("assetpath");
         }
 
@@ -68,36 +71,43 @@ namespace Shard
         }
 
         //TODO: create an IntPtr (img) from the path and store it for future use.
-        public override Sprite getSprite(string asset)
+        public override Sprite getSprite(string assetName)
         {
-            Sprite newSprite = new Sprite(asset);
+            if (sprites.TryGetValue(assetName, out Sprite value)) {
+                return (Sprite)value.Clone();
+            } else {
+                IntPtr loadedImage, img;
+                uint format;
+                int access;
+                int w;
+                int h;
 
-            IntPtr loadedImage, img;
-            uint format;
-            int access;
-            int w;
-            int h;
+                string absolutePath = Bootstrap.getAssetManager().getAssetPath(assetName);
 
-            loadedImage = SDL_image.IMG_Load(asset);
+                if (absolutePath == null)
+                {
+                    Console.WriteLine($"Failed to Load Sprite {assetName}");
+                    return null;
+                }
 
-            Debug.getInstance().log("IMG_Load: " + SDL_image.IMG_GetError());
+                loadedImage = SDL_image.IMG_Load(absolutePath);
 
-            img = Bootstrap.getDisplay().loadTexture(loadedImage);
+                Debug.getInstance().log("IMG_Load: " + SDL_image.IMG_GetError());
 
-            SDL.SDL_QueryTexture(img, out format, out access, out w, out h);
-            
-            newSprite.path = asset;
-            newSprite.height = h;
-            newSprite.width = w;
+                img = Bootstrap.getDisplay().loadTexture(loadedImage);
 
+                SDL.SDL_QueryTexture(img, out format, out access, out w, out h);
 
-           
-            //TODO: lets keep that here for now. We will have to do changes on the game object later
-            //trans.recalculateCentre();
+                Sprite newSprite = new Sprite(assetName);
 
-            newSprite.img = img;
+                newSprite.height = h;
+                newSprite.width = w;
+                newSprite.img = img;
 
-            return newSprite;
+                sprites[assetName] = newSprite;
+
+                return (Sprite)newSprite.Clone();
+            }
         }
     }
 }

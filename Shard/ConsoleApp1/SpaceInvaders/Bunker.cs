@@ -30,7 +30,6 @@ namespace SpaceInvaders
                     }
 
                     BunkerBit myBit = new BunkerBit();
-                    myBit.initialize();
                     myBit.transform.X = this.transform.X + (j * 16);
                     myBit.transform.Y = this.transform.Y + (i * 16);
                 }

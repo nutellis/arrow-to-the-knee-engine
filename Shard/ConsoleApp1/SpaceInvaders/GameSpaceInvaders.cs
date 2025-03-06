@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Numerics;
 
 namespace Shard
 {
@@ -94,7 +95,7 @@ namespace Shard
                     }
                 }
 
-                Debug.Log("Living invaders" + livingInvaders.Count);
+                Debug.Log("Living invaders " + livingInvaders.Count);
 
                 // Pick a random invader to fire.
                 livingInvaders[rand.Next(livingInvaders.Count)].fire();
@@ -105,8 +106,6 @@ namespace Shard
         public void createObjects()
         {
             ship = new Spaceship();
-            ship.initialize();
-
 
             int ymod = 0;
 
@@ -118,7 +117,6 @@ namespace Shard
                 for (int i = 0; i < columns; i++)
                 {
                     Invader invader = new Invader();
-                    invader.initialize();
                     invader.transform.X = 100 + (i * 50);
                     invader.transform.Y = 100 + (ymod * 50);
 
@@ -141,7 +139,6 @@ namespace Shard
             {
 
                 Bunker b = new Bunker();
-                b.initialize();
 
                 b.transform.X = 200 + (i * 180);
                 b.transform.Y = 600;
@@ -162,8 +159,8 @@ namespace Shard
             InputFramework.getInstance().setInputMapping("Fire", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_SPACE);
             InputFramework.getInstance().setInputMapping("Fire", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_Q);
 
-            InputFramework.getInstance().setAxisMapping(Axis.Horizontal, SDL2.SDL.SDL_Scancode.SDL_SCANCODE_A, -1);
-            InputFramework.getInstance().setAxisMapping(Axis.Horizontal, SDL2.SDL.SDL_Scancode.SDL_SCANCODE_D, 1);
+            InputFramework.getInstance().setAxisMapping("Horizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_A, -1);
+            InputFramework.getInstance().setAxisMapping("Horizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_D, 1);
 
 
             rows = 6;

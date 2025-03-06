@@ -26,7 +26,6 @@ namespace SpaceInvaders
             this.transform.Y = 800.0f;
 
             this.sprite = new SpriteComponent(this, false);
-            this.sprite.initialize();
             this.sprite.addSprite("player.png");
             
             fireDelay = 2;
@@ -42,6 +41,8 @@ namespace SpaceInvaders
             //input.bindInputAction("Left", InputType.Pressed, (parameters) => moveLeft());
             //input.bindInputAction("Right", InputType.Pressed, (parameters) => moveRight());
 
+            input.bindAxisAction("Horizontal", moveHorizontal);
+
             physics = new PhysicsComponent(this);
             physics.addRectCollider();
 
@@ -55,10 +56,13 @@ namespace SpaceInvaders
             moveDistance = (float)(2500 * Bootstrap.getDeltaTime());
             this.transform.translate(-1 * moveDistance, 0);
         }
-        public void moveRight()
+
+        public void moveHorizontal(float value)
         {
-            moveDistance = (float)(2500 * Bootstrap.getDeltaTime());
-            this.transform.translate(1 * moveDistance, 0);
+            if (value != 0.0)
+            {
+                this.transform.translate(value * moveDistance, 0);
+            }
         }
 
         public void fireBullet()
@@ -137,28 +141,9 @@ namespace SpaceInvaders
         {
             
             fireCounter += (float)Bootstrap.getDeltaTime();
+            moveDistance = (float)(100 * Bootstrap.getDeltaTime());
 
             base.update();
-            //if (left)
-            //{
-            //    this.Transform.translate(-1 * amount, 0);
-            //}
-
-            //if (right)
-            //{
-            //    this.Transform.translate(1 * amount, 0);
-            //}
-
-            //if (input.Left) transform.translate(-1 * amount, 0);
-            //if (input.Right) transform.translate(1 * amount, 0);
-            //if (input.Fire)
-            //{
-            //    fireBullet();
-            //    //weapon.Fire();
-            //    input.Fire = false;
-            //}
-
-            // Bootstrap.getDisplay().addToDraw(this);
         }
 
         public void onCollisionEnter(PhysicsComponent x)

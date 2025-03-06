@@ -163,6 +163,7 @@ namespace Shard
         public long TimeInterval { get => timeInterval; set => timeInterval = value; }
         public long LastDebugDraw { get => lastDebugDraw; set => lastDebugDraw = value; }
         public float GravityModifier { get => gravityModifier; set => gravityModifier = value; }
+        public Vector2 GravityDirection { get => gravityDir; set => gravityDir = value; }
 
         public void addPhysicsObject(PhysicsComponent body)
         {
@@ -301,15 +302,7 @@ namespace Shard
 
             foreach (PhysicsComponent body in allPhysicsObjects)
             {
-
-                if (body.UsesGravity)
-                {
-                    body.applyGravity(gravityModifier, gravityDir);
-                }
-
-                body.physicsTick();
-                body.recalculateColliders();
-
+                body.update();
             }
 
 

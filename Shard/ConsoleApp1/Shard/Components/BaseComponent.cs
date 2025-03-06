@@ -11,7 +11,7 @@ namespace Shard.Shard.Components
         protected GameObject owner;
         protected Tags tags;
 
-        protected bool enabled = true; 
+        protected bool enabled = true;
 
         public BaseComponent(GameObject owner)
         {
@@ -34,6 +34,13 @@ namespace Shard.Shard.Components
             if(owner != null) {
                 registerComponent();
             }
+        }
+        public virtual void physicsUpdate()
+        {
+        }
+
+        public virtual void prePhysicsUpdate()
+        {
         }
 
         public virtual void update()

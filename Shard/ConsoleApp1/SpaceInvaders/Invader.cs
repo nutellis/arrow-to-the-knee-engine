@@ -22,7 +22,7 @@ namespace SpaceInvaders
 
         public override void initialize()
         {
-            //sprite = 
+
             physics = new PhysicsComponent(this);
 
             sprite = new SpriteComponent(this, true);
