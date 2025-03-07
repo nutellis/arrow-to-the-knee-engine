@@ -114,8 +114,7 @@ namespace SpaceInvaders
         {
             Bullet b = new Bullet();
             b.initialize();
-            b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y);
-            b.Dir = 1;
+            b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [0,1]);
             b.DestroyTag = "Player";
         }
     }

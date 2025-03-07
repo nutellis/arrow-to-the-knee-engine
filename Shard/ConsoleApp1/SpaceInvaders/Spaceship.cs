@@ -16,8 +16,8 @@ namespace SpaceInvaders
 
         private PhysicsComponent physics;
 
-        private double fireCounter, fireDelay = 2.0f;
-        private float moveDistance;
+        private double fireCounter, fireDelay = 0.1f;
+        private float moveDistance, moveSpeed = 200;
 
 
         public override void initialize()
@@ -28,7 +28,7 @@ namespace SpaceInvaders
             this.sprite = new SpriteComponent(this, false);
             this.sprite.addSprite("player.png");
             
-            fireDelay = 2;
+            fireDelay = 0.1;
             fireCounter = fireDelay;
 
             tags = new Tags();
@@ -38,10 +38,12 @@ namespace SpaceInvaders
             input.initialize();
 
             input.bindInputAction("Fire", InputType.Pressed, (parameters) => fireBullet());
-            //input.bindInputAction("Left", InputType.Pressed, (parameters) => moveLeft());
-            //input.bindInputAction("Right", InputType.Pressed, (parameters) => moveRight());
 
             input.bindAxisAction("Horizontal", moveHorizontal);
+            input.bindAxisAction("Vertical", moveVertical);
+            
+            input.bindAxisAction("FireHorizontal", fireHorizontalBullet);
+            input.bindAxisAction("FireVertical", fireVerticalBullet);
 
             physics = new PhysicsComponent(this);
             physics.addRectCollider();
@@ -50,11 +52,11 @@ namespace SpaceInvaders
 
         }
 
-        // Again a very naive way to implement axis movement
-        public void moveLeft()
+        public void moveVertical(float value)
         {
-            moveDistance = (float)(2500 * Bootstrap.getDeltaTime());
-            this.transform.translate(-1 * moveDistance, 0);
+            {
+                this.transform.translate(0, value * moveDistance);
+            }
         }
 
         public void moveHorizontal(float value)
@@ -63,6 +65,37 @@ namespace SpaceInvaders
             {
                 this.transform.translate(value * moveDistance, 0);
             }
+        }
+        
+        public void fireVerticalBullet(float value)
+        {
+            if (fireCounter < fireDelay || value == 0.0)
+            {
+                return;
+            }
+
+            Bullet b = new Bullet();
+            b.initialize();
+            b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [0, value]);
+            b.DestroyTag = "Invader";
+
+            fireCounter = 0;
+        }
+
+
+        public void fireHorizontalBullet(float value)
+        {
+            if (fireCounter < fireDelay || value == 0.0)
+            {
+                return;
+            }
+
+            Bullet b = new Bullet();
+            b.initialize();
+            b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [value,0]);
+            b.DestroyTag = "Invader";
+
+            fireCounter = 0;
         }
 
         public void fireBullet()
@@ -74,8 +107,8 @@ namespace SpaceInvaders
 
             Bullet b = new Bullet();
             b.initialize();
-            b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y);
-            b.Dir = -1;
+            b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [0,-1]);
+            b.Dir[1] = -1;
             b.DestroyTag = "Invader";
 
             fireCounter = 0;
@@ -141,7 +174,7 @@ namespace SpaceInvaders
         {
             
             fireCounter += (float)Bootstrap.getDeltaTime();
-            moveDistance = (float)(100 * Bootstrap.getDeltaTime());
+            moveDistance = (float)(moveSpeed * Bootstrap.getDeltaTime());
 
             base.update();
         }

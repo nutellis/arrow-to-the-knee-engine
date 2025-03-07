@@ -56,7 +56,7 @@ namespace Shard
             uuid = Guid.NewGuid();
 
             GameObjectManager.getInstance().addGameObject(this);  // Manage game object
-            transform = new Transform(this);
+            transform = new Transform();
             tags = new Tags();
 
             visible = false;
@@ -77,7 +77,9 @@ namespace Shard
 
         // Called each frame to update all enabled components
         public virtual void update()
-        {}
+        {
+            transform.consumeMovement();
+        }
 
         public void checkDestroyMe()
         {

@@ -16,7 +16,7 @@ namespace Shard
         private double rotx, roty;
         private int scalez;
 
-        public Transform3D(GameObject o) : base(o)
+        public Transform3D() : base()
         {
         }
 

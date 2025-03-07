@@ -20,13 +20,12 @@ namespace Shard
 
     class Transform
     {
-        private GameObject owner;
         private float x, y;
         private float lx, ly;
         private float rotz;
         private int wid, ht;
         private float scalex, scaley;
-        private string spritePath;
+
         private Vector2 forward;
         private Vector2 right, centre;
 
@@ -39,9 +38,8 @@ namespace Shard
             return new Vector2(-dx, -dy);
         }
 
-        public Transform(GameObject ow)
+        public Transform()
         {
-            Owner = ow;
             forward = new Vector2();
             right = new Vector2();
             centre = new Vector2();
@@ -76,14 +74,20 @@ namespace Shard
 
         public void translate(float nx, float ny)
         {
-            Lx = X;
-            Ly = Y;
 
-            x += (float)nx;
-            y += (float)ny;
+            Lx += (float)nx;
+            Ly += (float)ny;
 
-
-            recalculateCentre();
+            if (Lx != 0 && Ly != 0)
+            {
+                // Normalize the movement vector to ensure consistent speed
+                float magnitude = (float)Math.Sqrt(Lx * Lx + Ly * Ly);
+                if (magnitude > 0)
+                {
+                    lx = lx * (Math.Abs(lx) / magnitude);
+                    ly = ly * (Math.Abs(ly) / magnitude);
+                }
+            }
         }
 
         public void translate(Vector2 vect)
@@ -91,6 +95,22 @@ namespace Shard
             translate(vect.X, vect.Y);
         }
 
+        public void consumeMovement()
+        {
+            X += Lx;
+            Y += Ly;
+
+            Lx = 0;
+            Ly = 0;
+
+            recalculateCentre();
+        }
+
+        public void moveImidiately(float nx, float ny)
+        {
+            translate(nx, ny);
+            consumeMovement();
+        }
 
 
         public void rotate(float dir)
@@ -134,17 +154,10 @@ namespace Shard
             set => rotz = value;
         }
 
-
-        public string SpritePath
-        {
-            get => spritePath;
-            set => spritePath = value;
-        }
         public ref Vector2 Forward { get => ref forward; }
         public int Wid { get => wid; set => wid = value; }
         public int Ht { get => ht; set => ht = value; }
         public ref Vector2 Right { get => ref right; }
-        internal GameObject Owner { get => owner; set => owner = value; }
         public ref Vector2 Centre { get => ref centre; }
         public float Scalex { get => scalex; set => scalex = value; }
         public float Scaley { get => scaley; set => scaley = value; }

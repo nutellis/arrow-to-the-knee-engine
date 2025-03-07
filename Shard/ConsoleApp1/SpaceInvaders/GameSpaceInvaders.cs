@@ -47,7 +47,7 @@ namespace Shard
             }
             animCounter += (float)Bootstrap.getDeltaTime();
 
-            //            Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
+            //Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
 
             if (animCounter > timeToSwap)
             {
@@ -162,6 +162,14 @@ namespace Shard
             InputFramework.getInstance().setAxisMapping("Horizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_A, -1);
             InputFramework.getInstance().setAxisMapping("Horizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_D, 1);
 
+            InputFramework.getInstance().setAxisMapping("Vertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_W, -1);
+            InputFramework.getInstance().setAxisMapping("Vertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_S, 1);
+
+            InputFramework.getInstance().setAxisMapping("FireVertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_UP, -1);
+            InputFramework.getInstance().setAxisMapping("FireVertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_DOWN, 1);
+
+            InputFramework.getInstance().setAxisMapping("FireHorizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_LEFT, -1);
+            InputFramework.getInstance().setAxisMapping("FireHorizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_RIGHT, 1);
 
             rows = 6;
             columns = 11;
