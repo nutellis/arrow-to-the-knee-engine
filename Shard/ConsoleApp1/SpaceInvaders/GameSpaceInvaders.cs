@@ -42,12 +42,19 @@ namespace Shard
             if (isRunning() == false)
             {
                 Color col = Color.FromArgb(rand.Next(0, 256), rand.Next(0, 256), rand.Next(0, 256));
-                Bootstrap.getDisplay().showText("GAME OVER!", 300, 300, 108, col);
+                if (livingInvaders.Count <= 0)
+                {
+                    Bootstrap.getDisplay().showText("YOU WON", 300, 300, 128, col);
+                }
+                else
+                {
+                    Bootstrap.getDisplay().showText("GAME OVER!", 300, 300, 128, col);
+                }
                 return;
             }
             animCounter += (float)Bootstrap.getDeltaTime();
 
-            //            Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
+            //Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
 
             if (animCounter > timeToSwap)
             {
@@ -95,15 +102,17 @@ namespace Shard
                     }
                 }
 
-                if(livingInvaders.Count > 0)
+                Debug.Log("Living invaders " + livingInvaders.Count);
+
+                if (livingInvaders.Count > 0)
                 {
                     SoundManager.getInstance().playSound("InvaderMove");
+
+                    Debug.Log("Living invaders" + livingInvaders.Count);
+
+                    // Pick a random invader to fire.
+                    livingInvaders[rand.Next(livingInvaders.Count)].fire();
                 }
-
-                Debug.Log("Living invaders" + livingInvaders.Count);
-
-                // Pick a random invader to fire.
-                livingInvaders[rand.Next(livingInvaders.Count)].fire();
             }
 
         }
@@ -168,9 +177,17 @@ namespace Shard
             InputFramework.getInstance().setInputMapping("Fire", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_SPACE);
             InputFramework.getInstance().setInputMapping("Fire", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_Q);
 
-            InputFramework.getInstance().setAxisMapping(Axis.Horizontal, SDL2.SDL.SDL_Scancode.SDL_SCANCODE_A, -1);
-            InputFramework.getInstance().setAxisMapping(Axis.Horizontal, SDL2.SDL.SDL_Scancode.SDL_SCANCODE_D, 1);
+            InputFramework.getInstance().setAxisMapping("Horizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_A, -1);
+            InputFramework.getInstance().setAxisMapping("Horizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_D, 1);
 
+            InputFramework.getInstance().setAxisMapping("Vertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_W, -1);
+            InputFramework.getInstance().setAxisMapping("Vertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_S, 1);
+
+            InputFramework.getInstance().setAxisMapping("FireVertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_UP, -1);
+            InputFramework.getInstance().setAxisMapping("FireVertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_DOWN, 1);
+
+            InputFramework.getInstance().setAxisMapping("FireHorizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_LEFT, -1);
+            InputFramework.getInstance().setAxisMapping("FireHorizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_RIGHT, 1);
 
             rows = 6;
             columns = 11;
@@ -180,7 +197,7 @@ namespace Shard
 
             Debug.Log("Bing!");
 
-            SoundManager.getInstance().loadSound("InvaderMove", "invadermove.wav");
+
         }
 
         public void handleInput(InputEvent inp, string eventType)

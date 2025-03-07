@@ -12,6 +12,7 @@ namespace Shard.Shard
     {
         private static SoundManager me;
         private List<(string name, IntPtr sound)> soundLibrary;
+        private Dictionary<string, int> soundChannels; // Store sound -> channel mapping
 
         private SoundManager()
         {
@@ -21,6 +22,7 @@ namespace Shard.Shard
             }
 
             soundLibrary = new List<(string, IntPtr)>();
+            soundChannels = new Dictionary<string, int>(); // Initialize tracking
         }
 
         public static SoundManager getInstance()
@@ -61,13 +63,40 @@ namespace Shard.Shard
             playSound(soundName, loop, time);
         }
 
-        public void playSound(string soundName, bool loop = false, int time = 0)
+        //public void playSound(string soundName, bool loop = false, int time = 0)
+        //{
+        //    var soundEntry = soundLibrary.FirstOrDefault(s => s.name == soundName);
+        //    if (soundEntry.sound == IntPtr.Zero)
+        //    {
+        //        Console.WriteLine($"ERROR: Sound {soundName} not loaded!");
+        //        return;
+        //    }
+
+        //    int loops = loop ? -1 : 0;
+        //    int channel = SDL_mixer.Mix_PlayChannel(-1, soundEntry.sound, loops);
+
+        //    if (channel == -1)
+        //    {
+        //        Console.WriteLine($"ERROR: Failed to play sound {soundName}, SDL_mixer Error: {SDL.SDL_GetError()}");
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine($"Playing sound {soundName} on channel {channel}");
+        //        if (time > 0)
+        //        {
+        //            Task.Delay(time).ContinueWith(_ => SDL_mixer.Mix_HaltChannel(channel));
+        //        }
+        //    }
+        //}
+
+
+        public int playSound(string soundName, bool loop = false, int time = 0)
         {
             var soundEntry = soundLibrary.FirstOrDefault(s => s.name == soundName);
             if (soundEntry.sound == IntPtr.Zero)
             {
                 Console.WriteLine($"ERROR: Sound {soundName} not loaded!");
-                return;
+                return -1;
             }
 
             int loops = loop ? -1 : 0;
@@ -80,11 +109,15 @@ namespace Shard.Shard
             else
             {
                 Console.WriteLine($"Playing sound {soundName} on channel {channel}");
+                soundChannels[soundName] = channel; // Store channel for this sound
+
                 if (time > 0)
                 {
-                    Task.Delay(time).ContinueWith(_ => SDL_mixer.Mix_HaltChannel(channel));
+                    Task.Delay(time).ContinueWith(_ => stopSound(soundName));
                 }
             }
+
+            return channel;
         }
 
         public void stopAllSounds()
@@ -116,22 +149,36 @@ namespace Shard.Shard
             SDL_mixer.Mix_CloseAudio();
         }
 
+        //public void stopSound(string soundName)
+        //{
+        //    // Get the channel currently playing the sound
+        //    int numChannels = SDL_mixer.Mix_AllocateChannels(-1);
+
+        //    for (int i = 0; i < numChannels; i++)
+        //    {
+        //        if (SDL_mixer.Mix_Playing(i) != 0) // Check if a channel is playing
+        //        {
+        //            SDL_mixer.Mix_HaltChannel(i);
+        //            Console.WriteLine($"Stopped sound {soundName} on channel {i}");
+        //            return;
+        //        }
+        //    }
+
+        //    Console.WriteLine($"Sound {soundName} was not playing!");
+        //}
+
         public void stopSound(string soundName)
         {
-            // Get the channel currently playing the sound
-            int numChannels = SDL_mixer.Mix_AllocateChannels(-1);
-
-            for (int i = 0; i < numChannels; i++)
+            if (soundChannels.TryGetValue(soundName, out int channel))
             {
-                if (SDL_mixer.Mix_Playing(i) != 0) // Check if a channel is playing
-                {
-                    SDL_mixer.Mix_HaltChannel(i);
-                    Console.WriteLine($"Stopped sound {soundName} on channel {i}");
-                    return;
-                }
+                SDL_mixer.Mix_HaltChannel(channel);
+                soundChannels.Remove(soundName); // Remove from tracking
+                Console.WriteLine($"Stopped sound {soundName} on channel {channel}");
             }
-
-            Console.WriteLine($"Sound {soundName} was not playing!");
+            else
+            {
+                Console.WriteLine($"Sound {soundName} is not currently playing.");
+            }
         }
     }
 
