@@ -24,7 +24,7 @@ namespace Shard
 
         public override bool isRunning()
         {
-            if (ship == null || ship.ToBeDestroyed == true)
+            if (ship == null || ship.ToBeDestroyed == true || livingInvaders.Count <= 0)
             {
                 return false;
             }
@@ -42,7 +42,14 @@ namespace Shard
             if (isRunning() == false)
             {
                 Color col = Color.FromArgb(rand.Next(0, 256), rand.Next(0, 256), rand.Next(0, 256));
-                Bootstrap.getDisplay().showText("GAME OVER!", 300, 300, 108, col);
+                if (livingInvaders.Count <= 0)
+                {
+                    Bootstrap.getDisplay().showText("YOU WON", 300, 300, 128, col);
+                }
+                else
+                {
+                    Bootstrap.getDisplay().showText("GAME OVER!", 300, 300, 128, col);
+                }
                 return;
             }
             animCounter += (float)Bootstrap.getDeltaTime();
@@ -97,8 +104,12 @@ namespace Shard
 
                 Debug.Log("Living invaders " + livingInvaders.Count);
 
-                // Pick a random invader to fire.
-                livingInvaders[rand.Next(livingInvaders.Count)].fire();
+
+                if (livingInvaders.Count > 0)
+                {
+                    // Pick a random invader to fire.
+                    livingInvaders[rand.Next(livingInvaders.Count)].fire();
+                }
             }
 
         }
