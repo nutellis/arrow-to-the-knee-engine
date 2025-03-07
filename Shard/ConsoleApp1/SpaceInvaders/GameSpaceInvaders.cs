@@ -1,8 +1,8 @@
-﻿using SpaceInvaders;
+﻿using Shard.Shard;
+using SpaceInvaders;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Numerics;
 
 namespace Shard
 {
@@ -24,7 +24,7 @@ namespace Shard
 
         public override bool isRunning()
         {
-            if (ship == null || ship.ToBeDestroyed == true || livingInvaders.Count <= 0)
+            if (ship == null || ship.ToBeDestroyed == true)
             {
                 return false;
             }
@@ -42,19 +42,12 @@ namespace Shard
             if (isRunning() == false)
             {
                 Color col = Color.FromArgb(rand.Next(0, 256), rand.Next(0, 256), rand.Next(0, 256));
-                if (livingInvaders.Count <= 0)
-                {
-                    Bootstrap.getDisplay().showText("YOU WON", 300, 300, 128, col);
-                }
-                else
-                {
-                    Bootstrap.getDisplay().showText("GAME OVER!", 300, 300, 128, col);
-                }
+                Bootstrap.getDisplay().showText("GAME OVER!", 300, 300, 108, col);
                 return;
             }
             animCounter += (float)Bootstrap.getDeltaTime();
 
-            //Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
+            //            Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
 
             if (animCounter > timeToSwap)
             {
@@ -102,14 +95,15 @@ namespace Shard
                     }
                 }
 
-                Debug.Log("Living invaders " + livingInvaders.Count);
-
-
-                if (livingInvaders.Count > 0)
+                if(livingInvaders.Count > 0)
                 {
-                    // Pick a random invader to fire.
-                    livingInvaders[rand.Next(livingInvaders.Count)].fire();
+                    SoundManager.getInstance().playSound("InvaderMove");
                 }
+
+                Debug.Log("Living invaders" + livingInvaders.Count);
+
+                // Pick a random invader to fire.
+                livingInvaders[rand.Next(livingInvaders.Count)].fire();
             }
 
         }
@@ -117,6 +111,8 @@ namespace Shard
         public void createObjects()
         {
             ship = new Spaceship();
+            ship.initialize();
+
 
             int ymod = 0;
 
@@ -128,6 +124,7 @@ namespace Shard
                 for (int i = 0; i < columns; i++)
                 {
                     Invader invader = new Invader();
+                    invader.initialize();
                     invader.transform.X = 100 + (i * 50);
                     invader.transform.Y = 100 + (ymod * 50);
 
@@ -150,6 +147,7 @@ namespace Shard
             {
 
                 Bunker b = new Bunker();
+                b.initialize();
 
                 b.transform.X = 200 + (i * 180);
                 b.transform.Y = 600;
@@ -170,17 +168,9 @@ namespace Shard
             InputFramework.getInstance().setInputMapping("Fire", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_SPACE);
             InputFramework.getInstance().setInputMapping("Fire", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_Q);
 
-            InputFramework.getInstance().setAxisMapping("Horizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_A, -1);
-            InputFramework.getInstance().setAxisMapping("Horizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_D, 1);
+            InputFramework.getInstance().setAxisMapping(Axis.Horizontal, SDL2.SDL.SDL_Scancode.SDL_SCANCODE_A, -1);
+            InputFramework.getInstance().setAxisMapping(Axis.Horizontal, SDL2.SDL.SDL_Scancode.SDL_SCANCODE_D, 1);
 
-            InputFramework.getInstance().setAxisMapping("Vertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_W, -1);
-            InputFramework.getInstance().setAxisMapping("Vertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_S, 1);
-
-            InputFramework.getInstance().setAxisMapping("FireVertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_UP, -1);
-            InputFramework.getInstance().setAxisMapping("FireVertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_DOWN, 1);
-
-            InputFramework.getInstance().setAxisMapping("FireHorizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_LEFT, -1);
-            InputFramework.getInstance().setAxisMapping("FireHorizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_RIGHT, 1);
 
             rows = 6;
             columns = 11;
@@ -190,7 +180,7 @@ namespace Shard
 
             Debug.Log("Bing!");
 
-
+            SoundManager.getInstance().loadSound("InvaderMove", "invadermove.wav");
         }
 
         public void handleInput(InputEvent inp, string eventType)
