@@ -33,8 +33,14 @@ namespace SpaceInvaders
             this.transform.X = 100.0f;
             this.transform.Y = 800.0f;
 
-            this.sprite = new SpriteComponent(this, false);
+            //this.sprite = new SpriteComponent(this, false);
+            this.sprite = new SpriteComponent(this);
+
             this.sprite.addSprite("player.png");
+
+            //this.sprite.addSprite("player.png", "Static");
+            //this.sprite.loadSpriteSheet("SpaceShip_Idle.png", "SpaceShip_Idle.json", "Idle");
+            //this.sprite.setAnimation("Idle");
 
             if (sprite.getSprite() != null)
             {

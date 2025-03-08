@@ -27,9 +27,11 @@ namespace SpaceInvaders
             physics = new PhysicsComponent(this);
             sound = new SoundComponent(this);
 
-            sprite = new SpriteComponent(this, true);
-            sprite.addSprite("invader1.png");
-            sprite.addSprite("invader2.png");
+            //sprite = new SpriteComponent(this, true);
+            sprite = new SpriteComponent(this);
+
+            sprite.addSprite("invader1.png", "Move");
+            sprite.addSprite("invader2.png", "Move");
 
             game = (GameSpaceInvaders)Bootstrap.getRunningGame();
 
@@ -60,13 +62,16 @@ namespace SpaceInvaders
             }
 
             //this.sprite.setSprite(spriteToUse);
-            this.sprite.setSprite(spriteToUse);
+            this.sprite.setAnimation("Move"); 
 
         }
 
         public override void update()
         {
             base.update();
+
+            //Sprite currentSprite = sprite.getSprite();
+            //Debug.Log("Invader: " + currentSprite);
         }
 
         //public void onCollisionEnter(PhysicsBody x)
