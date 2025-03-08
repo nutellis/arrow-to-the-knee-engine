@@ -36,6 +36,11 @@ namespace SpaceInvaders
             this.sprite = new SpriteComponent(this, false);
             this.sprite.addSprite("player.png");
 
+            if (sprite.getSprite() != null)
+            {
+                sprite.getSprite().setUniformScale(1.0f);
+            }
+
             fireDelay = 1;
             fireCounter = fireDelay;
 

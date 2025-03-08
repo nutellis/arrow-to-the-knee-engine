@@ -59,6 +59,7 @@ namespace SpaceInvaders
                 spriteToUse = 0;
             }
 
+            //this.sprite.setSprite(spriteToUse);
             this.sprite.setSprite(spriteToUse);
 
         }
