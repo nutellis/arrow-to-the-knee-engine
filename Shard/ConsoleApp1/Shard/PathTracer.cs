@@ -264,7 +264,7 @@ namespace Shard
             }
         }
 
-        public List<Node> FindPath((int, int) start, (int, int) goal)
+        public List<Node> CalculatePath((int, int) start, (int, int) goal)
         {
             int startX, startY, goalX, goalY;
 
@@ -398,14 +398,14 @@ namespace Shard
             }
         }
 
-        public void debugPrintPathVisual(List<Node> check)
+        public void debugPrintPathVisual(List<Node> path)
         {
             Display d = Bootstrap.getDisplay();
             for (int i = 0; i < nodeMap.GetLength(0); i++)
             {
                 for (int j = 0; j < nodeMap.GetLength(1); j++)
                 {
-                    if (check.Contains(nodeMap[i, j]))
+                    if (path.Contains(nodeMap[i, j]))
                     {
                         int minX = nodeMap[i, j].minX;
                         int minY = nodeMap[i, j].minY;
@@ -423,7 +423,7 @@ namespace Shard
             transformWorldToGrid();
             transformGridToNodeMap();
             transformWorldToNodeMap();
-            path = FindPath(start, goal);
+            path = CalculatePath(start, goal);
             transformPathToGrid();
             Console.WriteLine("The nodeMap for Debugging");
             debugPrintNodeMap();
@@ -443,7 +443,7 @@ namespace Shard
         }
         public void findPath((int, int) start, (int, int) goal)
         {
-            path = FindPath(start, goal);
+            path = CalculatePath(start, goal);
             debugPrintPathVisual(path);
 
         }
