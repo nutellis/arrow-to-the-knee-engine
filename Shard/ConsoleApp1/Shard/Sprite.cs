@@ -2,9 +2,9 @@
 
 namespace Shard
 {
-    public class Sprite
+    public class Sprite: ICloneable
     {
-        public string path;
+        public string spriteName;
         public IntPtr img;
         public float X, Y;
         public float rotz;
@@ -13,9 +13,9 @@ namespace Shard
         private bool isAnimating = false;
 
 
-        public Sprite(string path)
+        public Sprite(string assetName)
         {
-            this.path = path;
+            spriteName = assetName;
         }
 
         //Updates position of sprite
@@ -48,23 +48,27 @@ namespace Shard
         //Change color of sprite
         public void changeColor(float r, float g, float b, float a)
         {
-            Console.WriteLine($"Changing sprite {path} color to RGBA({r}, {g}, {b}, {a})"); //placeholder
+            Console.WriteLine($"Changing sprite {spriteName} color to RGBA({r}, {g}, {b}, {a})"); //placeholder
         }
 
         //Start animation for sprite
         public void animate()
         {
             isAnimating = true;
-            Console.WriteLine($"Animating sprite {path}"); //placeholder
+            Console.WriteLine($"Animating sprite {spriteName}"); //placeholder
         }
 
         //Plays the animation once.
         public void repeatOnce()
         {
             isAnimating = true;
-            Console.WriteLine($"Playing sprite animation {path} once"); //placeholder
+            Console.WriteLine($"Playing sprite animation {spriteName} once"); //placeholder
         }
 
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }
 

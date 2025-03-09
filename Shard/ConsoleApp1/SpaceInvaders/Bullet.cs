@@ -12,17 +12,20 @@ namespace SpaceInvaders
         private PhysicsComponent physics;
 
         private string destroyTag;
-        private int dir;
+        private float[] direction = { 0, 0 };
 
         public string DestroyTag { get => destroyTag; set => destroyTag = value; }
-        public int Dir { get => dir; set => dir = value; }
+        public float[] Dir { get => direction; set => direction = value; }
 
-        public void setupBullet(float x, float y)
+        public void setupBullet(float x, float y, float[] direction)
         {
+            this.direction = direction;
             this.transform.X = x;
             this.transform.Y = y;
-            this.transform.Wid = 1;
-            this.transform.Ht = 20;
+            this.transform.Wid = (int)(20 * direction[0]);
+            this.transform.Ht = (int)(20 * direction[1]);
+
+            
 
             physics.addRectCollider();
 
@@ -44,16 +47,21 @@ namespace SpaceInvaders
 
         public override void update()
         {
+            this.transform.moveImidiately((float)(direction[0] * 400.0 * Bootstrap.getDeltaTime()), (float)(direction[1] * 400.0 * Bootstrap.getDeltaTime()));
+
+            drawBullet();
+        }
+
+        private void drawBullet()
+        {
             Random r = new Random();
             Color col = Color.FromArgb(r.Next(0, 256), r.Next(0, 256), 0);
 
-            this.transform.translate(0, dir * 400.0 * Bootstrap.getDeltaTime());
-
             Bootstrap.getDisplay().drawLine(
-                (int)transform.X,
-                (int)transform.Y,
-                (int)transform.X,
-                (int)transform.Y + 20,
+                (int)transform.X ,
+                (int)transform.Y ,
+                (int)(transform.X + (20 * direction[0])),
+                (int)(transform.Y + (20 * direction[1])),
                 col);
         }
 
@@ -86,7 +94,7 @@ namespace SpaceInvaders
 
         public override string ToString()
         {
-            return "Bullet: " + transform.X + ", " + transform.X;
+            return "Bullet: " + transform.X + ", " + transform.Y;
         }
     }
 }

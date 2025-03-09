@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
+using System.Numerics;
 
 namespace Shard
 {
@@ -19,16 +19,12 @@ namespace Shard
         private List<Invader> livingInvaders;
         private Random rand;
         private GameObject ship;
-        private GameObject Ai;
-
-        private static PathTracer tracer;
-
         public int Xdir { get => xdir; set => xdir = value; }
         public bool Dead { get => dead; set => dead = value; }
 
         public override bool isRunning()
         {
-            if (ship == null || ship.ToBeDestroyed == true)
+            if (ship == null || ship.ToBeDestroyed == true || livingInvaders.Count <= 0)
             {
                 return false;
             }
@@ -36,7 +32,6 @@ namespace Shard
             return true;
 
         }
-
         public override void update()
         {
             Bootstrap.getDisplay().showText("FPS: " + Bootstrap.getFPS(), 10, 10, 12, 255, 255, 255);
@@ -47,12 +42,19 @@ namespace Shard
             if (isRunning() == false)
             {
                 Color col = Color.FromArgb(rand.Next(0, 256), rand.Next(0, 256), rand.Next(0, 256));
-                Bootstrap.getDisplay().showText("GAME OVER!", 300, 300, 108, col);
+                if (livingInvaders.Count <= 0)
+                {
+                    Bootstrap.getDisplay().showText("YOU WON", 300, 300, 128, col);
+                }
+                else
+                {
+                    Bootstrap.getDisplay().showText("GAME OVER!", 300, 300, 128, col);
+                }
                 return;
             }
             animCounter += (float)Bootstrap.getDeltaTime();
 
-            //            Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
+            //Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
 
             if (animCounter > timeToSwap)
             {
@@ -100,17 +102,14 @@ namespace Shard
                     }
                 }
 
-                Debug.Log("Living invaders" + livingInvaders.Count);
+                Debug.Log("Living invaders " + livingInvaders.Count);
 
-                // Pick a random invader to fire.
-                livingInvaders[rand.Next(livingInvaders.Count)].fire();
 
-               //tracer = PathTracer.getInstance;
-               //tracer.initialize(8, 8);
-               //tracer.findPath(((int)Ai.transform.X, (int)Ai.transform.Y), ((int)ship.transform.X, (int)ship.transform.Y));
-               //Ai.transform.X = tracer.temp.Last().minX;
-               //Ai.transform.Y = tracer.temp.Last().minY;
-
+                if (livingInvaders.Count > 0)
+                {
+                    // Pick a random invader to fire.
+                    livingInvaders[rand.Next(livingInvaders.Count)].fire();
+                }
             }
 
         }
@@ -118,11 +117,6 @@ namespace Shard
         public void createObjects()
         {
             ship = new Spaceship();
-            ship.initialize();
-            Ai = new Invader();
-            Ai.initialize();
-            Ai.transform.X = 1;
-            Ai.transform.Y = 1;
 
             int ymod = 0;
 
@@ -134,7 +128,6 @@ namespace Shard
                 for (int i = 0; i < columns; i++)
                 {
                     Invader invader = new Invader();
-                    invader.initialize();
                     invader.transform.X = 100 + (i * 50);
                     invader.transform.Y = 100 + (ymod * 50);
 
@@ -157,7 +150,6 @@ namespace Shard
             {
 
                 Bunker b = new Bunker();
-                b.initialize();
 
                 b.transform.X = 200 + (i * 180);
                 b.transform.Y = 600;
@@ -178,9 +170,17 @@ namespace Shard
             InputFramework.getInstance().setInputMapping("Fire", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_SPACE);
             InputFramework.getInstance().setInputMapping("Fire", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_Q);
 
-            InputFramework.getInstance().setAxisMapping(Axis.Horizontal, SDL2.SDL.SDL_Scancode.SDL_SCANCODE_A, -1);
-            InputFramework.getInstance().setAxisMapping(Axis.Horizontal, SDL2.SDL.SDL_Scancode.SDL_SCANCODE_D, 1);
+            InputFramework.getInstance().setAxisMapping("Horizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_A, -1);
+            InputFramework.getInstance().setAxisMapping("Horizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_D, 1);
 
+            InputFramework.getInstance().setAxisMapping("Vertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_W, -1);
+            InputFramework.getInstance().setAxisMapping("Vertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_S, 1);
+
+            InputFramework.getInstance().setAxisMapping("FireVertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_UP, -1);
+            InputFramework.getInstance().setAxisMapping("FireVertical", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_DOWN, 1);
+
+            InputFramework.getInstance().setAxisMapping("FireHorizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_LEFT, -1);
+            InputFramework.getInstance().setAxisMapping("FireHorizontal", SDL2.SDL.SDL_Scancode.SDL_SCANCODE_RIGHT, 1);
 
             rows = 6;
             columns = 11;

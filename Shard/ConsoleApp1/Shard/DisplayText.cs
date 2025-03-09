@@ -237,9 +237,9 @@ namespace Shard
             }
 
         }
-        public override nint loadTexture(nint loadedImage)
-        {
-            throw new NotImplementedException();
-        }
+
+        public override nint loadTexture(nint loadedImage) => throw new NotImplementedException();
+
+        public override nint loadTextureFromPixels(byte[] pixelArray, int width, int height) => throw new NotImplementedException();
     }
 }

@@ -39,10 +39,12 @@ namespace Shard
     class InputFramework : InputSystem
     {
         private static InputFramework me;
-        double tick, timeInterval, lastUpdate;
+        double tick, timeInterval;
         private Dictionary<int, double> keyHeldSeconds;
         private Dictionary<int, string> registeredInputActions;
-        private Dictionary<int, InputAxis> axisBindings;
+
+        private Dictionary<int, (string,float)> axisBindings;
+        private Dictionary<string,float> axisValue;
 
         const double HOLD_THRESHOLD = 0.25;
 
@@ -51,9 +53,9 @@ namespace Shard
             keyHeldSeconds = [];
             registeredInputActions = [];
             axisBindings = [];
+            axisValue = [];
 
-            lastUpdate = Bootstrap.getCurrentMillis();
-            timeInterval = 1 / 60.0;
+            timeInterval = 1 / 50.0;
         }
 
         public static InputFramework getInstance()
@@ -71,12 +73,14 @@ namespace Shard
             registeredInputActions[(int)key] = inputActionName;
         }
 
-        public void setAxisMapping(Axis axis, SDL.SDL_Scancode key, float direction)
+        public void setAxisMapping(string inputActionName, SDL.SDL_Scancode key, float direction)
         {
-            axisBindings[(int)key] = new InputAxis(axis,direction, null);
+            axisBindings[(int)key] = (inputActionName,direction);
+            if (!axisValue.ContainsKey(inputActionName))
+            {
+                axisValue[inputActionName] = 0.0f;
+            }
         }
-
-
 
         // slow!
         public double getActionTimeHeld(InputAction action)
@@ -96,16 +100,6 @@ namespace Shard
             return 0.0;
         }
 
-        public bool willTick()
-        {
-            if (Bootstrap.getCurrentMillis() - lastUpdate > timeInterval)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         public override void getInput()
         {
 
@@ -123,7 +117,6 @@ namespace Shard
             while (tick >= timeInterval)
             {
 
-                // lastUpdate = Bootstrap.getCurrentMillis();
                 res = SDL.SDL_PollEvent(out ev);
 
                 if (res != 1)
@@ -217,7 +210,8 @@ namespace Shard
                     handleKeyRelease(ie);
                 }
 
-                updateHeldButtons();
+                //updateHeldButtons();
+
                 tick -= timeInterval;
             }
         }
@@ -225,12 +219,16 @@ namespace Shard
         private void handleKeyPress(InputEvent inputEvent)
         {
             int keyCode = inputEvent.Key;
-            if (axisBindings.TryGetValue(keyCode, out InputAxis value))
+            if (axisBindings.ContainsKey(keyCode))
             {
-                Console.WriteLine($"Key {keyCode} PRESSED with axis movement on " + value.axis);
-                informListeners(inputEvent, InputType.Pressed);
-            }
-            else if(registeredInputActions.TryGetValue(keyCode, out string inputName)) {
+                if (!keyHeldSeconds.ContainsKey(keyCode))
+                {
+                    keyHeldSeconds[keyCode] = Bootstrap.getCurrentMillis(); // Start tracking hold duration
+
+                    processAxisInput(keyCode, true);
+                }
+            } 
+            else if (registeredInputActions.TryGetValue(keyCode, out string inputName)) {
 
                 inputEvent.InputActionName = registeredInputActions[keyCode];
 
@@ -249,10 +247,13 @@ namespace Shard
             int keyCode = inputEvent.Key;
             if (axisBindings.ContainsKey(keyCode))
             {
-                Console.WriteLine($"Key {keyCode} RELEASED with axis movement on " + axisBindings[keyCode].axis);
-                informListeners(inputEvent, InputType.Released);
+                if (keyHeldSeconds.TryGetValue(keyCode, out double value))
+                {
+                    keyHeldSeconds.Remove(keyCode); // Stop tracking
+                    processAxisInput(keyCode, false);
+                }
             }
-            if (registeredInputActions.ContainsKey(keyCode))
+            else if (registeredInputActions.ContainsKey(keyCode))
             {
                 inputEvent.InputActionName = registeredInputActions[keyCode];
                 if (keyHeldSeconds.TryGetValue(keyCode, out double value))
@@ -265,8 +266,9 @@ namespace Shard
             }
         }
 
-        private void updateHeldButtons()
-        {
+        // Will not use for now.
+        //private void updateHeldButtons()
+        //{
             //long currentTime = Bootstrap.getCurrentMillis();
             //foreach (var key in new List<int>(keyHeldSeconds.Keys))
             //{
@@ -281,30 +283,26 @@ namespace Shard
             //        informListeners(inputEvent, InputType.Held);
             //    }
             //}
-        }
-        //private void processAxisInput()
-        //{
-        //    foreach (var axis in axisBindings.Values)
-        //    {
-        //        float axisValue = 0.0f;
-
-        //        foreach (var keyPair in axis.KeyMappings)
-        //        {
-        //            if (keyHeldSeconds.ContainsKey(keyPair.Key))
-        //            {
-        //                axisValue += keyPair.Value;
-        //            }
-        //        }
-
-        //        axisValue = Math.Clamp(axisValue, -1.0f, 1.0f);
-
-        //        if (Math.Abs(axis.CurrentValue - axisValue) > 0.001f)
-        //        {
-        //            axis.CurrentValue = axisValue;
-        //            axis.Callback(axisValue);
-        //        }
-        //    }
         //}
+        
+        private void processAxisInput(int keyCode, bool toggle)
+        {
+
+            string axisName = axisBindings[keyCode].Item1;
+
+            if(toggle) { 
+                axisValue[axisName] += axisBindings[keyCode].Item2;
+            } else
+            {
+                axisValue[axisName] -= axisBindings[keyCode].Item2;
+            }
+            InputEvent axisEvent = new InputEvent();
+            axisEvent.InputActionName = axisBindings[keyCode].Item1;
+
+            axisEvent.MoveAmount = (float)Math.Clamp(axisValue[axisName], -1.0, 1.0);
+
+            informListeners(axisEvent, InputType.Held);
+        }
     }
     
 }

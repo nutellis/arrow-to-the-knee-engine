@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Shard.Shard
 {
@@ -30,18 +31,21 @@ namespace Shard.Shard
 
     public class InputAxis
     {
-        public Axis axis;
+        public string name;
         public float direction;
-        public Action<float> action;
-        public float currentValue;
+        private Action<float> action;
 
-        public InputAxis(Axis type, float direction, Action<float> action)
+        public InputAxis(string name, Action<float> action)
         {
-            this.axis = type;
-            this.direction = direction;
+            this.name = name;
             this.action = action;
 
-            currentValue = 0.0f;
+            direction = 0.0f;
+        }
+
+        public void Execute()
+        {
+            action?.Invoke(direction);
         }
     }
 }

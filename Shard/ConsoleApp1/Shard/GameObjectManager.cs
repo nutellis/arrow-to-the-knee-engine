@@ -12,9 +12,11 @@ using Shard.Shard.Components;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Shard
 {
+
     class GameObjectManager
     {
         private static GameObjectManager me;
@@ -85,39 +87,25 @@ namespace Shard
             }
         }
 
-        public void physicsUpdate()
-        {
-            foreach (var gob in myObjects)
-            {
-                if (components.TryGetValue(gob, out List<BaseComponent> value))
-                {
-                    PhysicsComponent physics = (PhysicsComponent)value.Find(
-                    delegate (BaseComponent physics)
-                    {
-                        return physics is PhysicsComponent;
-                    }
-                    );
-                    physics?.physicsUpdate();
-                }
-            }
-        }
-
         public void prePhysicsUpdate()
         {
             foreach (var gob in myObjects)
             {
-                if (components.TryGetValue(gob, out List<BaseComponent> value))
-                {
-                    PhysicsComponent physics = (PhysicsComponent)value.Find(
-                    delegate (BaseComponent physics)
-                    {
-                        return physics is PhysicsComponent;
-                    }
-                    );
-                    physics?.prePhysicsUpdate();
-                }
+                gob.prePhysicsUpdate();
+                tickPrePhysicsComponents(gob);
+
             }
         }
+
+        public void physicsUpdate()
+        {
+            foreach (var gob in myObjects)
+            {
+                gob.physicsUpdate();
+                tickPhysicsComponents(gob);
+            }
+        }
+
 
         public void update()
         {
@@ -125,9 +113,10 @@ namespace Shard
             GameObject gob;
             for (int i = 0; i < myObjects.Count; i++)
             {
-                 gob = myObjects[i];
+                gob = myObjects[i];
 
                 gob.update();
+                tickComponents(gob);
 
                 gob.checkDestroyMe();
 
@@ -153,6 +142,29 @@ namespace Shard
             toDestroy.Clear();
             //Debug.Log ("NUm Objects is " + myObjects.Count);
         }
+
+        public void tickPrePhysicsComponents(GameObject owner)
+        {
+            if (components.ContainsKey(owner))
+            {
+                foreach (BaseComponent component in components[owner])
+                {
+                    component.prePhysicsUpdate();
+                }
+            }
+        }
+
+        public void tickPhysicsComponents(GameObject owner)
+        {
+            if (components.ContainsKey(owner))
+            {
+                foreach (BaseComponent component in components[owner])
+                {
+                    component.physicsUpdate();
+                }
+            }
+        }
+
 
         public void tickComponents(GameObject owner)
         {

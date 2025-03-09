@@ -56,7 +56,7 @@ namespace Shard
             uuid = Guid.NewGuid();
 
             GameObjectManager.getInstance().addGameObject(this);  // Manage game object
-            transform = new Transform(this);
+            transform = new Transform();
             tags = new Tags();
 
             visible = false;
@@ -65,14 +65,20 @@ namespace Shard
             this.initialize();
         }
 
-        // Optional: Can be overridden in derived classes to add more specific logic
         public virtual void initialize() { }
+
+        public virtual void physicsUpdate()
+        {
+        }
+
+        public virtual void prePhysicsUpdate()
+        {
+        }
 
         // Called each frame to update all enabled components
         public virtual void update()
         {
-
-            GameObjectManager.getInstance().tickComponents(this);
+            transform.consumeMovement();
         }
 
         public void checkDestroyMe()

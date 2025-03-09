@@ -15,8 +15,10 @@ using SDL2;
 using Shard;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Threading;
+using static SDL2.SDL;
 
 namespace Shard
 {
@@ -84,27 +86,50 @@ namespace Shard
 
         }
 
+        public override IntPtr loadTextureFromPixels(byte[] pixelArray, int width, int height)
+        {
+            IntPtr result = IntPtr.Zero;
+
+            unsafe
+            {
+                fixed (byte* ptr = pixelArray)
+                {
+                    SDL.SDL_Surface* surface = (SDL_Surface*)SDL.SDL_CreateRGBSurfaceWithFormatFrom(
+                        (IntPtr)ptr, width, height, 32, width * 4, SDL.SDL_PIXELFORMAT_ABGR8888);
+
+                    if (surface != null)
+                    {
+                        result = SDL.SDL_CreateTextureFromSurface(_rend, (IntPtr)surface);
+
+                        SDL.SDL_SetTextureBlendMode(result, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
+
+                        SDL.SDL_FreeSurface((IntPtr)surface);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+
         public override void addToDraw(Sprite sprite)
         {
-            //TODO: gob.SpriteComponent.Sprite
             _toDraw.Add(sprite);
 
-            if (sprite.path == null)
+            if (sprite.spriteName == null)
             {
                 return;
             }
             //if the sprite exists and it is valid, try and see if it is contained on the draw buffer
             // if its already there return the buffer
-            if (spriteBuffer.ContainsKey(sprite.path))
+            if (spriteBuffer.ContainsKey(sprite.spriteName))
             {
                 return;
             }
 
-            spriteBuffer[sprite.path] = sprite.img;
+            spriteBuffer[sprite.spriteName] = sprite.img;
 
-            SDL.SDL_SetTextureBlendMode(spriteBuffer[sprite.path], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
-
-            //return spriteBuffer[sprite.path];
+            SDL.SDL_SetTextureBlendMode(spriteBuffer[sprite.spriteName], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
 
         }
 
@@ -163,6 +188,53 @@ namespace Shard
             }
         }
 
+        void renderCircle1(int centreX, int centreY, int rad)
+        {
+            int dia = (rad * 2);
+            byte r, g, b, a;
+            int x = (rad - 1);
+            int y = 0;
+            int tx = 1;
+            int ty = 1;
+            int error = (tx - dia);
+
+            SDL.SDL_GetRenderDrawColor(_rend, out r, out g, out b, out a);
+
+            var points = new List<SDL.SDL_Point>();
+
+            // We draw an octagon around the point, and then turn it a bit. Do 
+            // that until we have an outline circle. If you want a filled one, 
+            // do the same thing with an ever decreasing radius.
+            while (x >= y)
+            {
+                points.Add(new SDL.SDL_Point { x = centreX + x, y = centreY - y });
+                points.Add(new SDL.SDL_Point { x = centreX + x, y = centreY + y });
+                points.Add(new SDL.SDL_Point { x = centreX - x, y = centreY - y });
+                points.Add(new SDL.SDL_Point { x = centreX - x, y = centreY + y });
+                points.Add(new SDL.SDL_Point { x = centreX + y, y = centreY - x });
+                points.Add(new SDL.SDL_Point { x = centreX + y, y = centreY + x });
+                points.Add(new SDL.SDL_Point { x = centreX - y, y = centreY - x });
+                points.Add(new SDL.SDL_Point { x = centreX - y, y = centreY + x });
+
+                if (error <= 0)
+                {
+                    y += 1;
+                    error += ty;
+                    ty += 2;
+                }
+
+                if (error > 0)
+                {
+                    x -= 1;
+                    tx += 2;
+                    error += (tx - dia);
+                }
+            }
+
+            SDL.SDL_RenderDrawPoints(_rend, points.ToArray(), points.Count);
+        }
+
+
         public override void drawCircle(int x, int y, int rad, int r, int g, int b, int a)
         {
             Circle c = new Circle();
@@ -203,7 +275,7 @@ namespace Shard
             foreach (Sprite sprite in _toDraw)
             {
 
-                if (sprite.path == null)
+                if (sprite.spriteName == null)
                 {
                     continue;
                 }
@@ -224,7 +296,7 @@ namespace Shard
             foreach (Circle c in _circlesToDraw)
             {
                 SDL.SDL_SetRenderDrawColor(_rend, (byte)c.R, (byte)c.G, (byte)c.B, (byte)c.A);
-                renderCircle(c.X, c.Y, c.Radius);
+                renderCircle1(c.X, c.Y, c.Radius);
             }
 
             foreach (Line l in _linesToDraw)
