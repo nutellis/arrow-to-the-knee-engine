@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 //To Do:
 /*
  * 1- Do not use grid , use the game objects to create the node system ##Done
- * 2- Make meaningful fucntions for the path tracer
+ * 2- Make meaningful fucntions for the path tracer 
  * 3- Make the path tracer work with the game objects ##Done
- * 4- Make the class to singleton
+ * 4- Make the class to singleton ##Done?mabey
  * 
  */
 
@@ -21,10 +21,35 @@ namespace Shard
 {
     public class PathTracer
     {
+        // Singleton instance
+        private static PathTracer instance = null;
+        private static readonly object padlock = new object();
+
+        // Private constructor to prevent instantiation
+        private PathTracer() 
+        {
+
+        }
+
+        public static PathTracer getInstance
+        {
+            get
+            {
+                lock (padlock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new PathTracer();
+                    }
+                    return instance;
+                }
+            }
+        }
+
         //variables
 
         private static readonly int[][] Directions =
-{
+        {
                 new int[] { 0, 1 },  // Right
                 new int[] { 1, 0 },  // Down
                 new int[] { 0, -1 }, // Left
@@ -33,7 +58,7 @@ namespace Shard
                 new int [] { 1, -1 }, // Down Left
                 new int [] { -1, 1 }, // Up Right
                 new int [] { -1, -1 } // Up Left
-        };
+            };
         private int displayWidth = Bootstrap.getDisplay().getWidth();
         private int displayHeight = Bootstrap.getDisplay().getHeight();
         private int nodeWidth = 16; // deault value
@@ -52,7 +77,7 @@ namespace Shard
             public struct isFilled()
             {
                 public int row, column;
-                
+
             }
             public List<isFilled> filled = new List<isFilled>();
 
@@ -77,8 +102,8 @@ namespace Shard
             {
                 this.minX = minX;
                 this.minY = minY;
-                this.maxX = minX+nodeWidth-1;
-                this.maxY = minY+nodeHeight-1;
+                this.maxX = minX + nodeWidth - 1;
+                this.maxY = minY + nodeHeight - 1;
             }
             public void setFilled(int row, int col)
             {
@@ -109,7 +134,7 @@ namespace Shard
             List<GameObject> gameObjects = GameObjectManager.getInstance().getMyObject();
             foreach (var gameObject in gameObjects)
             {
-                if(gameObject is Bullet)
+                if (gameObject is Bullet)
                 {
                     continue;
                 }
@@ -117,17 +142,17 @@ namespace Shard
                 int y = (int)gameObject.transform.Y;
                 //int x = (int)gameObject.transform.Centre.X;
                 //int y = (int)gameObject.transform.Centre.Y;
-                
+
                 int width = (int)gameObject.transform.Wid;
                 int height = (int)gameObject.transform.Ht;
-                for(int i = x; i < x + width; i++)
+                for (int i = x; i < x + width; i++)
                 {
                     for (int j = y; j < y + height; j++)
                     {
                         grid[i, j] = 1;
                     }
                 }
-                
+
                 //grid[x, y] = 1;
             }
         }
@@ -197,7 +222,7 @@ namespace Shard
             {
                 posX = rowCounter;
 
-                for(int colCounter = 0; colCounter < displayHeight / nodeHeight; colCounter++)
+                for (int colCounter = 0; colCounter < displayHeight / nodeHeight; colCounter++)
                 {
                     posY = colCounter;
                     coordianteX = rowCounter * nodeWidth;
@@ -206,7 +231,7 @@ namespace Shard
                     node.setNodeInfo(coordianteX, coordinateY, nodeWidth, nodeHeight);
                     nodeMap[rowCounter, colCounter] = node;
 
-                    for(int i = node.minX; i <= node.maxX; i++)
+                    for (int i = node.minX; i <= node.maxX; i++)
                     {
                         for (int j = node.minY; j <= node.maxY; j++)
                         {
@@ -237,10 +262,6 @@ namespace Shard
                 }
             }
         }
-
-
-
-
 
         public List<Node> FindPath((int, int) start, (int, int) goal)
         {
@@ -277,7 +298,7 @@ namespace Shard
             // I need to fix this later
 
             Node startNode = nodeMap[startX, startY];
-            Node goalNode = nodeMap[goalX , goalY];
+            Node goalNode = nodeMap[goalX, goalY];
             openList.Add(startNode);
 
             while (openList.Count > 0)
@@ -334,7 +355,7 @@ namespace Shard
             this.path = path;
         }
 
-        public void printGrid()
+        public void debugPrintGrid()
         {
             for (int i = 0; i < grid.GetLength(0); i++)
             {
@@ -345,13 +366,13 @@ namespace Shard
                 Console.WriteLine();
             }
         }
-        public void printNodeMap()
+        public void debugPrintNodeMap()
         {
             for (int i = 0; i < nodeMap.GetLength(0); i++)
             {
                 for (int j = 0; j < nodeMap.GetLength(1); j++)
                 {
-                    if(nodeMap[i, j].walkable == false)
+                    if (nodeMap[i, j].walkable == false)
                     {
                         Console.Write(0);
                     }
@@ -364,64 +385,61 @@ namespace Shard
                 Console.WriteLine();
             }
         }
-        public void printPath()
+        public void debugPrintPath()
         {
             foreach (var node in path)
             {
                 Console.WriteLine(node.PosX + " " + node.posY);
             }
         }
-        
-        public void printPathVisual()
+        public void debugPrintPathVisual()
         {
             Display d = Bootstrap.getDisplay();
             for (int i = 0; i < nodeMap.GetLength(0); i++)
             {
                 for (int j = 0; j < nodeMap.GetLength(1); j++)
                 {
-                    if (nodeMap[i, j].walkable == false)
-                    {
-                        //Console.Write(0);
-                    }
                     if (path.Contains(nodeMap[i, j]))
                     {
                         int minX = nodeMap[i, j].minX;
                         int minY = nodeMap[i, j].minY;
                         int maxX = nodeMap[i, j].maxX;
                         int maxY = nodeMap[i, j].maxY;
-                        //Console.Write("*");
                         d.drawLine(minX, minY, maxX, maxY, Color.Red);
                     }
-                    else
-                    {
-                        //Console.Write(1);
-                    }
-
                 }
-                //Console.WriteLine();
             }
         }
-
-        public void testRun(int nodeWidth, int nodeHeight, (int,int) start, (int,int) goal)
+        public void debugTestRun(int nodeWidth, int nodeHeight, (int, int) start, (int, int) goal)
         {
             setNodeWidth(nodeWidth);
             setNodeHeight(nodeHeight);
-            //transformWorldToGrid();
-            //transformGridToNodeMap();
+            transformWorldToGrid();
+            transformGridToNodeMap();
             transformWorldToNodeMap();
             path = FindPath(start, goal);
-            //transformPathToGrid();
-            //Console.WriteLine("The nodeMap for Debugging");
-            //printNodeMap();
-            //printGrid();
-           // Console.WriteLine("The path for Debugging");
-            //printPath();
-            //Console.WriteLine("The path visual for Debugging");
-            printPathVisual();
+            transformPathToGrid();
+            Console.WriteLine("The nodeMap for Debugging");
+            debugPrintNodeMap();
+            debugPrintGrid();
+             Console.WriteLine("The path for Debugging");
+            debugPrintPath();
+            Console.WriteLine("The path visual for Debugging");
+            debugPrintPathVisual();
 
         }
 
+        public void initialize(int nodeWidth, int nodeHeight)
+        {
+            setNodeWidth(nodeWidth);
+            setNodeHeight(nodeHeight);
+            transformWorldToNodeMap();
+        }
+        public void findPath((int, int) start, (int, int) goal)
+        {
+            path = FindPath(start, goal);
 
+        }
 
     }
 }

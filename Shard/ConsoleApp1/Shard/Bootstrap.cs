@@ -270,7 +270,7 @@ namespace Shard
             // Debugging Pathtracer
 
            
-            tracer = new PathTracer();
+            tracer = PathTracer.getInstance;
             //tracer.testRun(16, 16, (0,0), (Bootstrap.getDisplay().getHeight(), Bootstrap.getDisplay().getWidth()));
             //Console.WriteLine("Test Run 0");
             //tracer.testRun(16, 16, (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()), (0,0));
@@ -290,10 +290,14 @@ namespace Shard
                 // Clear the screen.
                 Bootstrap.getDisplay().clearDisplay();
 
-                tracer.testRun(8, 8, (380, 300), (520, 600));
-                //tracer.printPathVisual();
+                if(frames % 5 == 0)
+                {
+                    //tracer.debugTestRun(8, 8, (380, 300), (520, 600));
+                    tracer.initialize(8, 8);
+                    tracer.findPath((380, 300), (520, 600));
+                    tracer.debugPrintPathVisual();
+                }
 
-                
                 // Update 
                 runningGame.update();
                 // Input
