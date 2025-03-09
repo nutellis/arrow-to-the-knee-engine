@@ -18,7 +18,9 @@ namespace Shard
         private List<Invader> livingInvaders;
         private Random rand;
         private GameObject ship;
+        private GameObject Ai;
 
+        PathTracer tracer = new PathTracer();
         public int Xdir { get => xdir; set => xdir = value; }
         public bool Dead { get => dead; set => dead = value; }
 
@@ -100,6 +102,11 @@ namespace Shard
 
                 // Pick a random invader to fire.
                 livingInvaders[rand.Next(livingInvaders.Count)].fire();
+                tracer.testRun(16, 16, ((int)Ai.transform.X, (int)Ai.transform.Y),((int)ship.transform.X, (int)ship.transform.Y));
+                /*
+                Ai.transform.X = tracer.path[0].minX;
+                Ai.transform.Y = tracer.path[0].minY;
+                */
             }
 
         }
@@ -108,7 +115,10 @@ namespace Shard
         {
             ship = new Spaceship();
             ship.initialize();
-
+            Ai = new Invader();
+            Ai.initialize();
+            Ai.transform.X = 1;
+            Ai.transform.Y = 1;
 
             int ymod = 0;
 

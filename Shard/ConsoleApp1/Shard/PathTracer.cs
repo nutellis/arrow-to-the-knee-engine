@@ -1,17 +1,19 @@
-﻿using System;
+﻿using SpaceInvaders;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Text;
-using System.Threading.Tasks; 
+using System.Threading.Tasks;
 
 //To Do:
 /*
- * 1- need to get the display and make it to a grid
- * 2- need to check there is other game objects in each tile
- * 3- need to impelement the A* to find the shortest path
+ * 1- Do not use grid , use the game objects to create the node system ##Done
+ * 2- Make meaningful fucntions for the path tracer
+ * 3- Make the path tracer work with the game objects ##Done
+ * 4- Make the class to singleton
  * 
  */
 
@@ -26,7 +28,11 @@ namespace Shard
                 new int[] { 0, 1 },  // Right
                 new int[] { 1, 0 },  // Down
                 new int[] { 0, -1 }, // Left
-                new int[] { -1, 0 }  // Up
+                new int[] { -1, 0 },  // Up
+                new int [] { 1, 1 },  // Down Right
+                new int [] { 1, -1 }, // Down Left
+                new int [] { -1, 1 }, // Up Right
+                new int [] { -1, -1 } // Up Left
         };
         private int displayWidth = Bootstrap.getDisplay().getWidth();
         private int displayHeight = Bootstrap.getDisplay().getHeight();
@@ -84,6 +90,7 @@ namespace Shard
         }
 
 
+        // Making a grid out of the display for each pixel
         public void setGrid()
         {
             grid = new int[displayWidth, displayHeight];
@@ -95,19 +102,24 @@ namespace Shard
                 }
             }
         }
-       public void transformGameObjectsToGrid()
+        // Transforming the game objects to the grid and marking the occupied cells by 1
+        public void transformGameObjectsToGrid()
         {
             // Assuming Bootstrap.getGameObjects() returns a list of game objects with X and Y properties  
             List<GameObject> gameObjects = GameObjectManager.getInstance().getMyObject();
             foreach (var gameObject in gameObjects)
             {
-                //int x = (int)gameObject.Transform.X;
-                //int y = (int)gameObject.Transform.Y;
-                int x = (int)gameObject.Transform.Centre.X;
-                int y = (int)gameObject.Transform.Centre.Y;
-                /*
-                int width = (int)gameObject.Transform.Wid;
-                int height = (int)gameObject.Transform.Ht;
+                if(gameObject is Bullet)
+                {
+                    continue;
+                }
+                int x = (int)gameObject.transform.X;
+                int y = (int)gameObject.transform.Y;
+                //int x = (int)gameObject.transform.Centre.X;
+                //int y = (int)gameObject.transform.Centre.Y;
+                
+                int width = (int)gameObject.transform.Wid;
+                int height = (int)gameObject.transform.Ht;
                 for(int i = x; i < x + width; i++)
                 {
                     for (int j = y; j < y + height; j++)
@@ -115,11 +127,11 @@ namespace Shard
                         grid[i, j] = 1;
                     }
                 }
-                */
-                grid[x, y] = 1;
+                
+                //grid[x, y] = 1;
             }
         }
-
+        // Transforming the game to the grid system
         public void transformWorldToGrid()
         {
             setGrid();
@@ -129,17 +141,59 @@ namespace Shard
         public void setNodeMap()
         {
             nodeMap = new Node[displayWidth / nodeWidth, displayHeight / nodeHeight];
+            for (int i = 0; i < displayWidth / nodeWidth; i++)
+            {
+                for (int j = 0; j < displayHeight / nodeHeight; j++)
+                {
+                    Node node = new Node(i, j);
+                    node.setNodeInfo(i * nodeWidth, j * nodeHeight, nodeWidth, nodeHeight);
+                    nodeMap[i, j] = node;
+                }
+            }
 
         }
+        public void setGameObjectsToNodeMap()
+        {
+            // Assuming Bootstrap.getGameObjects() returns a list of game objects with X and Y properties  
+            List<GameObject> gameObjects = GameObjectManager.getInstance().getMyObject();
+            foreach (var gameObject in gameObjects)
+            {
+                if (gameObject is Bullet)
+                {
+                    continue;
+                }
+                int x = (int)gameObject.transform.X;
+                int y = (int)gameObject.transform.Y;
+                int width = (int)gameObject.transform.Wid;
+                int height = (int)gameObject.transform.Ht;
+                for (int i = x; i < x + width; i++)
+                {
+                    for (int j = y; j < y + height; j++)
+                    {
+                        int posX = i / nodeWidth;
+                        int posY = j / nodeHeight;
+                        nodeMap[posX, posY].setWalkable(false);
+                        nodeMap[posX, posY].setFilled(i, j);
+                    }
+                }
+            }
+        }
+        public void transformWorldToNodeMap()
+        {
+            setNodeMap();
+            setGameObjectsToNodeMap();
+        }
         // A little bit of a mess, works best in squere shapes, need to be checked for other shapes
+        // This function was used to transform the grid to the nodeMap
+        // Might be used later for more precision
         public void transformGridToNodeMap()
         {
             int posX = 0, posY = 0;
             int coordianteX = 0, coordinateY = 0;
 
-            setNodeMap();
+            nodeMap = new Node[displayWidth / nodeWidth, displayHeight / nodeHeight];
 
-            for (int rowCounter = 0; rowCounter < displayWidth / nodeHeight; rowCounter++)
+            for (int rowCounter = 0; rowCounter < displayWidth / nodeWidth; rowCounter++)
             {
                 posX = rowCounter;
 
@@ -352,17 +406,18 @@ namespace Shard
         {
             setNodeWidth(nodeWidth);
             setNodeHeight(nodeHeight);
-            transformWorldToGrid();
-            transformGridToNodeMap();
+            //transformWorldToGrid();
+            //transformGridToNodeMap();
+            transformWorldToNodeMap();
             path = FindPath(start, goal);
-            transformPathToGrid();
-            Console.WriteLine("The nodeMap for Debugging");
-            printNodeMap();
+            //transformPathToGrid();
+            //Console.WriteLine("The nodeMap for Debugging");
+            //printNodeMap();
             //printGrid();
-            Console.WriteLine("The path for Debugging");
-            printPath();
-            Console.WriteLine("The path visual for Debugging");
-            
+           // Console.WriteLine("The path for Debugging");
+            //printPath();
+            //Console.WriteLine("The path visual for Debugging");
+            printPathVisual();
 
         }
 

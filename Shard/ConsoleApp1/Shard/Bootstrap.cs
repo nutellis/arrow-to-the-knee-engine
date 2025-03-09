@@ -275,7 +275,7 @@ namespace Shard
             //Console.WriteLine("Test Run 0");
             //tracer.testRun(16, 16, (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()), (0,0));
             //Console.WriteLine("Test Run 1");
-            tracer.testRun(16, 16, (200,650), (500, 600));
+ 
             //Console.WriteLine("Test Run End");
             //////////////
 
@@ -290,7 +290,8 @@ namespace Shard
                 // Clear the screen.
                 Bootstrap.getDisplay().clearDisplay();
 
-                tracer.printPathVisual();
+                tracer.testRun(8, 8, (380, 300), (520, 600));
+                //tracer.printPathVisual();
 
                 
                 // Update 
