@@ -16,7 +16,9 @@ namespace Shard
             public abstract string getAssetPath(string asset);
             public abstract Sprite getSprite(string asset);
             public abstract Sprite extractSprite(IntPtr spriteSheet, int startX, int startY, int width, int height, string spriteName);
-        
+
+            //this should be in a helper class but i am too tired to create a new file  ( ✜︵✜ )
+            public abstract void readAnimationFromJson(string jsonPath);
 
         }
 

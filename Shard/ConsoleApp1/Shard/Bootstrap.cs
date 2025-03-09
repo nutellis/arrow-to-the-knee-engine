@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace Shard
@@ -261,6 +262,8 @@ namespace Shard
             {
                 physDebug = true;
             }
+
+            asset.readAnimationFromJson("animations.json");
 
             while (true)
             {

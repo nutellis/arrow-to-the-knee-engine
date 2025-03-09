@@ -1,8 +1,10 @@
 ﻿using SDL2;
+using Shard.Shard;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 
 namespace Shard
 {
@@ -186,6 +188,25 @@ namespace Shard
 
                 return (Sprite)newSprite.Clone();
             }
+        }
+
+        public override void readAnimationFromJson(string jsonPath)
+        {
+
+            string absolutePath = Bootstrap.getAssetManager().getAssetPath(jsonPath);
+            if (!File.Exists(absolutePath))
+            {
+                throw new FileNotFoundException($"The file '{absolutePath}' was not found.");
+            }
+
+            string jsonContent = File.ReadAllText(absolutePath);
+            JsonAnimationData animationData = JsonSerializer.Deserialize<JsonAnimationData>(jsonContent);
+
+            // Accessing the Idle animation frames
+            //foreach (var frame in animationData.Animations["Frames")
+            //{
+            //    Console.WriteLine($"Frame: X={frame.X}, Y={frame.Y}, Width={frame.Width}, Height={frame.Height}");
+            //}
         }
     }
 }
