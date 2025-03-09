@@ -292,11 +292,11 @@ namespace Shard
                 if(frames % 5 == 0)
                 {
                     //tracer.debugTestRun(8, 8, (380, 300), (520, 600));
-                    tracer.initialize(8, 8);
+                    //tracer.initialize(8, 8);
                     //tracer.findPath((380, 300), (520, 600));
-                    //tracer.debugPrintPathVisual();
-                    tracer.findPath((0, 0), (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()));
-                    tracer.FindPath((0, 0), (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()));
+
+                    //tracer.findPath((0, 0), (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()));
+                    //tracer.FindPath((0, 0), (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()));
                     //tracer.debugPrintPathVisual();
 
                 }

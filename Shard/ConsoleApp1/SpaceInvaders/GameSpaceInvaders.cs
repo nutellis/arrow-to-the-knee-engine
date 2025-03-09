@@ -19,6 +19,7 @@ namespace Shard
         private List<Invader> livingInvaders;
         private Random rand;
         private GameObject ship;
+        private GameObject Ai;
         public int Xdir { get => xdir; set => xdir = value; }
         public bool Dead { get => dead; set => dead = value; }
 
@@ -55,7 +56,7 @@ namespace Shard
             animCounter += (float)Bootstrap.getDeltaTime();
 
             //Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
-
+            PathTracer.getInstance.findPath(((int)Ai.transform.X, (int)Ai.transform.Y), ((int)ship.transform.X, (int)ship.transform.Y));
             if (animCounter > timeToSwap)
             {
                 animCounter -= timeToSwap;
@@ -109,6 +110,7 @@ namespace Shard
                 {
                     // Pick a random invader to fire.
                     livingInvaders[rand.Next(livingInvaders.Count)].fire();
+
                 }
             }
 
@@ -117,6 +119,11 @@ namespace Shard
         public void createObjects()
         {
             ship = new Spaceship();
+            Ai = new Invader();
+            Ai.transform.X = 1;
+            Ai.transform.Y = 1;
+            PathTracer.getInstance.initialize(8,8);
+            PathTracer.getInstance.findPath(((int)Ai.transform.X,(int)Ai.transform.Y), ((int)ship.transform.X,(int)ship.transform.Y));
 
             int ymod = 0;
 
