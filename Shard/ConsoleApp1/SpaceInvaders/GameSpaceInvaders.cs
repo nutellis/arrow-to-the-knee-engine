@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace Shard
 {
@@ -20,8 +21,8 @@ namespace Shard
         private GameObject ship;
         private GameObject Ai;
 
-        //tracer = PathTracer.getInstance;
         private static PathTracer tracer;
+
         public int Xdir { get => xdir; set => xdir = value; }
         public bool Dead { get => dead; set => dead = value; }
 
@@ -103,12 +104,13 @@ namespace Shard
 
                 // Pick a random invader to fire.
                 livingInvaders[rand.Next(livingInvaders.Count)].fire();
-                //tracer = PathTracer.getInstance;
-                //tracer.testRun(16, 16, ((int)Ai.transform.X, (int)Ai.transform.Y),((int)ship.transform.X, (int)ship.transform.Y));
-                /*
-                Ai.transform.X = tracer.path[0].minX;
-                Ai.transform.Y = tracer.path[0].minY;
-                */
+
+               //tracer = PathTracer.getInstance;
+               //tracer.initialize(8, 8);
+               //tracer.findPath(((int)Ai.transform.X, (int)Ai.transform.Y), ((int)ship.transform.X, (int)ship.transform.Y));
+               //Ai.transform.X = tracer.temp.Last().minX;
+               //Ai.transform.Y = tracer.temp.Last().minY;
+
             }
 
         }

@@ -275,7 +275,6 @@ namespace Shard
             //Console.WriteLine("Test Run 0");
             //tracer.testRun(16, 16, (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()), (0,0));
             //Console.WriteLine("Test Run 1");
- 
             //Console.WriteLine("Test Run End");
             //////////////
 
@@ -294,10 +293,13 @@ namespace Shard
                 {
                     //tracer.debugTestRun(8, 8, (380, 300), (520, 600));
                     tracer.initialize(8, 8);
-                    tracer.findPath((380, 300), (520, 600));
-                    tracer.debugPrintPathVisual();
-                }
+                    //tracer.findPath((380, 300), (520, 600));
+                    //tracer.debugPrintPathVisual();
+                    tracer.findPath((0, 0), (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()));
+                    //tracer.debugPrintPathVisual();
 
+                }
+  
                 // Update 
                 runningGame.update();
                 // Input

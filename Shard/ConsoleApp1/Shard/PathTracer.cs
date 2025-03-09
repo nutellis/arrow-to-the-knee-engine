@@ -65,6 +65,7 @@ namespace Shard
         private int nodeHeight = 16; // deault value
         private int[,] grid;
         private List<Node> path;
+        public List<Node> temp = new List<Node>();
         private Node[,] nodeMap;
 
         // Node class might later put it in a different file
@@ -330,7 +331,7 @@ namespace Shard
             return new List<Node>();
         }
 
-        private static List<Node> ReconstructPath(Node node)
+        private List<Node> ReconstructPath(Node node)
         {
             List<Node> path = new List<Node>();
             while (node != null)
@@ -339,6 +340,7 @@ namespace Shard
                 node = node.Parent;
             }
             path.Reverse();
+            this.temp = path; // Use 'this' to refer to the instance variable
             return path;
         }
 
@@ -354,7 +356,10 @@ namespace Shard
         {
             this.path = path;
         }
-
+        public List<Node> getPath()
+        {
+            return path;
+        }
         public void debugPrintGrid()
         {
             for (int i = 0; i < grid.GetLength(0); i++)
@@ -392,14 +397,15 @@ namespace Shard
                 Console.WriteLine(node.PosX + " " + node.posY);
             }
         }
-        public void debugPrintPathVisual()
+
+        public void debugPrintPathVisual(List<Node> check)
         {
             Display d = Bootstrap.getDisplay();
             for (int i = 0; i < nodeMap.GetLength(0); i++)
             {
                 for (int j = 0; j < nodeMap.GetLength(1); j++)
                 {
-                    if (path.Contains(nodeMap[i, j]))
+                    if (check.Contains(nodeMap[i, j]))
                     {
                         int minX = nodeMap[i, j].minX;
                         int minY = nodeMap[i, j].minY;
@@ -425,7 +431,7 @@ namespace Shard
              Console.WriteLine("The path for Debugging");
             debugPrintPath();
             Console.WriteLine("The path visual for Debugging");
-            debugPrintPathVisual();
+            debugPrintPathVisual(path);
 
         }
 
@@ -438,6 +444,7 @@ namespace Shard
         public void findPath((int, int) start, (int, int) goal)
         {
             path = FindPath(start, goal);
+            debugPrintPathVisual(path);
 
         }
 
