@@ -53,11 +53,11 @@ namespace Shard
                 new int[] { 0, 1 },  // Right
                 new int[] { 1, 0 },  // Down
                 new int[] { 0, -1 }, // Left
-                new int[] { -1, 0 },  // Up
-                new int [] { 1, 1 },  // Down Right
-                new int [] { 1, -1 }, // Down Left
-                new int [] { -1, 1 }, // Up Right
-                new int [] { -1, -1 } // Up Left
+                new int[] { -1, 0 } // ,  // Up
+                //new int [] { 1, 1 },  // Down Right
+                //new int [] { 1, -1 }, // Down Left
+                //new int [] { -1, 1 }, // Up Right
+                //new int [] { -1, -1 } // Up Left
             };
         private int displayWidth = Bootstrap.getDisplay().getWidth();
         private int displayHeight = Bootstrap.getDisplay().getHeight();
@@ -184,7 +184,7 @@ namespace Shard
             List<GameObject> gameObjects = GameObjectManager.getInstance().getMyObject();
             foreach (var gameObject in gameObjects)
             {
-                if (gameObject is Bullet)
+                if (gameObject is Bullet || gameObject is Spaceship || gameObject.Tags.checkTag("AI") == true)
                 {
                     continue;
                 }
@@ -443,8 +443,9 @@ namespace Shard
         }
         public void findPath((int, int) start, (int, int) goal)
         {
+            setGameObjectsToNodeMap();
             path = CalculatePath(start, goal);
-            debugPrintPathVisual(path);
+            //debugPrintPathVisual(path);
 
         }
 

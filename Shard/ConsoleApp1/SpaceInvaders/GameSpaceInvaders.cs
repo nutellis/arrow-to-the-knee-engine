@@ -56,7 +56,8 @@ namespace Shard
             animCounter += (float)Bootstrap.getDeltaTime();
 
             //Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
-            PathTracer.getInstance.findPath(((int)Ai.transform.X, (int)Ai.transform.Y), ((int)ship.transform.X, (int)ship.transform.Y));
+            //PathTracer.getInstance.findPath(((int)Ai.transform.X, (int)Ai.transform.Y), ((int)ship.transform.X, (int)ship.transform.Y));
+
             if (animCounter > timeToSwap)
             {
                 animCounter -= timeToSwap;
@@ -120,10 +121,13 @@ namespace Shard
         {
             ship = new Spaceship();
             Ai = new Invader();
-            Ai.transform.X = 1;
-            Ai.transform.Y = 1;
-            PathTracer.getInstance.initialize(8,8);
-            PathTracer.getInstance.findPath(((int)Ai.transform.X,(int)Ai.transform.Y), ((int)ship.transform.X,(int)ship.transform.Y));
+            Ai.transform.X = 0;
+            Ai.transform.Y = 0;
+
+            Ai.Tags.addTag("AI");
+            PathTracer.getInstance.initialize(16, 16);
+            //PathTracer.getInstance.findPath(((int)Ai.transform.X,(int)Ai.transform.Y), ((int)ship.transform.X,(int)ship.transform.Y));
+
 
             int ymod = 0;
 

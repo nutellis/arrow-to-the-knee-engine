@@ -45,6 +45,15 @@ namespace SpaceInvaders
 
         }
 
+        public override void physicsUpdate()
+        {
+            base.physicsUpdate();
+            if (tags.checkTag("AI"))
+            {
+                PathTracer.getInstance.findPath(((int)transform.X, (int)transform.Y), (400, 800));
+            }
+        }
+
 
         public void changeSprite()
         {
@@ -62,6 +71,14 @@ namespace SpaceInvaders
         public override void update()
         {
             base.update();
+            if (tags.checkTag("AI"))
+            {
+                if(PathTracer.getInstance.getPath() != null)
+                {
+                    PathTracer.getInstance.debugPrintPathVisual(PathTracer.getInstance.getPath());
+                }
+            }
+
         }
 
         //public void onCollisionEnter(PhysicsBody x)
