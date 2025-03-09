@@ -56,6 +56,11 @@ namespace Shard
             return height;
         }
 
+        public IntPtr getTexture()
+        {
+            return img;
+        }
+
         //Change scale of sprite
         public void setUniformScale(float scale)
         {
@@ -104,45 +109,45 @@ namespace Shard
             return this.MemberwiseClone();
         }
 
-        public Sprite getFrame(int x, int y, int frameWidth, int frameHeight)
-        {
-            // Get the renderer from DisplaySDL
-            DisplaySDL display = (DisplaySDL)Bootstrap.getDisplay();
-            IntPtr renderer = display.getRenderer();  // You may need to create this method
+        //public Sprite getFrame(int x, int y, int frameWidth, int frameHeight)
+        //{
+        //    // Get the renderer from DisplaySDL
+        //    DisplaySDL display = (DisplaySDL)Bootstrap.getDisplay();
+        //    IntPtr renderer = display.getRenderer();  // You may need to create this method
 
-            if (renderer == IntPtr.Zero)
-            {
-                Console.WriteLine("Renderer not available.");
-                return null;
-            }
+        //    if (renderer == IntPtr.Zero)
+        //    {
+        //        Console.WriteLine("Renderer not available.");
+        //        return null;
+        //    }
 
-            // Create a new sprite for the cropped frame
-            Sprite frame = new Sprite(this.path)
-            {
-                width = frameWidth,
-                height = frameHeight
-            };
+        //    // Create a new sprite for the cropped frame
+        //    Sprite frame = new Sprite(this.path)
+        //    {
+        //        width = frameWidth,
+        //        height = frameHeight
+        //    };
 
-            // Create a new texture for the cropped frame
-            IntPtr newTexture = SDL.SDL_CreateTexture(
-                renderer,
-                SDL.SDL_PIXELFORMAT_RGBA8888,
-                (int)SDL.SDL_TextureAccess.SDL_TEXTUREACCESS_TARGET,
-                frameWidth, frameHeight
-            );
+        //    // Create a new texture for the cropped frame
+        //    IntPtr newTexture = SDL.SDL_CreateTexture(
+        //        renderer,
+        //        SDL.SDL_PIXELFORMAT_RGBA8888,
+        //        (int)SDL.SDL_TextureAccess.SDL_TEXTUREACCESS_TARGET,
+        //        frameWidth, frameHeight
+        //    );
 
-            SDL.SDL_SetRenderTarget(renderer, newTexture);
+        //    SDL.SDL_SetRenderTarget(renderer, newTexture);
 
-            SDL.SDL_Rect srcRect = new SDL.SDL_Rect { x = x, y = y, w = frameWidth, h = frameHeight };
-            SDL.SDL_Rect dstRect = new SDL.SDL_Rect { x = 0, y = 0, w = frameWidth, h = frameHeight };
+        //    SDL.SDL_Rect srcRect = new SDL.SDL_Rect { x = x, y = y, w = frameWidth, h = frameHeight };
+        //    SDL.SDL_Rect dstRect = new SDL.SDL_Rect { x = 0, y = 0, w = frameWidth, h = frameHeight };
 
-            SDL.SDL_RenderCopy(renderer, this.img, ref srcRect, ref dstRect);
+        //    SDL.SDL_RenderCopy(renderer, this.img, ref srcRect, ref dstRect);
 
-            SDL.SDL_SetRenderTarget(renderer, IntPtr.Zero);
+        //    SDL.SDL_SetRenderTarget(renderer, IntPtr.Zero);
 
-            frame.img = newTexture;
-            return frame;
-        }
+        //    frame.img = newTexture;
+        //    return frame;
+        //}
     }
 }
 

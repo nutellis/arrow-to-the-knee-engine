@@ -231,6 +231,9 @@ namespace Shard.Shard.Components
             if (spriteSheet == null)
                 return;
 
+            // Get the SDL surface pointer
+            IntPtr spriteSheetPtr = spriteSheet.getTexture();
+
             // Load the JSON file as a string
             string json = File.ReadAllText(jsonAssetPath);
             var spriteData = JsonConvert.DeserializeObject<SpriteSheetData>(json);
@@ -245,7 +248,8 @@ namespace Shard.Shard.Components
                     foreach (var frameData in animation.Value.frames)
                     {
                         // Get the frame using the frame's position and size
-                        Sprite frame = spriteSheet.getFrame(frameData.x, frameData.y, frameData.w, frameData.h);
+                        //Sprite frame = spriteSheet.getFrame(frameData.x, frameData.y, frameData.w, frameData.h);
+                        Sprite frame = Bootstrap.getAssetManager().extractSprite(spriteSheetPtr, frameData.x, frameData.y, frameData.w, frameData.h, spriteSheetPath + "_" + animation.Key + "_" + frameData.filename);
                         frames.Add(frame);
                     }
                     animations[animation.Key] = frames; // Store frames under the animation name
@@ -258,7 +262,8 @@ namespace Shard.Shard.Components
                 foreach (var frameData in spriteData.frames)
                 {
                     // Get the frame using the frame's position and size
-                    Sprite frame = spriteSheet.getFrame(frameData.x, frameData.y, frameData.w, frameData.h);
+                    //Sprite frame = spriteSheet.getFrame(frameData.x, frameData.y, frameData.w, frameData.h);
+                    Sprite frame = Bootstrap.getAssetManager().extractSprite(spriteSheetPtr, frameData.x, frameData.y, frameData.w, frameData.h, spriteSheetPath + "_" + "_" + frameData.filename);
                     frames.Add(frame);
                 }
                 animations[defaultAnimationName] = frames; // Store frames under the provided animation name (e.g., "Move" or "Idle")

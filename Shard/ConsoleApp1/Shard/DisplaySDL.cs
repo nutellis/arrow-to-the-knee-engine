@@ -15,8 +15,10 @@ using SDL2;
 using Shard;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Threading;
+using static SDL2.SDL;
 
 namespace Shard
 {
@@ -82,6 +84,31 @@ namespace Shard
 
             return result;
 
+        }
+
+        public override IntPtr loadTextureFromPixels(byte[] pixelArray, int width, int height)
+        {
+            IntPtr result = IntPtr.Zero;
+
+            unsafe
+            {
+                fixed (byte* ptr = pixelArray)
+                {
+                    SDL.SDL_Surface* surface = (SDL_Surface*)SDL.SDL_CreateRGBSurfaceWithFormatFrom(
+                        (IntPtr)ptr, width, height, 32, width * 4, SDL.SDL_PIXELFORMAT_ABGR8888);
+
+                    if (surface != null)
+                    {
+                        result = SDL.SDL_CreateTextureFromSurface(_rend, (IntPtr)surface);
+
+                        SDL.SDL_SetTextureBlendMode(result, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
+
+                        SDL.SDL_FreeSurface((IntPtr)surface);
+                    }
+                }
+            }
+
+            return result;
         }
 
         public override void addToDraw(Sprite sprite)

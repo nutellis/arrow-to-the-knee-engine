@@ -36,11 +36,11 @@ namespace SpaceInvaders
             //this.sprite = new SpriteComponent(this, false);
             this.sprite = new SpriteComponent(this);
 
-            this.sprite.addSprite("player.png");
+            //this.sprite.addSprite("player.png");
 
             //this.sprite.addSprite("player.png", "Static");
-            //this.sprite.loadSpriteSheet("SpaceShip_Idle.png", "SpaceShip_Idle.json", "Idle");
-            //this.sprite.setAnimation("Idle");
+            this.sprite.loadSpriteSheet("SpaceShip_Idle.png", "SpaceShip_Idle.json", "Idle");
+            this.sprite.setAnimation("Idle");
 
             if (sprite.getSprite() != null)
             {
