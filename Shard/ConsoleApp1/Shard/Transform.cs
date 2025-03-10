@@ -78,16 +78,16 @@ namespace Shard
             Lx += (float)nx;
             Ly += (float)ny;
 
-            if (Lx != 0 && Ly != 0)
-            {
-                // Normalize the movement vector to ensure consistent speed
-                float magnitude = (float)Math.Sqrt(Lx * Lx + Ly * Ly);
-                if (magnitude > 0)
-                {
-                    lx = lx * (Math.Abs(lx) / magnitude);
-                    ly = ly * (Math.Abs(ly) / magnitude);
-                }
-            }
+            //if (Lx != 0 && Ly != 0)
+            //{
+            //    // Normalize the movement vector to ensure consistent speed
+            //    float magnitude = (float)Math.Sqrt(Lx * Lx + Ly * Ly);
+            //    if (magnitude > 0)
+            //    {
+            //        lx = lx * (Math.Abs(lx) / magnitude);
+            //        ly = ly * (Math.Abs(ly) / magnitude);
+            //    }
+            //}
         }
 
         public void translate(Vector2 vect)

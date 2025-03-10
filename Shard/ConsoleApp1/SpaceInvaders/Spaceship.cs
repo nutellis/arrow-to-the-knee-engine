@@ -16,16 +16,11 @@ namespace SpaceInvaders
         private InputComponent input;
 
         private SoundComponent sound;
-        private int movementSoundChannel = -1;
-        private bool movementSoundIsPlaying = false;
-        private float moveValue = 0;
-        private float horizontalMoveValue = 0;
-        private float verticalMoveValue = 0;
-
+  
         private PhysicsComponent physics;
 
         private double fireCounter, fireDelay = 1f;
-        private float moveDistance, moveSpeed = 100;
+        private float moveDistance, moveSpeed = 200;
 
 
         public override void initialize()
@@ -36,21 +31,10 @@ namespace SpaceInvaders
             //this.sprite = new SpriteComponent(this, false);
             this.sprite = new SpriteComponent(this);
 
-            //this.sprite.addSprite("player.png");
-
-            //this.sprite.addSprite("player.png", "Static");
-            //this.sprite.Animations["Idle"] =  Bootstrap.getAssetManager().loadSpriteSheet("SpaceShip_Idle.png", "SpaceShip_Idle.json", "Idle");
-
             // store animations and pass them to the frames list 
-            this.sprite.addAnimationFrames("Idle", Bootstrap.getAssetManager().loadSpriteSheet("SpaceShip_Idle.png", "SpaceShip_Idle.json", "Idle"));
-            this.sprite.setAnimation("Idle");
+            this.sprite.setCurrentAnimation("spaceship_animation");
 
-            if (sprite.getSprite() != null)
-            {
-                sprite.getSprite().setUniformScale(1.0f);
-            }
-
-            fireDelay = 1;
+            fireDelay = 0.1;
             fireCounter = fireDelay;
 
             tags = new Tags();
@@ -73,48 +57,39 @@ namespace SpaceInvaders
             tags.addTag("Player");
 
             sound = new SoundComponent(this);
-            sound.loadSound("SpaceShipAttack", "fire.wav");
-            sound.loadSound("BackgroundMusic", "background.wav");
+            //sound.loadSound("SpaceShipAttack", "fire.wav");
+            //sound.loadSound("BackgroundMusic", "background.wav");
             sound.loadSound("SpaceShipMove", "spaceshipmove.wav");
-            sound.loadSound("BackgroundEngine", "spaceshipengine.wav");
+            //sound.loadSound("BackgroundEngine", "spaceshipengine.wav");
 
 
-            sound.setVolume("BackgroundMusic", 0.1f);
-            //sound.playSoundOnRepeat("BackgroundMusic");
-            //sound.playSoundOnRepeat("BackgroundEngine");
+            //sound.setVolume("BackgroundMusic", 0.1f);
 
         }
 
 
         public void moveVertical(float value)
         {
-            if (value != 0.0f)
+            if (value != 0.0)
             {
                 this.transform.translate(0, value * moveDistance);
-                moveValue = value;  
-                verticalMoveValue = value; 
+                sound.playSound("SpaceShipMove");
             }
             else
             {
-                // Reset only if no movement on vertical axis
-                moveValue = horizontalMoveValue; 
-                verticalMoveValue = 0.0f; 
+                sound.stopSound("SpaceShipMove");
             }
         }
 
         public void moveHorizontal(float value)
         {
-            if (value != 0.0f)
+            if (value != 0.0)
             {
                 this.transform.translate(value * moveDistance, 0);
-                moveValue = value;  
-                horizontalMoveValue = value; 
-            }
-            else
+                sound.playSound("SpaceShipMove");
+            } else
             {
-                // Reset only if no movement on horizontal axis
-                moveValue = verticalMoveValue; 
-                horizontalMoveValue = 0.0f; 
+                sound.stopSound("SpaceShipMove");
             }
         }
 
@@ -172,70 +147,13 @@ namespace SpaceInvaders
 
         }
 
-        public void handleInput(InputEvent inp, string eventType)
-        {
-
-            if (Bootstrap.getRunningGame().isRunning() == false)
-            {
-                return;
-            }
-
-            //if (eventType == "KeyDown")
-            //{
-
-            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
-            //    {
-            //        //right = true;
-            //        input.Right = true;
-            //    }
-
-            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
-            //    {
-            //        //left = true;
-            //        input.Left = true;
-            //    }
-
-            //}
-            //else if (eventType == "KeyUp")
-            //{
-
-
-            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
-            //    {
-            //        //right = false;
-            //        input.Right = false;
-            //    }
-
-            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
-            //    {
-            //        //left = false;
-            //        input.Left = false;
-            //    }
-
-
-            //}
-
-
-
-            //if (eventType == "KeyUp")
-            //{
-            //    if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE)
-            //    {
-            //        //fireBullet();
-            //        input.Fire = true;
-            //    }
-            //}
-        }
-
         public override void update()
         {
+            base.update();
 
             fireCounter += (float)Bootstrap.getDeltaTime();
             moveDistance = (float)(moveSpeed * Bootstrap.getDeltaTime());
 
-            base.update();
-
-            checkMovementSound();
             //Console.WriteLine("Move Value: " + moveValue);
         }
 
@@ -259,49 +177,5 @@ namespace SpaceInvaders
         {
             return "Spaceship: [" + transform.X + ", " + transform.Y + ", " + transform.Wid + ", " + transform.Ht + "]";
         }
-
-        private void checkMovementSound()
-        {
-            // If we are moving (moveValue != 0), start the sound if not already playing
-            if (moveValue != 0.0f)
-            {
-                if (!movementSoundIsPlaying)
-                {
-                    startMovementSound();
-                }
-            }
-            else
-            {
-                // If not moving, stop the sound if it's playing
-                if (movementSoundIsPlaying)
-                {
-                    stopMovementSound();
-                }
-            }
-        }
-
-        private void startMovementSound()
-        {
-            if (movementSoundChannel != -1)
-                return; // Sound is already playing, do nothing
-
-            movementSoundIsPlaying = true;
-            movementSoundChannel = SoundManager.getInstance().playSound("SpaceShipMove", true); // Start the looped movement sound
-            Console.WriteLine($"Movement sound started on channel {movementSoundChannel}");
-        }
-
-        private void stopMovementSound()
-        {
-            moveValue = 0.0f; // Reset movement value
-
-            if (movementSoundChannel == -1)
-                return; // Sound isn't playing, do nothing
-
-            movementSoundIsPlaying = false;
-            SoundManager.getInstance().stopSound("SpaceShipMove"); // Stop the movement sound
-            movementSoundChannel = -1; // Reset channel to release it
-            Console.WriteLine("Stopped movement sound");
-        }
-
     }
 }

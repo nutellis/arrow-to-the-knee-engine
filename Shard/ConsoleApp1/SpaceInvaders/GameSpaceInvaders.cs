@@ -86,7 +86,7 @@ namespace Shard
                         // Speed them up as their numbers diminish.
                         timeToSwap = 2 - ((deaths / 3) * 0.1f);
 
-                        myInvaders[i, j].changeSprite();
+                        //myInvaders[i, j].changeSprite();
 
                         if (ymod != 0)
                         {
@@ -119,10 +119,12 @@ namespace Shard
 
         public void createObjects()
         {
+            SpriteManager.getInstance().loadSpriteSheet("spaceship_Spritesheet", "SpaceShip_Idle.png", "animations.json");
+
             ship = new Spaceship();
             ship.initialize();
 
-
+           
             int ymod = 0;
 
             timeToSwap = 3;

@@ -10,13 +10,10 @@
 
 using Shard.Shard;
 using System;
-using System.Collections.Generic;
-using Shard.Shard.Components;
-using System.Linq;
 
 namespace Shard
 {
-     class GameObject
+    class GameObject
     {
         public Guid uuid;
         protected Tags tags;

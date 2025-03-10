@@ -15,7 +15,7 @@ namespace SpaceInvaders
             //sprite = new SpriteComponent(this,false);
             sprite = new SpriteComponent(this);
 
-            sprite.addSprite("bunkerBit.png");
+            sprite.addSprite("bunkerBit", "bunkerBit.png");
 
             physics = new PhysicsComponent(this);
 

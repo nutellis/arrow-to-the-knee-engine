@@ -7,8 +7,10 @@ namespace Shard.Shard.Components
 {
     internal class SoundComponent : BaseComponent
     {
-        private static Dictionary<string, string> loadedSounds = new Dictionary<string, string>();
+        private static Dictionary<string, bool> loadedSounds = new Dictionary<string, bool>();
         private string currentSound;
+        private int soundChannel = -1;
+
         private bool loop;
 
         public SoundComponent(GameObject owner) : base(owner)
@@ -20,8 +22,9 @@ namespace Shard.Shard.Components
         {
             if (!loadedSounds.ContainsKey(soundName))
             {
-                loadedSounds[soundName] = filePath;
                 SoundManager.getInstance().loadSound(soundName, filePath);
+                
+                loadedSounds[soundName] = false;
             }
         }
 
@@ -35,12 +38,8 @@ namespace Shard.Shard.Components
             bool loop = false;
             if (loadedSounds.ContainsKey(soundName))
             {
-                SoundManager.getInstance().playSound(soundName, loop, time);
+                SoundManager.getInstance().playSound(soundName, true, time);
                 currentSound = soundName;
-            }
-            else
-            {
-                Console.WriteLine($"Sound {soundName} not found in loaded sounds.");
             }
         }
 
@@ -54,11 +53,6 @@ namespace Shard.Shard.Components
             if (loadedSounds.ContainsKey(soundName))
             {
                 SoundManager.getInstance().playSound(soundName, loop);
-                currentSound = soundName;
-            }
-            else
-            {
-                Console.WriteLine($"Sound {soundName} not found in loaded sounds.");
             }
         }
 
@@ -72,7 +66,9 @@ namespace Shard.Shard.Components
 
         public void stopAllSounds()
         {
-            SoundManager.getInstance().stopAllSounds();
+            //TODO: @christos
+            //stop all sounds coming from this component!
+            //SoundManager.getInstance().stopAllSounds(List<string> sounds);
         }
 
         public void setVolume(string soundName, float volume)

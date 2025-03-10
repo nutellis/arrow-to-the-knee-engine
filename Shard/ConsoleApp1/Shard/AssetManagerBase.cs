@@ -14,10 +14,6 @@ namespace Shard
 
             public abstract void registerAssets();
             public abstract string getAssetPath(string asset);
-            public abstract Sprite getSprite(string asset);
-            public abstract Sprite extractSprite(IntPtr spriteSheet, int startX, int startY, int width, int height, string spriteName);
-            public abstract List<Sprite> loadSpriteSheet(string spriteSheetName, string jsonFileName, string defaultAnimationName = "Static");
-
         }
 
 }

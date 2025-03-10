@@ -113,20 +113,20 @@ namespace Shard
         {
             _toDraw.Add(sprite);
 
-            if (sprite.path == null)
+            if (sprite.spriteName == null)
             {
                 return;
             }
             //if the sprite exists and it is valid, try and see if it is contained on the draw buffer
             // if its already there return the buffer
-            if (spriteBuffer.ContainsKey(sprite.path))
+            if (spriteBuffer.ContainsKey(sprite.spriteName))
             {
                 return;
             }
 
-            spriteBuffer[sprite.path] = sprite.texture;
+            spriteBuffer[sprite.spriteName] = sprite.texture;
 
-            SDL.SDL_SetTextureBlendMode(spriteBuffer[sprite.path], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
+            SDL.SDL_SetTextureBlendMode(spriteBuffer[sprite.spriteName], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
 
         }
 
@@ -272,7 +272,7 @@ namespace Shard
             foreach (Sprite sprite in _toDraw)
             {
 
-                if (sprite.path == null)
+                if (sprite.spriteName == null)
                 {
                     continue;
                 }

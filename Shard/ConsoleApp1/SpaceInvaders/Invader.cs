@@ -30,8 +30,10 @@ namespace SpaceInvaders
             //sprite = new SpriteComponent(this, true);
             sprite = new SpriteComponent(this);
 
-            sprite.addSprite("invader1.png", "Move");
-            sprite.addSprite("invader2.png", "Move");
+            sprite.addAnimationFrames("invader1","invader1.png", "Move");
+            sprite.addAnimationFrames("invader2", "invader2.png", "Move");
+
+            sprite.setCurrentAnimation("Move");
 
             game = (GameSpaceInvaders)Bootstrap.getRunningGame();
 
@@ -54,15 +56,15 @@ namespace SpaceInvaders
 
         public void changeSprite()
         {
-            spriteToUse += 1;
+            //spriteToUse += 1;
 
-            if (spriteToUse >= 2)
-            {
-                spriteToUse = 0;
-            }
+            //if (spriteToUse >= 2)
+            //{
+            //    spriteToUse = 0;
+            //}
 
-            //this.sprite.setSprite(spriteToUse);
-            this.sprite.setAnimation("Move"); 
+            ////this.sprite.setSprite(spriteToUse);
+            //this.sprite.setAnimation("Move"); 
 
         }
 
