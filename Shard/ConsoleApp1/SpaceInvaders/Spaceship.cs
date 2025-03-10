@@ -39,7 +39,10 @@ namespace SpaceInvaders
             //this.sprite.addSprite("player.png");
 
             //this.sprite.addSprite("player.png", "Static");
-            this.sprite.loadSpriteSheet("SpaceShip_Idle.png", "SpaceShip_Idle.json", "Idle");
+            //this.sprite.Animations["Idle"] =  Bootstrap.getAssetManager().loadSpriteSheet("SpaceShip_Idle.png", "SpaceShip_Idle.json", "Idle");
+
+            // store animations and pass them to the frames list 
+            this.sprite.addAnimationFrames("Idle", Bootstrap.getAssetManager().loadSpriteSheet("SpaceShip_Idle.png", "SpaceShip_Idle.json", "Idle"));
             this.sprite.setAnimation("Idle");
 
             if (sprite.getSprite() != null)

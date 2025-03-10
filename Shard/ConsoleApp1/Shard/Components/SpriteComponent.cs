@@ -156,121 +156,81 @@ namespace Shard.Shard.Components
             currentAnimation = "Idle"; // Default animation
         }
 
+        public Dictionary<string, List<Sprite>> Animations
+        {
+            get { return animations; }
+        }
+
         public override void initialize()
         {
             // Initialize any necessary components here (e.g., load initial sprite, etc.)
         }
 
+        //public override void update()
+        //{
+        //    if (animations.Count == 0 || !animations.ContainsKey(currentAnimation))
+        //        return;
+
+        //    List<Sprite> frames = animations[currentAnimation];
+        //    if (frames.Count == 0)
+        //        return;
+
+        //    // Update frame timer and switch frames if needed
+        //    frameTimer += Bootstrap.getDeltaTime();
+        //    if (frameTimer >= frameDuration)
+        //    {
+        //        frameTimer = 0;
+        //        currentFrameIndex = (currentFrameIndex + 1) % frames.Count; // Loop through frames
+        //        currentSprite = frames[currentFrameIndex];
+        //        owner.transform.Wid = currentSprite.getWidth();
+        //        owner.transform.Ht = currentSprite.getHeight();
+        //        owner.transform.recalculateCentre();
+        //    }
+
+        //    // Update position and draw the current sprite
+        //    currentSprite.setPosition(owner.transform.X, owner.transform.Y);
+        //    Bootstrap.getDisplay().addToDraw(currentSprite);
+        //}
+
         public override void update()
         {
-            if (animations.Count == 0 || !animations.ContainsKey(currentAnimation))
+            if (!animations.ContainsKey(currentAnimation) || animations[currentAnimation].Count == 0)
                 return;
 
             List<Sprite> frames = animations[currentAnimation];
-            if (frames.Count == 0)
-                return;
 
-            // Update frame timer and switch frames if needed
+            // Update the frame timer
             frameTimer += Bootstrap.getDeltaTime();
             if (frameTimer >= frameDuration)
             {
                 frameTimer = 0;
-                currentFrameIndex = (currentFrameIndex + 1) % frames.Count; // Loop through frames
+                currentFrameIndex = (currentFrameIndex + 1) % frames.Count;
                 currentSprite = frames[currentFrameIndex];
                 owner.transform.Wid = currentSprite.getWidth();
                 owner.transform.Ht = currentSprite.getHeight();
                 owner.transform.recalculateCentre();
             }
 
-            // Update position and draw the current sprite
-            currentSprite.setPosition(owner.transform.X, owner.transform.Y);
-            Bootstrap.getDisplay().addToDraw(currentSprite);
-        }
-
-        // Load the sprite sheet and process JSON to define animations
-        //public void loadSpriteSheet(string spriteSheetPath, string jsonFilePath)
-        //{
-        //    string spriteSheetAssetPath = Bootstrap.getAssetManager().getAssetPath(spriteSheetPath);
-        //    string jsonAssetPath = Bootstrap.getAssetManager().getAssetPath(jsonFilePath);
-
-        //    if (spriteSheetAssetPath == null || jsonAssetPath == null)
-        //        return;
-
-        //    Sprite spriteSheet = Bootstrap.getAssetManager().getSprite(spriteSheetAssetPath);
-        //    if (spriteSheet == null)
-        //        return;
-
-        //    // Load JSON data for animation frames
-        //    string json = File.ReadAllText(jsonAssetPath);
-        //    var spriteData = JsonConvert.DeserializeObject<SpriteSheetData>(json);
-
-        //    // Process animations and store them in the animations dictionary
-        //    foreach (var animation in spriteData.animations)
-        //    {
-        //        List<Sprite> frames = new List<Sprite>();
-        //        foreach (var frameData in animation.Value.frames)
-        //        {
-        //            // Create frames based on sprite sheet and frame data
-        //            Sprite frame = spriteSheet.getFrame(frameData.x, frameData.y, frameData.width, frameData.height);
-        //            frames.Add(frame);
-        //        }
-        //        animations[animation.Key] = frames; // Store frames for this animation
-        //    }
-        //}
-
-
-        public void loadSpriteSheet(string spriteSheetPath, string jsonFilePath, string defaultAnimationName = "Static")
-        {
-            string spriteSheetAssetPath = Bootstrap.getAssetManager().getAssetPath(spriteSheetPath);
-            string jsonAssetPath = Bootstrap.getAssetManager().getAssetPath(jsonFilePath);
-
-            if (spriteSheetAssetPath == null || jsonAssetPath == null)
-                return;
-
-            Sprite spriteSheet = Bootstrap.getAssetManager().getSprite(spriteSheetAssetPath);
-            if (spriteSheet == null)
-                return;
-
-            // Get the SDL surface pointer
-            IntPtr spriteSheetPtr = spriteSheet.getTexture();
-
-            // Load the JSON file as a string
-            string json = File.ReadAllText(jsonAssetPath);
-            var spriteData = JsonConvert.DeserializeObject<SpriteSheetData>(json);
-
-            // Check if the JSON contains animation data
-            if (spriteData.animations != null)
+            // Ensure the correct sprite is being drawn
+            if (currentSprite != null)
             {
-                // Process each animation (group of frames)
-                foreach (var animation in spriteData.animations)
-                {
-                    List<Sprite> frames = new List<Sprite>();
-                    foreach (var frameData in animation.Value.frames)
-                    {
-                        // Get the frame using the frame's position and size
-                        //Sprite frame = spriteSheet.getFrame(frameData.x, frameData.y, frameData.w, frameData.h);
-                        Sprite frame = Bootstrap.getAssetManager().extractSprite(spriteSheetPtr, frameData.x, frameData.y, frameData.w, frameData.h, spriteSheetPath + "_" + animation.Key + "_" + frameData.filename);
-                        frames.Add(frame);
-                    }
-                    animations[animation.Key] = frames; // Store frames under the animation name
-                }
-            }
-            else if (spriteData.frames != null)
-            {
-                // If no animations section exists, use the default animation name
-                List<Sprite> frames = new List<Sprite>();
-                foreach (var frameData in spriteData.frames)
-                {
-                    // Get the frame using the frame's position and size
-                    //Sprite frame = spriteSheet.getFrame(frameData.x, frameData.y, frameData.w, frameData.h);
-                    Sprite frame = Bootstrap.getAssetManager().extractSprite(spriteSheetPtr, frameData.x, frameData.y, frameData.w, frameData.h, spriteSheetPath + "_" + "_" + frameData.filename);
-                    frames.Add(frame);
-                }
-                animations[defaultAnimationName] = frames; // Store frames under the provided animation name (e.g., "Move" or "Idle")
+                currentSprite.setPosition(owner.transform.X, owner.transform.Y);
+                Bootstrap.getDisplay().addToDraw(currentSprite);
             }
         }
 
         // Set the current animation to be played
+        //public void setAnimation(string animationName)
+        //{
+        //    if (animations.ContainsKey(animationName))
+        //    {
+        //        currentAnimation = animationName;
+        //        currentFrameIndex = 0;
+        //        frameTimer = 0;
+        //        currentSprite = animations[animationName][currentFrameIndex];
+        //    }
+        //}
+
         public void setAnimation(string animationName)
         {
             if (animations.ContainsKey(animationName))
@@ -278,6 +238,7 @@ namespace Shard.Shard.Components
                 currentAnimation = animationName;
                 currentFrameIndex = 0;
                 frameTimer = 0;
+                currentSprite = animations[currentAnimation][0]; // Ensure this sets the correct sprite
             }
         }
 
@@ -315,7 +276,26 @@ namespace Shard.Shard.Components
         {
             return currentSprite;
         }
+
+        public void addAnimationFrames(string animationName, List<Sprite> frames)
+        {
+            if (!animations.ContainsKey(animationName))
+            {
+                animations[animationName] = new List<Sprite>();
+            }
+            animations[animationName].AddRange(frames);
+
+            // Set the first frame if no current animation is set
+            if (currentAnimation == null || currentAnimation == animationName)
+            {
+                currentAnimation = animationName;
+                currentFrameIndex = 0;
+                frameTimer = 0;
+                currentSprite = animations[currentAnimation][0];
+            }
+        }
     }
+
 
     //// Data model for parsing JSON
     //public class SpriteSheetData
@@ -348,13 +328,40 @@ namespace Shard.Shard.Components
         public List<FrameData> frames { get; set; }
     }
 
+    //public class FrameData
+    //{
+    //    public int x { get; set; }
+    //    public int y { get; set; }
+    //    public int w { get; set; }
+    //    public int h { get; set; }
+    //    public int duration { get; set; }
+    //    public string filename { get; set; }
+    //}
+
     public class FrameData
     {
-        public int x { get; set; }
-        public int y { get; set; }
-        public int w { get; set; }
-        public int h { get; set; }
-        public int duration { get; set; }
+        [JsonProperty("filename")]
         public string filename { get; set; }
+
+        [JsonProperty("duration")]
+        public int duration { get; set; }
+
+        [JsonProperty("frame")]
+        public FramePosition frame { get; set; } // New class to map nested object
+    }
+
+    public class FramePosition
+    {
+        [JsonProperty("x")]
+        public int x { get; set; }
+
+        [JsonProperty("y")]
+        public int y { get; set; }
+
+        [JsonProperty("w")]
+        public int w { get; set; }
+
+        [JsonProperty("h")]
+        public int h { get; set; }
     }
 }

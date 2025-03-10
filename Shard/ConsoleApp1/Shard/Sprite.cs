@@ -109,6 +109,15 @@ namespace Shard
             return this.MemberwiseClone();
         }
 
+        public void Dispose()
+        {
+            if (img != IntPtr.Zero)
+            {
+                SDL.SDL_DestroyTexture(img);
+                img = IntPtr.Zero;
+            }
+        }
+
         //public Sprite getFrame(int x, int y, int frameWidth, int frameHeight)
         //{
         //    // Get the renderer from DisplaySDL

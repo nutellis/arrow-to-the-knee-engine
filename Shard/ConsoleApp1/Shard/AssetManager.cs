@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using Newtonsoft.Json;
+using Shard.Shard.Components;
 
 namespace Shard
 {
@@ -124,13 +126,120 @@ namespace Shard
             }
         }
 
+        // Load the sprite sheet and process JSON to define animations
+        //public void loadSpriteSheet(string spriteSheetPath, string jsonFilePath)
+        //{
+        //    string spriteSheetAssetPath = Bootstrap.getAssetManager().getAssetPath(spriteSheetPath);
+        //    string jsonAssetPath = Bootstrap.getAssetManager().getAssetPath(jsonFilePath);
+
+        //    if (spriteSheetAssetPath == null || jsonAssetPath == null)
+        //        return;
+
+        //    Sprite spriteSheet = Bootstrap.getAssetManager().getSprite(spriteSheetAssetPath);
+        //    if (spriteSheet == null)
+        //        return;
+
+        //    // Load JSON data for animation frames
+        //    string json = File.ReadAllText(jsonAssetPath);
+        //    var spriteData = JsonConvert.DeserializeObject<SpriteSheetData>(json);
+
+        //    // Process animations and store them in the animations dictionary
+        //    foreach (var animation in spriteData.animations)
+        //    {
+        //        List<Sprite> frames = new List<Sprite>();
+        //        foreach (var frameData in animation.Value.frames)
+        //        {
+        //            // Create frames based on sprite sheet and frame data
+        //            Sprite frame = spriteSheet.getFrame(frameData.x, frameData.y, frameData.width, frameData.height);
+        //            frames.Add(frame);
+        //        }
+        //        animations[animation.Key] = frames; // Store frames for this animation
+        //    }
+        //}
+
+        public override List<Sprite> loadSpriteSheet(string spriteSheetName, string jsonFileName, string defaultAnimationName = "Static")
+        {
+            string jsonAssetPath = Bootstrap.getAssetManager().getAssetPath(jsonFileName);
+
+            Sprite spriteSheet = Bootstrap.getAssetManager().getSprite(spriteSheetName);
+            if (spriteSheet == null)
+                return null; 
+
+            IntPtr spriteSheetPtr = spriteSheet.getTexture();
+
+            string json = File.ReadAllText(jsonAssetPath);
+            var spriteData = JsonConvert.DeserializeObject<SpriteSheetData>(json);
+
+            if (spriteData.animations != null)
+            {
+                foreach (var animation in spriteData.animations)
+                {
+                    List<Sprite> frames = new List<Sprite>();
+                    //foreach (var frameData in animation.Value.frames)
+                    //{
+                    //    Sprite frame = Bootstrap.getAssetManager().extractSprite(spriteSheetPtr, frameData.x, frameData.y, frameData.w, frameData.h, spriteSheetName);
+                    //    frames.Add(frame);
+                    //}
+
+                    foreach (var frameData in spriteData.frames)
+                    {
+                        Sprite frame = Bootstrap.getAssetManager().extractSprite(
+                            spriteSheetPtr,
+                            frameData.frame.x,
+                            frameData.frame.y,
+                            frameData.frame.w,
+                            frameData.frame.h,
+                            spriteSheetName
+                        );
+                        frames.Add(frame);
+                    }
+
+                    //animations[animation.Key] = frames;
+                    return frames;
+                }
+            }
+            else if (spriteData.frames != null)
+            {
+                List<Sprite> frames = new List<Sprite>();
+                //foreach (var frameData in spriteData.frames)
+                //{
+                //    Sprite frame = Bootstrap.getAssetManager().extractSprite(spriteSheetPtr, frameData.x, frameData.y, frameData.w, frameData.h, spriteSheetName);
+                //    frames.Add(frame);
+                //}
+
+                foreach (var frameData in spriteData.frames)
+                {
+                    Console.WriteLine($"Extracting sprite: {frameData.frame.x}, {frameData.frame.y}, {frameData.frame.w}, {frameData.frame.h}");
+
+                    Sprite frame = Bootstrap.getAssetManager().extractSprite(
+                        spriteSheetPtr,
+                        frameData.frame.x,
+                        frameData.frame.y,
+                        frameData.frame.w,
+                        frameData.frame.h,
+                        spriteSheetName
+                    );
+
+                    Console.WriteLine($"Extracted sprite size: {frame.width}x{frame.height}");
+
+                    frames.Add(frame);
+                }
+
+
+                //animations[defaultAnimationName] = frames;
+                return frames;
+            }
+
+            return null;
+        }
+
         public override Sprite extractSprite(IntPtr spriteSheet, int startX, int startY, int width, int height, string spriteName)
         {
-            if (sprites.TryGetValue(spriteName, out Sprite value))
-            {
-                return (Sprite)value.Clone();
-            }
-            else
+            //if (sprites.TryGetValue(spriteName, out Sprite value))
+            //{
+            //    return (Sprite)value.Clone();
+            //}
+            //else
             {
 
                 SDL.SDL_LockSurface(spriteSheet); // Lock the surface before accessing pixels
@@ -193,7 +302,6 @@ namespace Shard
                 return (Sprite)newSprite.Clone();
             }
         }
-
 
     }
 }
