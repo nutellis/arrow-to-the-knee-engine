@@ -133,7 +133,7 @@ namespace Shard
             IntPtr spriteSheetPtr = spriteSheet.surface;
 
             string json = File.ReadAllText(jsonAssetPath);
-            //var spriteData = System.Text.Json.DeserializeObject<SpriteSheetData>(json);
+            var spriteData = JsonSerializer.Deserialize<SpriteSheetData>(json);
 
             if (spriteData.animations != null)
             {
