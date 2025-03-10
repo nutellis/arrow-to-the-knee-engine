@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using Newtonsoft.Json;
+using System.Text.Json;
 using Shard.Shard.Components;
 
 namespace Shard
@@ -133,7 +133,7 @@ namespace Shard
             IntPtr spriteSheetPtr = spriteSheet.surface;
 
             string json = File.ReadAllText(jsonAssetPath);
-            var spriteData = JsonConvert.DeserializeObject<SpriteSheetData>(json);
+            //var spriteData = System.Text.Json.DeserializeObject<SpriteSheetData>(json);
 
             if (spriteData.animations != null)
             {
