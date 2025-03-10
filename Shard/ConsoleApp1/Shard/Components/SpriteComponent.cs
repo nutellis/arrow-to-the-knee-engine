@@ -10,7 +10,7 @@ namespace Shard.Shard.Components
 {
     internal class SpriteComponent : BaseComponent
     {
-        private Sprite sprite; //reference to sprite object
+        public Sprite sprite; //reference to sprite object
         private List<Sprite> animationFrames; //replace sprite with animationFrames as teh default
         private int currentFrame;
         private double frameTimer;
@@ -30,12 +30,12 @@ namespace Shard.Shard.Components
         public override void update()
         {
             frameTimer += Bootstrap.getDeltaTime();
-            if (frameTimer >= frameDuration)
-            {
-                frameTimer = 0;
-                currentFrame = (currentFrame + 1) % animationFrames.Count;
-                sprite = animationFrames[currentFrame];
-            }
+            //if (frameTimer >= frameDuration)
+            //{
+            //    frameTimer = 0;
+            //    currentFrame = (currentFrame + 1) % animationFrames.Count;
+            //    sprite = animationFrames[currentFrame];
+            //}
 
             sprite.X = owner.transform.X;
             sprite.Y = owner.transform.Y;

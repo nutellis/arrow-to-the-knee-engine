@@ -5,7 +5,7 @@ namespace Shard
     public class Sprite: ICloneable
     {
         public string spriteName;
-        public IntPtr img;
+        public IntPtr img,surface;
         public float X, Y;
         public float rotz;
         public float scaleX = 1, scaleY = 1;

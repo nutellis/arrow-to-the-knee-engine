@@ -110,6 +110,7 @@ namespace Shard
                 newSprite.height = h;
                 newSprite.width = w;
                 newSprite.img = img;
+                newSprite.surface = loadedImage;
 
                 // i am not checking if the sprite or the img is null ( •̀ᴗ•́)و ☜╗(• ᴥ • ) good luck with the crash.
 

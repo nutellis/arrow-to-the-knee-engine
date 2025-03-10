@@ -26,7 +26,10 @@ namespace SpaceInvaders
             this.transform.Y = 800.0f;
 
             this.sprite = new SpriteComponent(this, false);
-            this.sprite.addSprite("player.png");
+
+            Sprite frame = Bootstrap.getAssetManager().getSprite("SpaceShip_Idle.png");
+            this.sprite.sprite = Bootstrap.getAssetManager().extractSprite(frame.surface, 0, 0, 32, 32, "spaceship_small");
+            
             
             fireDelay = 0.1;
             fireCounter = fireDelay;
