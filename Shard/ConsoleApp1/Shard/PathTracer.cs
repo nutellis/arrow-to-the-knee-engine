@@ -5,15 +5,16 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
 //To Do:
 /*
  * 1- Do not use grid , use the game objects to create the node system ##Done
- * 2- Make meaningful fucntions for the path tracer 
+ * 2- Make meaningful fucntions for the path tracer #inProgress
  * 3- Make the path tracer work with the game objects ##Done
- * 4- Make the class to singleton ##Done?mabey
+ * 4- Make the class to singleton ##Done
  * 
  */
 
@@ -26,7 +27,7 @@ namespace Shard
         private static readonly object padlock = new object();
 
         // Private constructor to prevent instantiation
-        private PathTracer() 
+        private PathTracer()
         {
 
         }
@@ -67,12 +68,14 @@ namespace Shard
         private List<Node> path;
         public List<Node> temp = new List<Node>();
         private Node[,] nodeMap;
+        private List<string> excludedTags;
+
 
         // Node class might later put it in a different file
         public class Node
         {
             public int minX, minY, maxX, maxY;
-            public int PosX, posY;
+            public int posX, posY;
             public int nodeWidth, nodeHeight;
             public bool walkable = true; // default value
             public struct isFilled()
@@ -88,7 +91,7 @@ namespace Shard
 
             public Node(int coordinateX, int coordinateY, Node parent = null)
             {
-                PosX = coordinateX;
+                posX = coordinateX;
                 posY = coordinateY;
                 Parent = parent;
                 G = parent != null ? parent.G + 1 : 0;
@@ -177,6 +180,15 @@ namespace Shard
                 }
             }
 
+        }
+
+        public bool CheckExcludedTags(string tag)
+        {
+            if (excludedTags.Contains(tag))
+            {
+                return true;
+            }
+            return false;
         }
         public void setGameObjectsToNodeMap()
         {
@@ -305,24 +317,24 @@ namespace Shard
             while (openList.Count > 0)
             {
                 Node current = openList.OrderBy(n => n.F).First();
-                if (current.PosX == goalNode.PosX && current.posY == goalNode.posY)
+                if (current.posX == goalNode.posX && current.posY == goalNode.posY)
                     return ReconstructPath(current);
 
                 openList.Remove(current);
-                closedList.Add((current.PosX, current.posY));
+                closedList.Add((current.posX, current.posY));
 
                 foreach (var direction in Directions)
                 {
-                    int newX = current.PosX + direction[0], newY = current.posY + direction[1];
+                    int newX = current.posX + direction[0], newY = current.posY + direction[1];
                     if (newX < 0 || newY < 0 || newX >= nodeMap.GetLength(0) || newY >= nodeMap.GetLength(1) || !nodeMap[newX, newY].walkable || closedList.Contains((newX, newY)))
                         continue;
 
                     Node neighbor = nodeMap[newX, newY];
                     neighbor.Parent = current;
                     neighbor.G = current.G + 1;
-                    neighbor.H = Math.Abs(newX - goalNode.PosX) + Math.Abs(newY - goalNode.posY);
+                    neighbor.H = Math.Abs(newX - goalNode.posX) + Math.Abs(newY - goalNode.posY);
 
-                    if (openList.Any(n => n.PosX == neighbor.PosX && n.posY == neighbor.posY && n.G <= neighbor.G))
+                    if (openList.Any(n => n.posX == neighbor.posX && n.posY == neighbor.posY && n.G <= neighbor.G))
                         continue;
 
                     openList.Add(neighbor);
@@ -394,7 +406,7 @@ namespace Shard
         {
             foreach (var node in path)
             {
-                Console.WriteLine(node.PosX + " " + node.posY);
+                Console.WriteLine(node.posX + " " + node.posY);
             }
         }
 
@@ -428,7 +440,7 @@ namespace Shard
             Console.WriteLine("The nodeMap for Debugging");
             debugPrintNodeMap();
             debugPrintGrid();
-             Console.WriteLine("The path for Debugging");
+            Console.WriteLine("The path for Debugging");
             debugPrintPath();
             Console.WriteLine("The path visual for Debugging");
             debugPrintPathVisual(path);
@@ -445,8 +457,12 @@ namespace Shard
         {
             path = CalculatePath(start, goal);
             debugPrintPathVisual(path);
-
+        }
+        public void excludingTags(List<string> tags)
+        { 
+        excludedTags = tags;
         }
 
-    }
+
+    }   
 }
