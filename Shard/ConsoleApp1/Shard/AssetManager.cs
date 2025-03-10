@@ -190,7 +190,7 @@ namespace Shard
                             frameData.frame.y,
                             frameData.frame.w,
                             frameData.frame.h,
-                            spriteSheetName
+                            frameData.filename
                         );
                         frames.Add(frame);
                     }
@@ -208,8 +208,10 @@ namespace Shard
                 //    frames.Add(frame);
                 //}
 
+                int counter = 0;
                 foreach (var frameData in spriteData.frames)
                 {
+                    counter++;
                     Console.WriteLine($"Extracting sprite: {frameData.frame.x}, {frameData.frame.y}, {frameData.frame.w}, {frameData.frame.h}");
 
                     Sprite frame = Bootstrap.getAssetManager().extractSprite(
@@ -218,7 +220,7 @@ namespace Shard
                         frameData.frame.y,
                         frameData.frame.w,
                         frameData.frame.h,
-                        spriteSheetName
+                        frameData.filename
                     );
                     
                     if (frame != null)
@@ -246,13 +248,85 @@ namespace Shard
             return null;
         }
 
+        //public override Sprite extractSprite(IntPtr spriteSheet, int startX, int startY, int width, int height, string spriteName)
+        //{
+        //    //if (sprites.TryGetValue(spriteName, out Sprite value))
+        //    //{
+        //    //    return (Sprite)value.Clone();
+        //    //}
+        //    //else
+        //    {
+
+        //        SDL.SDL_LockSurface(spriteSheet); // Lock the surface before accessing pixels
+
+        //        // get surface properties
+        //        SDL.SDL_Surface surface = Marshal.PtrToStructure<SDL.SDL_Surface>(spriteSheet);
+
+        //        // do some checks before allocating more memory
+        //        if (startX + width > surface.w || startY + height > surface.h)
+        //        {
+        //            Debug.getInstance().log("Sprite extraction out of bounds");
+        //            return null;
+        //        }
+
+        //        SDL.SDL_PixelFormat pixelFormat = Marshal.PtrToStructure<SDL.SDL_PixelFormat>(surface.format);
+
+        //        int bytesPerPixel = pixelFormat.BytesPerPixel;
+        //        int pitch = surface.pitch;
+
+        //        byte[] spritePixels = new byte[width * height * bytesPerPixel];
+
+        //        unsafe
+        //        {
+        //            byte* pixels = (byte*)surface.pixels;
+
+        //            for (int y = 0; y < height; y++)
+        //            {
+        //                int srcIndex = ((startY + y) * pitch) + (startX * bytesPerPixel);
+        //                int destIndex = y * width * bytesPerPixel;
+
+        //                for (int x = 0; x < width * bytesPerPixel; x++)
+        //                {
+        //                    spritePixels[destIndex + x] = pixels[srcIndex + x];
+        //                }
+        //            }
+        //        }
+
+        //        SDL.SDL_UnlockSurface(spriteSheet); // Unlock the surface
+
+        //        IntPtr img = IntPtr.Zero;
+        //        uint format;
+        //        int access;
+        //        int w;
+        //        int h;
+
+        //        var result = Bootstrap.getDisplay().loadTextureFromPixels(spritePixels, width, height);
+
+        //        SDL.SDL_QueryTexture(result.Item1, out format, out access, out w, out h);
+
+        //        Sprite newSprite = new Sprite(spriteName);
+
+        //        newSprite.height = h;
+        //        newSprite.width = w;
+        //        newSprite.texture = result.Item1;
+        //        newSprite.surface = result.Item2;
+
+        //        // same. No null checks for us here 〵(″⚈╭╮⚈)ノ
+
+        //        sprites[spriteName] = newSprite;
+
+        //        return (Sprite)newSprite.Clone();
+        //    }
+        //}
+
         public override Sprite extractSprite(IntPtr spriteSheet, int startX, int startY, int width, int height, string spriteName)
         {
-            //if (sprites.TryGetValue(spriteName, out Sprite value))
-            //{
-            //    return (Sprite)value.Clone();
-            //}
-            //else
+
+            if (sprites.TryGetValue(spriteName, out Sprite value))
+            {
+                return (Sprite)value.Clone();
+            }
+            else
             {
 
                 SDL.SDL_LockSurface(spriteSheet); // Lock the surface before accessing pixels
@@ -274,6 +348,7 @@ namespace Shard
 
                 byte[] spritePixels = new byte[width * height * bytesPerPixel];
 
+                int iterationCount = 0;
                 unsafe
                 {
                     byte* pixels = (byte*)surface.pixels;
@@ -285,31 +360,34 @@ namespace Shard
 
                         for (int x = 0; x < width * bytesPerPixel; x++)
                         {
-                            spritePixels[destIndex + x] = pixels[srcIndex + x];
+                            iterationCount++;
+                            if (srcIndex + x < surface.h * pitch && destIndex + x < spritePixels.Length)
+                            {
+                                spritePixels[destIndex + x] = pixels[srcIndex + x];
+                            }
+                            else
+                            {
+                                Debug.getInstance().log($"Index out of bounds during sprite extraction: srcIndex={srcIndex}, destIndex={destIndex}, x={x}, surface.h={surface.h}, pitch={pitch}, spritePixels.Length={spritePixels.Length}");
+                                SDL.SDL_UnlockSurface(spriteSheet);
+                                return null;
+                            }
                         }
                     }
                 }
 
                 SDL.SDL_UnlockSurface(spriteSheet); // Unlock the surface
 
-                IntPtr img = IntPtr.Zero;
-                uint format;
-                int access;
-                int w;
-                int h;
-
                 var result = Bootstrap.getDisplay().loadTextureFromPixels(spritePixels, width, height);
 
-                SDL.SDL_QueryTexture(result.Item1, out format, out access, out w, out h);
+                SDL.SDL_QueryTexture(result.Item1, out uint format, out int access, out int w, out int h);
 
-                Sprite newSprite = new Sprite(spriteName);
-
-                newSprite.height = h;
-                newSprite.width = w;
-                newSprite.texture = result.Item1;
-                newSprite.surface = result.Item2;
-
-                // same. No null checks for us here 〵(″⚈╭╮⚈)ノ
+                Sprite newSprite = new Sprite(spriteName)
+                {
+                    height = h,
+                    width = w,
+                    texture = result.Item1,
+                    surface = result.Item2
+                };
 
                 sprites[spriteName] = newSprite;
 
