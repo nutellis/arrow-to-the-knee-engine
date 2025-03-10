@@ -76,7 +76,7 @@ namespace Shard
         }
 
         public abstract IntPtr loadTexture(IntPtr loadedImage);
-        public abstract IntPtr loadTextureFromPixels(byte[] pixelArray, int width, int height);
+        public abstract (IntPtr, IntPtr) loadTextureFromPixels(byte[] pixelArray, int width, int height);
 
 
         public int getHeight()

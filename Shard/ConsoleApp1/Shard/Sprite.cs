@@ -6,7 +6,8 @@ namespace Shard
     public class Sprite: ICloneable
     {
         public string path;
-        public IntPtr img;
+        public IntPtr surface;
+        public IntPtr texture;
         public float X, Y;
         public float rotz;
         public float scaleX = 1, scaleY = 1;
@@ -29,7 +30,7 @@ namespace Shard
             Sprite loadedSprite = Bootstrap.getAssetManager().getSprite(assetPath);
             if (loadedSprite != null)
             {
-                this.img = loadedSprite.img;
+                this.texture = loadedSprite.texture;
                 this.width = loadedSprite.getWidth();
                 this.height = loadedSprite.getHeight();
             }
@@ -58,7 +59,7 @@ namespace Shard
 
         public IntPtr getTexture()
         {
-            return img;
+            return texture;
         }
 
         //Change scale of sprite
@@ -111,10 +112,10 @@ namespace Shard
 
         public void Dispose()
         {
-            if (img != IntPtr.Zero)
+            if (texture != IntPtr.Zero)
             {
-                SDL.SDL_DestroyTexture(img);
-                img = IntPtr.Zero;
+                SDL.SDL_DestroyTexture(texture);
+                texture = IntPtr.Zero;
             }
         }
 

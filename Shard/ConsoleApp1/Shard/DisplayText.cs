@@ -242,7 +242,7 @@ namespace Shard
             throw new NotImplementedException();
         }
 
-        public override nint loadTextureFromPixels(byte[] pixelArray, int width, int height)
+        public override (IntPtr, IntPtr) loadTextureFromPixels(byte[] pixelArray, int width, int height)
         {
             throw new NotImplementedException();
         }

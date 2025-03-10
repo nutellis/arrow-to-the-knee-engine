@@ -116,7 +116,8 @@ namespace Shard
 
                 newSprite.height = h;
                 newSprite.width = w;
-                newSprite.img = img;
+                newSprite.texture = img;
+                newSprite.surface = loadedImage;
 
                 // i am not checking if the sprite or the img is null ( •̀ᴗ•́)و ☜╗(• ᴥ • ) good luck with the crash.
 
@@ -165,7 +166,7 @@ namespace Shard
             if (spriteSheet == null)
                 return null; 
 
-            IntPtr spriteSheetPtr = spriteSheet.getTexture();
+            IntPtr spriteSheetPtr = spriteSheet.surface;
 
             string json = File.ReadAllText(jsonAssetPath);
             var spriteData = JsonConvert.DeserializeObject<SpriteSheetData>(json);
@@ -219,10 +220,22 @@ namespace Shard
                         frameData.frame.h,
                         spriteSheetName
                     );
+                    
+                    if (frame != null)
+                    {
+                        Console.WriteLine($"Extracted sprite size: {frame.width}x{frame.height}");
 
-                    Console.WriteLine($"Extracted sprite size: {frame.width}x{frame.height}");
+                        frames.Add(frame);
+                    }
+                    else
+                    {
+                        //TODO @Christos it will crash later if frame is null 
+  
+                        Environment.FailFast("do something and dont crash( ._.) /\\(._. ) \n Remove this message after the fix\n");
 
-                    frames.Add(frame);
+                        //do something and dont crash( ._.) /\(._. )
+                    }
+
                 }
 
 
@@ -285,15 +298,16 @@ namespace Shard
                 int w;
                 int h;
 
-                img = Bootstrap.getDisplay().loadTextureFromPixels(spritePixels, width, height);
+                var result = Bootstrap.getDisplay().loadTextureFromPixels(spritePixels, width, height);
 
-                SDL.SDL_QueryTexture(img, out format, out access, out w, out h);
+                SDL.SDL_QueryTexture(result.Item1, out format, out access, out w, out h);
 
                 Sprite newSprite = new Sprite(spriteName);
 
                 newSprite.height = h;
                 newSprite.width = w;
-                newSprite.img = img;
+                newSprite.texture = result.Item1;
+                newSprite.surface = result.Item2;
 
                 // same. No null checks for us here 〵(″⚈╭╮⚈)ノ
 
