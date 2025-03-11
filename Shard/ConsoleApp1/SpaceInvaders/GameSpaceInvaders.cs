@@ -56,7 +56,7 @@ namespace Shard
             }
             animCounter += (float)Bootstrap.getDeltaTime();
 
-            PathTracer.getInstance.findPath(((int)Ai.transform.X, (int)Ai.transform.Y), ((int)ship.transform.X, (int)ship.transform.Y));
+            //PathTracer.getInstance.findPath(((int)Ai.transform.X, (int)Ai.transform.Y), ((int)ship.transform.X, (int)ship.transform.Y));
 
             //Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
 
@@ -127,12 +127,7 @@ namespace Shard
 
             ship = new Spaceship();
             ship.initialize();
-            Ai = new Invader();
-            Ai.transform.X = 1;
-            Ai.transform.Y = 1;
 
-            Ai.Tags.addTag("AI");
-            PathTracer.getInstance.initialize(16, 16);
 
 
             int ymod = 0;
@@ -161,6 +156,12 @@ namespace Shard
 
             moveDir = 1;
             Xdir = 35;
+
+            Ai = new Invader();
+            Ai.transform.X = 1;
+            Ai.transform.Y = 1;
+            Ai.Tags.addTag("AI");
+            PathTracer.getInstance.initialize(16, 16);
 
             // Finally, four bunkers
 

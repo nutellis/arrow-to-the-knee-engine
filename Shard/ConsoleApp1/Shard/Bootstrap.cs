@@ -267,17 +267,6 @@ namespace Shard
                 physDebug = true;
             }
 
-            // Debugging Pathtracer
-
-           
-            //tracer = PathTracer.getInstance;
-            //tracer.testRun(16, 16, (0,0), (Bootstrap.getDisplay().getHeight(), Bootstrap.getDisplay().getWidth()));
-            //Console.WriteLine("Test Run 0");
-            //tracer.testRun(16, 16, (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()), (0,0));
-            //Console.WriteLine("Test Run 1");
-            //Console.WriteLine("Test Run End");
-            //////////////
-
             while (true)
             {
                
@@ -289,14 +278,12 @@ namespace Shard
                 // Clear the screen.
                 Bootstrap.getDisplay().clearDisplay();
 
-                if(frames % 1 == 0)
-                {
 
-                    //tracer.initialize(16, 16);
-                    //tracer.findPath((100, 100), (720, 600));
-                    
-                }
-  
+                // Debuging PathTracer
+                PathTracer.getInstance.initialize(16, 16);
+                PathTracer.getInstance.findPath((100, 100), (720, 600));   
+
+                
                 // Update 
                 runningGame.update();
                 // Input
