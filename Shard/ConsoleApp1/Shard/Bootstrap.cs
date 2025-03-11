@@ -299,8 +299,8 @@ namespace Shard
                     //tracer.findPath((0, 0), (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()));
                     //tracer.FindPath((0, 0), (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()));
                     //tracer.debugPrintPathVisual();
-                    tracer.initialize(16, 16);
-                    tracer.findPath((100, 100), (520, 600));
+                    //tracer.initialize(16, 16);
+                    //tracer.findPath((100, 100), (520, 600));
 
                 }
   

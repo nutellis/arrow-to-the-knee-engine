@@ -13,7 +13,7 @@ using System;
 
 namespace Shard
 {
-    class GameObject
+    public class GameObject 
     {
         public Guid uuid;
         protected Tags tags;

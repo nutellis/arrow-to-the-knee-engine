@@ -455,6 +455,29 @@ namespace Shard
             subGridOrigin.Item1 = Math.Clamp(subGridOrigin.Item1, 0, nodeMap.GetLength(0) - windowSize);
             subGridOrigin.Item2 = Math.Clamp(subGridOrigin.Item2, 0, nodeMap.GetLength(1) - windowSize);
         }
+        public void setNodeMap(GameObject gameObject)
+        {
+            int numNodesX = 10;
+            int numNodesY = 10;
+
+            int objectNodeX = (int)(gameObject.transform.X / nodeWidth);
+            int objectNodeY = (int)(gameObject.transform.Y / nodeHeight);
+
+            int startX = Math.Max(objectNodeX - numNodesX / 2, 0);
+            int startY = Math.Max(objectNodeY - numNodesY / 2, 0);
+            int endX = Math.Min(objectNodeX + numNodesX / 2, displayWidth / nodeWidth - 1);
+            int endY = Math.Min(objectNodeY + numNodesY / 2, displayHeight / nodeHeight - 1);
+
+            nodeMap = new Node[endX - startX + 1, endY - startY + 1];
+
+            for (int i = startX; i <= endX; i++)
+            {
+                for (int j = startY; j <= endY; j++)
+                {
+                    nodeMap[i - startX, j - startY] = new Node(i, j);
+                }
+            }
+        }
 
 
 
