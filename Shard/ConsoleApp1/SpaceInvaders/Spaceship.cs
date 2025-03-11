@@ -74,17 +74,25 @@ namespace SpaceInvaders
 
             sound = new SoundComponent(this);
             sound.loadSound("SpaceShipAttack", "fire.wav");
+<<<<<<< Updated upstream
             sound.loadSound("BackgroundMusic", "background.wav");
+=======
+            //sound.loadSound("BackgroundMusic", "background.wav");
+            sound.setVolume("SpaceShipMove", 1f);
+>>>>>>> Stashed changes
             sound.loadSound("SpaceShipMove", "spaceshipmove.wav");
             sound.loadSound("BackgroundEngine", "spaceshipengine.wav");
 
+<<<<<<< Updated upstream
 
             sound.setVolume("BackgroundMusic", 0.1f);
             //sound.playSoundOnRepeat("BackgroundMusic");
             //sound.playSoundOnRepeat("BackgroundEngine");
+=======
+            //sound.setVolume("BackgroundMusic", 0.1f);
+>>>>>>> Stashed changes
 
         }
-
 
         public void moveVertical(float value)
         {
@@ -132,6 +140,7 @@ namespace SpaceInvaders
 
             fireCounter = 0;
 
+            sound.setVolume("SpaceShipAttack", 0.1f);
             sound.playSound("SpaceShipAttack");
         }
 
@@ -235,24 +244,42 @@ namespace SpaceInvaders
 
             base.update();
 
+<<<<<<< Updated upstream
             checkMovementSound();
+=======
+
+            if (isMoving.Equals((false, false)))
+            {
+                sound.stopSound("SpaceShipMove");
+            } else {
+                sound.playSound("SpaceShipMove");
+            }
+>>>>>>> Stashed changes
             //Console.WriteLine("Move Value: " + moveValue);
         }
 
-        public void onCollisionEnter(PhysicsComponent x)
+        public void onCollisionEnter(PhysicsComponent other)
         {
-
         }
 
         public void onCollisionExit(PhysicsComponent x)
         {
 
             physics.DebugColor = Color.Green;
+            if (x.Owner.Tags.checkTag("BunkerBit"))
+            {
+                SoundManager.getInstance().playSound("Music", true);
+            }
         }
 
         public void onCollisionStay(PhysicsComponent x)
         {
             physics.DebugColor = Color.Blue;
+            if(x.Owner.Tags.checkTag("BunkerBit"))
+            {
+                sound.stopAllComponentSounds(sound.GetLoadedSoundNames());
+                //SoundManager.getInstance().stopAllSounds();
+            }
         }
 
         public override string ToString()

@@ -11,6 +11,11 @@ namespace Shard.Shard.Components
         private string currentSound;
         private bool loop;
 
+        public List<string> GetLoadedSoundNames()
+        {
+            return new List<string>(loadedSounds.Keys);
+        }
+
         public SoundComponent(GameObject owner) : base(owner)
         {
             // Empty constructor for adding multiple sounds later
@@ -70,9 +75,20 @@ namespace Shard.Shard.Components
             }
         }
 
-        public void stopAllSounds()
+        public void stopAllComponentSounds(List<string> soundsNameList)
         {
+<<<<<<< Updated upstream
             SoundManager.getInstance().stopAllSounds();
+=======
+            foreach (var soundName in soundsNameList)
+            {
+                if (loadedSounds.ContainsKey(soundName))
+                {
+                    SoundManager.getInstance().stopSound(soundName);
+                    Debug.Log("Stopping sound: " + soundName);
+                }
+            }
+>>>>>>> Stashed changes
         }
 
         public void setVolume(string soundName, float volume)

@@ -27,10 +27,12 @@ namespace Shard
             if (ship == null || ship.ToBeDestroyed == true)
             {
                 return false;
+            }else if(livingInvaders.Count <= 0)
+            {
+                return false;
             }
 
             return true;
-
         }
         public override void update()
         {
@@ -41,6 +43,9 @@ namespace Shard
 
             if (isRunning() == false)
             {
+                // Disable All Sounds
+                SoundManager.getInstance().stopAllSounds();
+
                 Color col = Color.FromArgb(rand.Next(0, 256), rand.Next(0, 256), rand.Next(0, 256));
                 if (livingInvaders.Count <= 0)
                 {
@@ -102,7 +107,7 @@ namespace Shard
                     }
                 }
 
-                Debug.Log("Living invaders " + livingInvaders.Count);
+                //Debug.Log("Living invaders " + livingInvaders.Count);
 
                 if (livingInvaders.Count > 0)
                 {
@@ -113,6 +118,7 @@ namespace Shard
                     // Pick a random invader to fire.
                     livingInvaders[rand.Next(livingInvaders.Count)].fire();
                 }
+
             }
 
         }
@@ -195,9 +201,11 @@ namespace Shard
             myInvaders = new Invader[rows, columns];
             createObjects();
 
-            Debug.Log("Bing!");
+            //Debug.Log("Bing!");
 
-
+            SoundManager.getInstance().loadSound("Music", "space_chords.wav");
+            SoundManager.getInstance().setVolume("Music", 0.2f);
+            SoundManager.getInstance().playSound("Music", true);
         }
 
         public void handleInput(InputEvent inp, string eventType)

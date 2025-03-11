@@ -11,8 +11,14 @@ namespace Shard.Shard
     internal class SoundManager
     {
         private static SoundManager me;
+<<<<<<< Updated upstream
         private List<(string name, IntPtr sound)> soundLibrary;
         private Dictionary<string, int> soundChannels; // Store sound -> channel mapping
+=======
+        public Dictionary<string, Sound> soundLibrary;
+
+        private Dictionary<string, int> occupiedChannels; // Store sound -> channel mapping
+>>>>>>> Stashed changes
 
         private SoundManager()
         {
@@ -172,12 +178,17 @@ namespace Shard.Shard
             if (soundChannels.TryGetValue(soundName, out int channel))
             {
                 SDL_mixer.Mix_HaltChannel(channel);
+<<<<<<< Updated upstream
                 soundChannels.Remove(soundName); // Remove from tracking
                 Console.WriteLine($"Stopped sound {soundName} on channel {channel}");
             }
             else
             {
                 Console.WriteLine($"Sound {soundName} is not currently playing.");
+=======
+                occupiedChannels.Remove(soundName); // Remove from tracking
+                Debug.Log("Stopping sound: " + soundName);
+>>>>>>> Stashed changes
             }
         }
     }

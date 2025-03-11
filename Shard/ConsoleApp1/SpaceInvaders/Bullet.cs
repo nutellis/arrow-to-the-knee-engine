@@ -34,6 +34,8 @@ namespace SpaceInvaders
 
             physics.PassThrough = true;
 
+            sound.loadSound("GotHit", "hit.wav");
+
         }
 
         public override void initialize()
@@ -44,10 +46,6 @@ namespace SpaceInvaders
             this.Transient = true;
 
             tags = new Tags();
-
-            sound.loadSound("GotHit", "hit.wav");
-            sound.loadSound("BunkerExplosion", "bunkerexplosion.wav");
-            sound.setVolume("BunkerExplosion", 1.0f);
         }
 
 
@@ -77,19 +75,23 @@ namespace SpaceInvaders
 
             if (ToBeDestroyed) return;
 
-            if (other.Owner.Tags != null && (other.Owner.Tags.checkTag(destroyTag) || other.Owner.Tags.checkTag("BunkerBit")))
-            {
-                ToBeDestroyed = true;
-                other.Owner.ToBeDestroyed = true;
+            //if (other.Owner.Tags != null && (other.Owner.Tags.checkTag(destroyTag) || other.Owner.Tags.checkTag("BunkerBit")))
+            //{
+            //    ToBeDestroyed = true;
+            //    //other.Owner.ToBeDestroyed = true;
 
-                sound.playSound("BunkerExplosion");
+            //    if(other.Owner.Tags.checkTag("Invader"))
+            //    {
+            //        sound.setVolume("GotHit", 0.1f);    
+            //        sound.playSound("GotHit");
+            //    }
 
-                if (other.Owner.Tags.checkTag("Player"))
-                {
-                    g = (GameSpaceInvaders)Bootstrap.getRunningGame();
-                    g.Dead = true;
-                }
-            }
+            //    if (other.Owner.Tags.checkTag("Player"))
+            //    {
+            //        //g = (GameSpaceInvaders)Bootstrap.getRunningGame();
+            //        //g.Dead = true;
+            //    }
+            //}
         }
 
         public void onCollisionExit(PhysicsComponent x)
