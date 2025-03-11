@@ -173,8 +173,8 @@ namespace Shard
 
         public void setNodeMap(GameObject gameObject)
         {
-            int numNodesX = 10;  
-            int numNodesY = 10; 
+            int numNodesX = 30;  
+            int numNodesY = 30; 
 
             int objectNodeX = (int)(gameObject.transform.X / nodeWidth);
             int objectNodeY = (int)(gameObject.transform.Y / nodeHeight);

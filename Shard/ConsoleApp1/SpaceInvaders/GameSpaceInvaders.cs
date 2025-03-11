@@ -55,6 +55,7 @@ namespace Shard
             }
             animCounter += (float)Bootstrap.getDeltaTime();
 
+            Ai.navigation.goalPosition = ((int)ship.transform.X, (int)ship.transform.Y);
             //Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
             if (animCounter > timeToSwap)
             {

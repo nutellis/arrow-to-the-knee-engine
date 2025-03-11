@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpaceInvaders;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -32,8 +33,13 @@ namespace Shard.Shard.Components
             }
             else
             {
-                if(owner.transform.X != goalPosition.x && owner.transform.Y != goalPosition.y)
+                //if(owner.transform.X != goalPosition.x && owner.transform.Y != goalPosition.y)
+                
+                   
                     moveTowardsGoal(goalPosition);
+
+                
+                    
             }
         }
 
