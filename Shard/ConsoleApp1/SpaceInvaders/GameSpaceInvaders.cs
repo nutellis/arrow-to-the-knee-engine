@@ -19,7 +19,7 @@ namespace Shard
         private List<Invader> livingInvaders;
         private Random rand;
         private GameObject ship;
-        private GameObject Ai;
+        private Invader Ai;
         public int Xdir { get => xdir; set => xdir = value; }
         public bool Dead { get => dead; set => dead = value; }
 
@@ -56,7 +56,7 @@ namespace Shard
             animCounter += (float)Bootstrap.getDeltaTime();
 
             //Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
-            PathTracer.getInstance.findPath(((int)Ai.transform.X, (int)Ai.transform.Y), ((int)ship.transform.X, (int)ship.transform.Y));
+            PathTracer.getInstance.findPath(Ai, ((int)ship.transform.X, (int)ship.transform.Y));
             if (animCounter > timeToSwap)
             {
                 animCounter -= timeToSwap;
@@ -125,12 +125,13 @@ namespace Shard
             Ai = new Invader();
             Ai.transform.X = 1;
             Ai.transform.Y = 1;
-            PathTracer.getInstance.initialize(8,8);
-            PathTracer.getInstance.findPath(((int)Ai.transform.X,(int)Ai.transform.Y), ((int)ship.transform.X,(int)ship.transform.Y));
+            PathTracer.getInstance.initialize(16,16);
+
+            Ai.navigation.moveTowardsGoal(((int)ship.transform.X,(int)ship.transform.Y));
             SpriteManager.getInstance().loadSpriteSheet("spaceship_Spritesheet", "SpaceShip_Idle.png", "animations.json");
 
-            ship = new Spaceship();
-            ship.initialize();
+            //ship = new Spaceship();
+            //ship.initialize();
 
            
             int ymod = 0;

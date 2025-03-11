@@ -171,19 +171,30 @@ namespace Shard
             transformGameObjectsToGrid();
         }
 
-        public void setNodeMap()
+        public void setNodeMap(GameObject gameObject)
         {
-            nodeMap = new Node[displayWidth / nodeWidth, displayHeight / nodeHeight];
-            for (int i = 0; i < displayWidth / nodeWidth; i++)
+            int numNodesX = 10;  
+            int numNodesY = 10; 
+
+            int objectNodeX = (int)(gameObject.transform.X / nodeWidth);
+            int objectNodeY = (int)(gameObject.transform.Y / nodeHeight);
+
+            // Define the bounds of the node map
+            int startX = Math.Max(objectNodeX - numNodesX / 2, 0);
+            int startY = Math.Max(objectNodeY - numNodesY / 2, 0);
+            int endX = Math.Min(objectNodeX + numNodesX / 2, displayWidth / nodeWidth - 1);
+            int endY = Math.Min(objectNodeY + numNodesY / 2, displayHeight / nodeHeight - 1);
+
+            // Create the node map for this limited region
+            nodeMap = new Node[endX - startX + 1, endY - startY + 1];
+
+            for (int i = startX; i <= endX; i++)
             {
-                for (int j = 0; j < displayHeight / nodeHeight; j++)
+                for (int j = startY; j <= endY; j++)
                 {
-                    Node node = new Node(i, j);
-                    node.setNodeInfo(i * nodeWidth, j * nodeHeight, nodeWidth, nodeHeight);
-                    nodeMap[i, j] = node;
+                    nodeMap[i - startX, j - startY] = new Node(i, j);
                 }
             }
-
         }
 
         public bool CheckExcludedTags(string tag)
@@ -194,36 +205,48 @@ namespace Shard
             }
             return false;
         }
-        public void setGameObjectsToNodeMap()
+        public void setGameObjectsToNodeMap(GameObject ownerObject)
         {
             // Assuming Bootstrap.getGameObjects() returns a list of game objects with X and Y properties  
             List<GameObject> gameObjects = GameObjectManager.getInstance().getMyObject();
+
+            int nodeMapWidth = nodeMap.GetLength(0);
+            int nodeMapHeight = nodeMap.GetLength(1);
+
             foreach (var gameObject in gameObjects)
             {
-                if (gameObject is Bullet)
+                if (gameObject is Bullet || gameObject is Invader || gameObject.Tags.checkTag("ignore"))
                 {
                     continue;
                 }
-                int x = (int)gameObject.transform.X;
-                int y = (int)gameObject.transform.Y;
-                int width = (int)gameObject.transform.Wid;
-                int height = (int)gameObject.transform.Ht;
-                for (int i = x; i < x + width; i++)
+
+                // Convert object bounds to node coordinates
+                int minNodeX = Math.Max((int)(gameObject.transform.X / nodeWidth), 0);
+                int minNodeY = Math.Max((int)(gameObject.transform.Y / nodeHeight), 0);
+                int maxNodeX = Math.Min((int)((gameObject.transform.X + gameObject.transform.Wid) / nodeWidth), nodeMapWidth - 1);
+                int maxNodeY = Math.Min((int)((gameObject.transform.Y + gameObject.transform.Ht) / nodeHeight), nodeMapHeight - 1);
+
+                // **Skip this object if it's completely outside the node map**
+                if (minNodeX > nodeMapWidth - 1 || minNodeY > nodeMapHeight - 1 || maxNodeX < 0 || maxNodeY < 0)
                 {
-                    for (int j = y; j < y + height; j++)
+                    continue;
+                }
+
+                // Iterate only within the object’s node-space bounds
+                for (int i = minNodeX; i <= maxNodeX; i++)
+                {
+                    for (int j = minNodeY; j <= maxNodeY; j++)
                     {
-                        int posX = i / nodeWidth;
-                        int posY = j / nodeHeight;
-                        nodeMap[posX, posY].setWalkable(false);
-                        nodeMap[posX, posY].setFilled(i, j);
+                        nodeMap[i, j].setWalkable(false);
+                        nodeMap[i, j].setFilled(i * nodeWidth, j * nodeHeight);
                     }
                 }
             }
         }
-        public void transformWorldToNodeMap()
+        public void transformWorldToNodeMap(GameObject gameObject)
         {
-            setNodeMap();
-            setGameObjectsToNodeMap();
+            setNodeMap(gameObject);
+            setGameObjectsToNodeMap(gameObject);
         }
         // A little bit of a mess, works best in squere shapes, need to be checked for other shapes
         // This function was used to transform the grid to the nodeMap
@@ -280,72 +303,144 @@ namespace Shard
             }
         }
 
-        public List<Node> CalculatePath((int, int) start, (int, int) goal)
+        public List<Node> CalculatePath3(GameObject gameObject, (int, int) goal)
         {
-            int startX, startY, goalX, goalY;
+            int nodeMapWidth = nodeMap.GetLength(0);
+            int nodeMapHeight = nodeMap.GetLength(1);
 
-            // This need fixing, cuz right now it only checks if its the last node
-            // I might need to check other wierd cases that might make it go out of bounds
-            if (start.Item1 == displayWidth || start.Item2 == displayHeight)
-            {
-                startX = (start.Item1 / nodeWidth) - 1;
-                startY = (start.Item2 / nodeHeight) - 1;
-            }
-            else
-            {
-                startX = start.Item1 / nodeWidth;
-                startY = start.Item2 / nodeHeight;
-            }
-            if (goal.Item1 == displayWidth || goal.Item2 == displayHeight)
-            {
-                goalX = (goal.Item1 / nodeWidth) - 1;
-                goalY = (goal.Item2 / nodeHeight) - 1;
-            }
-            else
-            {
-                goalX = goal.Item1 / nodeWidth;
-                goalY = goal.Item2 / nodeHeight;
-            }
-
-
-            List<Node> openList = new List<Node>();
-            HashSet<(int, int)> closedList = new HashSet<(int, int)>();
-
-            // I hard coded the the transformation of the start and goal to the nodeMap
-            // I need to fix this later
+            int startX = Math.Clamp((int)(gameObject.transform.X / nodeWidth), 0, nodeMapWidth - 1);
+            int startY = Math.Clamp((int)(gameObject.transform.Y / nodeHeight), 0, nodeMapHeight - 1);
+            int goalX = Math.Clamp(goal.Item1 / nodeWidth, 0, nodeMapWidth - 1);
+            int goalY = Math.Clamp(goal.Item2 / nodeHeight, 0, nodeMapHeight - 1);
 
             Node startNode = nodeMap[startX, startY];
             Node goalNode = nodeMap[goalX, goalY];
-            openList.Add(startNode);
+
+            PriorityQueue<Node, int> openList = new PriorityQueue<Node, int>();
+            HashSet<(int, int)> closedList = new HashSet<(int, int)>();
+
+            startNode.G = 0;
+            startNode.H = Math.Abs(startX - goalX) + Math.Abs(startY - goalY);
+            openList.Enqueue(startNode, startNode.F);
 
             while (openList.Count > 0)
             {
-                Node current = openList.OrderBy(n => n.F).First();
-                if (current.posX == goalNode.posX && current.posY == goalNode.posY)
-                    return ReconstructPath(current);
+                Node current = openList.Dequeue();
 
-                openList.Remove(current);
+                if (current.posX == goalX && current.posY == goalY)
+                    return ReconstructPath1(current);
+
                 closedList.Add((current.posX, current.posY));
 
                 foreach (var direction in Directions)
                 {
-                    int newX = current.posX + direction[0], newY = current.posY + direction[1];
-                    if (newX < 0 || newY < 0 || newX >= nodeMap.GetLength(0) || newY >= nodeMap.GetLength(1) || !nodeMap[newX, newY].walkable || closedList.Contains((newX, newY)))
+                    int newX = current.posX + direction[0];
+                    int newY = current.posY + direction[1];
+
+                    // Check if within bounds & walkable
+                    if (newX < 0 || newY < 0 || newX >= nodeMapWidth || newY >= nodeMapHeight || !nodeMap[newX, newY].walkable || closedList.Contains((newX, newY)))
                         continue;
 
                     Node neighbor = nodeMap[newX, newY];
-                    neighbor.Parent = current;
-                    neighbor.G = current.G + 1;
-                    neighbor.H = Math.Abs(newX - goalNode.posX) + Math.Abs(newY - goalNode.posY);
+                    int newG = current.G + 1; // Cost to move to neighbor
 
-                    if (openList.Any(n => n.posX == neighbor.posX && n.posY == neighbor.posY && n.G <= neighbor.G))
-                        continue;
+                    if (newG < neighbor.G)
+                    {
+                        neighbor.Parent = current;
+                        neighbor.G = newG;
+                        neighbor.H = Math.Abs(newX - goalX) + Math.Abs(newY - goalY);
 
-                    openList.Add(neighbor);
+                        if (!openList.UnorderedItems.Any(n => n.Element == neighbor))
+                            openList.Enqueue(neighbor, neighbor.F);
+                    }
                 }
             }
-            return new List<Node>();
+
+            return new List<Node>(); // No path found
         }
+
+        // Helper Function to Reconstruct Path
+        private List<Node> ReconstructPath1(Node node)
+        {
+            List<Node> path = new List<Node>();
+            while (node != null)
+            {
+                path.Add(node);
+                node = node.Parent;
+            }
+            path.Reverse();
+            return path;
+        }
+
+
+
+
+        //public List<Node> CalculatePath(GameObject gameObject, (int, int) goal)
+        //{
+        //    int startX, startY, goalX, goalY;
+
+        //    // This need fixing, cuz right now it only checks if its the last node
+        //    // I might need to check other wierd cases that might make it go out of bounds
+        //    if (start.Item1 == displayWidth || start.Item2 == displayHeight)
+        //    {
+        //        startX = (start.Item1 / nodeWidth) - 1;
+        //        startY = (start.Item2 / nodeHeight) - 1;
+        //    }
+        //    else
+        //    {
+        //        startX = start.Item1 / nodeWidth;
+        //        startY = start.Item2 / nodeHeight;
+        //    }
+        //    if (goal.Item1 == displayWidth || goal.Item2 == displayHeight)
+        //    {
+        //        goalX = (goal.Item1 / nodeWidth) - 1;
+        //        goalY = (goal.Item2 / nodeHeight) - 1;
+        //    }
+        //    else
+        //    {
+        //        goalX = goal.Item1 / nodeWidth;
+        //        goalY = goal.Item2 / nodeHeight;
+        //    }
+
+
+        //    List<Node> openList = new List<Node>();
+        //    HashSet<(int, int)> closedList = new HashSet<(int, int)>();
+
+        //    // I hard coded the the transformation of the start and goal to the nodeMap
+        //    // I need to fix this later
+
+        //    Node startNode = nodeMap[startX, startY];
+        //    Node goalNode = nodeMap[goalX, goalY];
+        //    openList.Add(startNode);
+
+        //    while (openList.Count > 0)
+        //    {
+        //        Node current = openList.OrderBy(n => n.F).First();
+        //        if (current.posX == goalNode.posX && current.posY == goalNode.posY)
+        //            return ReconstructPath(current);
+
+        //        openList.Remove(current);
+        //        closedList.Add((current.posX, current.posY));
+
+        //        foreach (var direction in Directions)
+        //        {
+        //            int newX = current.posX + direction[0], newY = current.posY + direction[1];
+        //            if (newX < 0 || newY < 0 || newX >= nodeMap.GetLength(0) || newY >= nodeMap.GetLength(1) || !nodeMap[newX, newY].walkable || closedList.Contains((newX, newY)))
+        //                continue;
+
+        //            Node neighbor = nodeMap[newX, newY];
+        //            neighbor.Parent = current;
+        //            neighbor.G = current.G + 1;
+        //            neighbor.H = Math.Abs(newX - goalNode.posX) + Math.Abs(newY - goalNode.posY);
+
+        //            if (openList.Any(n => n.posX == neighbor.posX && n.posY == neighbor.posY && n.G <= neighbor.G))
+        //                continue;
+
+        //            openList.Add(neighbor);
+        //        }
+        //    }
+        //    return new List<Node>();
+        //}
 
         public List<Node> CalculatePath2((int, int) start, (int, int) goal)
         {
@@ -488,8 +583,8 @@ namespace Shard
             setNodeHeight(nodeHeight);
             transformWorldToGrid();
             transformGridToNodeMap();
-            transformWorldToNodeMap();
-            path = CalculatePath(start, goal);
+            //transformWorldToNodeMap();
+           // path = CalculatePath(start, goal);
             transformPathToGrid();
             Console.WriteLine("The nodeMap for Debugging");
             debugPrintNodeMap();
@@ -511,11 +606,12 @@ namespace Shard
             setNodeWidth(nodeWidth);
             setNodeHeight(nodeHeight);
             //setOwner(owner);
-            transformWorldToNodeMap();
+           // transformWorldToNodeMap();
         }
-        public void findPath((int, int) start, (int, int) goal)
+        public void findPath(GameObject gameObject, (int, int) goal)
         {
-            path = CalculatePath(start, goal);
+            transformWorldToNodeMap(gameObject);
+            path = CalculatePath3(gameObject, goal);
             //path = CalculatePath2(start, goal);
             debugPrintPathVisual(path);
         }

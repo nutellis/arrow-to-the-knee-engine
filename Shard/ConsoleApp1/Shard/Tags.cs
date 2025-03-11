@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shard.Shard
 {
-    internal class Tags
+    public class Tags
     {
         private List<string> tags;
 
