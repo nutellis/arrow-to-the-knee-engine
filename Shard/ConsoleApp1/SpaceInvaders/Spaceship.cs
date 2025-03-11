@@ -169,13 +169,17 @@ namespace SpaceInvaders
 
         public void onCollisionEnter(PhysicsComponent x)
         {
-
         }
 
         public void onCollisionExit(PhysicsComponent x)
         {
 
             physics.DebugColor = Color.Green;
+
+            if (x.Owner.Tags.checkTag("BunkerBit"))
+            {
+                sound.stopAllSounds();
+            }
         }
 
         public void onCollisionStay(PhysicsComponent x)

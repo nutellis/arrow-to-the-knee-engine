@@ -197,9 +197,11 @@ namespace Shard
             myInvaders = new Invader[rows, columns];
             createObjects();
 
-            Debug.Log("Bing!");
+            //Debug.Log("Bing!");
 
-
+            SoundManager.getInstance().loadSound("Music", "space_chords.wav");
+            SoundManager.getInstance().setVolume("Music", 0.1f);
+            SoundManager.getInstance().playSound("Music", true);    
         }
 
         public void handleInput(InputEvent inp, string eventType)

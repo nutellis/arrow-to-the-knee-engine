@@ -170,6 +170,8 @@ namespace Shard.Shard
             {
                 SDL_mixer.Mix_HaltChannel(channel);
                 occupiedChannels.Remove(soundName); // Remove from tracking
+                Debug.getInstance().log("Stopped: " + soundName);
+
             }
         }
     }
