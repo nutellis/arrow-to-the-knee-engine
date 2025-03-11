@@ -66,8 +66,8 @@ namespace Shard
         private int nodeHeight = 16; // deault value
         private int[,] grid;
         private List<Node> path;
-        public List<Node> temp = new List<Node>();
         private Node[,] nodeMap;
+        private Node[,] subNodeMap;
         private List<string> excludedTags;
         private GameObject owner = new GameObject();
 
@@ -347,6 +347,7 @@ namespace Shard
             return new List<Node>();
         }
 
+        /*
         public List<Node> CalculatePath2((int, int) start, (int, int) goal)
         {
             int startX = start.Item1 / nodeWidth;
@@ -396,6 +397,7 @@ namespace Shard
             }
             return new List<Node>();
         }
+        */
 
         private List<Node> ReconstructPath(Node node)
         {
@@ -406,9 +408,57 @@ namespace Shard
                 node = node.Parent;
             }
             path.Reverse();
-            this.temp = path; // Use 'this' to refer to the instance variable
             return path;
         }
+
+        Node[,] GetSubGrid(Node[,] nodeMap, (int, int) agentPosition, int windowSize)
+        {
+            int halfSize = windowSize / 2;
+            int mapWidth = nodeMap.GetLength(0);
+            int mapHeight = nodeMap.GetLength(1);
+
+            int startX = Math.Clamp(agentPosition.Item1 - halfSize, 0, mapWidth - windowSize);
+            int startY = Math.Clamp(agentPosition.Item2 - halfSize, 0, mapHeight - windowSize);
+            int endX = Math.Min(startX + windowSize, mapWidth);
+            int endY = Math.Min(startY + windowSize, mapHeight);
+
+            Node[,] subGrid = new Node[endX - startX, endY - startY];
+
+            for (int x = startX; x < endX; x++)
+            {
+                for (int y = startY; y < endY; y++)
+                {
+                    subGrid[x - startX, y - startY] = nodeMap[x, y];
+                }
+            }
+
+            return subGrid;
+        }
+        (int,int) GetRelativeGoal((int, int) globalGoal, (int, int) subGridOrigin, int windowSize)
+        {
+            int relativeX = Math.Clamp(globalGoal.Item1 - subGridOrigin.Item1, 0, windowSize - 1);
+            int relativeY = Math.Clamp(globalGoal.Item2 - subGridOrigin.Item2, 0, windowSize - 1);
+            return new (relativeX, relativeY);
+        }
+
+        void UpdateSearchWindow(ref (int, int) subGridOrigin, (int, int) agentPosition, (int, int) goalPosition, int windowSize)
+        {
+            int halfSize = windowSize / 2;
+
+            if (agentPosition.Item1 - subGridOrigin.Item1 > halfSize) subGridOrigin.Item1++;
+            if (agentPosition.Item1 - subGridOrigin.Item1 < halfSize) subGridOrigin.Item1--;
+
+            if (agentPosition.Item2 - subGridOrigin.Item2 > halfSize) subGridOrigin.Item2++;
+            if (agentPosition.Item2 - subGridOrigin.Item2 < halfSize) subGridOrigin.Item2--;
+
+            // Ensure it stays within bounds
+            subGridOrigin.Item1 = Math.Clamp(subGridOrigin.Item1, 0, nodeMap.GetLength(0) - windowSize);
+            subGridOrigin.Item2 = Math.Clamp(subGridOrigin.Item2, 0, nodeMap.GetLength(1) - windowSize);
+        }
+
+
+
+
 
         public void setNodeWidth(int width)
         {
