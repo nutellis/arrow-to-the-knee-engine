@@ -196,11 +196,10 @@ namespace Shard
         }
         public void setGameObjectsToNodeMap()
         {
-            // Assuming Bootstrap.getGameObjects() returns a list of game objects with X and Y properties  
             List<GameObject> gameObjects = GameObjectManager.getInstance().getMyObject();
             foreach (var gameObject in gameObjects)
             {
-                if (gameObject is Bullet)
+                if (gameObject is Bullet || gameObject.Tags.checkTag("Ai") || gameObject is Spaceship)
                 {
                     continue;
                 }
@@ -455,7 +454,7 @@ namespace Shard
             subGridOrigin.Item1 = Math.Clamp(subGridOrigin.Item1, 0, nodeMap.GetLength(0) - windowSize);
             subGridOrigin.Item2 = Math.Clamp(subGridOrigin.Item2, 0, nodeMap.GetLength(1) - windowSize);
         }
-        public void setNodeMap(GameObject gameObject)
+        public void setSubNodeMap(GameObject gameObject)
         {
             int numNodesX = 10;
             int numNodesY = 10;
@@ -588,8 +587,8 @@ namespace Shard
         }
         public void findPath((int, int) start, (int, int) goal)
         {
+            transformWorldToNodeMap();
             path = CalculatePath(start, goal);
-            //path = CalculatePath2(start, goal);
             debugPrintPathVisual(path);
         }
         public void excludingTags(List<string> tags)

@@ -39,9 +39,7 @@ namespace Shard
         private static string baseDir;
         private static Dictionary<string,string> enVars;
 
-        // Debugging Pathtracer
 
-        public static PathTracer tracer;
         
         public static bool checkEnvironmentalVariable (string id) {
             return enVars.ContainsKey (id);
@@ -272,7 +270,7 @@ namespace Shard
             // Debugging Pathtracer
 
            
-            tracer = PathTracer.getInstance;
+            //tracer = PathTracer.getInstance;
             //tracer.testRun(16, 16, (0,0), (Bootstrap.getDisplay().getHeight(), Bootstrap.getDisplay().getWidth()));
             //Console.WriteLine("Test Run 0");
             //tracer.testRun(16, 16, (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()), (0,0));
