@@ -1,17 +1,17 @@
-﻿using System;
+﻿using SDL2;
+using System;
 
 namespace Shard
 {
     public class Sprite: ICloneable
     {
         public string spriteName;
-        public IntPtr img;
+        public IntPtr texture, surface;
         public float X, Y;
         public float rotz;
         public float scaleX = 1, scaleY = 1;
         public int width, height;
         private bool isAnimating = false;
-
 
         public Sprite(string assetName)
         {
@@ -35,6 +35,11 @@ namespace Shard
             return height;
         }
 
+        public IntPtr getTexture()
+        {
+            return texture;
+        }
+
         //Change scale of sprite
         public void setUniformScale(float scale)
         {
@@ -43,6 +48,8 @@ namespace Shard
 
             //Minor priority
             //TODO: actually scale the img when the scale is changed
+            this.width = (int)(this.width * scale);
+            this.height = (int)(this.height * scale);
         }
 
         //Change color of sprite
@@ -58,6 +65,17 @@ namespace Shard
             Console.WriteLine($"Animating sprite {spriteName}"); //placeholder
         }
 
+        public void stopAnimate()
+        {
+            isAnimating = false;
+            Console.WriteLine($"Stopped animating sprite {spriteName}"); //placeholder
+        }
+
+        public bool isAnimationPlaying()
+        {
+            return isAnimating;
+        }
+
         //Plays the animation once.
         public void repeatOnce()
         {
@@ -68,6 +86,15 @@ namespace Shard
         public object Clone()
         {
             return this.MemberwiseClone();
+        }
+
+        public void Dispose()
+        {
+            if (texture != IntPtr.Zero)
+            {
+                SDL.SDL_DestroyTexture(texture);
+                texture = IntPtr.Zero;
+            }
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using SpaceInvaders;
+﻿using Shard.Shard;
+using SpaceInvaders;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Numerics;
 
 namespace Shard
 {
@@ -25,7 +25,7 @@ namespace Shard
 
         public override bool isRunning()
         {
-            if (ship == null || ship.ToBeDestroyed == true || livingInvaders.Count <= 0)
+            if (ship == null || ship.ToBeDestroyed == true)
             {
                 return false;
             }
@@ -87,7 +87,7 @@ namespace Shard
                         // Speed them up as their numbers diminish.
                         timeToSwap = 2 - ((deaths / 3) * 0.1f);
 
-                        myInvaders[i, j].changeSprite();
+                        //myInvaders[i, j].changeSprite();
 
                         if (ymod != 0)
                         {
@@ -105,9 +105,12 @@ namespace Shard
 
                 Debug.Log("Living invaders " + livingInvaders.Count);
 
-
                 if (livingInvaders.Count > 0)
                 {
+                    SoundManager.getInstance().playSound("InvaderMove");
+
+                    Debug.Log("Living invaders" + livingInvaders.Count);
+
                     // Pick a random invader to fire.
                     livingInvaders[rand.Next(livingInvaders.Count)].fire();
 
@@ -124,7 +127,12 @@ namespace Shard
             Ai.transform.Y = 1;
             PathTracer.getInstance.initialize(8,8);
             PathTracer.getInstance.findPath(((int)Ai.transform.X,(int)Ai.transform.Y), ((int)ship.transform.X,(int)ship.transform.Y));
+            SpriteManager.getInstance().loadSpriteSheet("spaceship_Spritesheet", "SpaceShip_Idle.png", "animations.json");
 
+            ship = new Spaceship();
+            ship.initialize();
+
+           
             int ymod = 0;
 
             timeToSwap = 3;
@@ -135,6 +143,7 @@ namespace Shard
                 for (int i = 0; i < columns; i++)
                 {
                     Invader invader = new Invader();
+                    invader.initialize();
                     invader.transform.X = 100 + (i * 50);
                     invader.transform.Y = 100 + (ymod * 50);
 
@@ -157,6 +166,7 @@ namespace Shard
             {
 
                 Bunker b = new Bunker();
+                b.initialize();
 
                 b.transform.X = 200 + (i * 180);
                 b.transform.Y = 600;

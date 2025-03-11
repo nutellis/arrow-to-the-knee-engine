@@ -86,31 +86,28 @@ namespace Shard
 
         }
 
-        public override IntPtr loadTextureFromPixels(byte[] pixelArray, int width, int height)
+        public override (IntPtr, IntPtr) loadTextureFromPixels(byte[] pixelArray, int width, int height)
         {
-            IntPtr result = IntPtr.Zero;
+            IntPtr texture = IntPtr.Zero;
+            IntPtr surface;
 
             unsafe
             {
                 fixed (byte* ptr = pixelArray)
                 {
-                    SDL.SDL_Surface* surface = (SDL_Surface*)SDL.SDL_CreateRGBSurfaceWithFormatFrom(
+                    surface = SDL.SDL_CreateRGBSurfaceWithFormatFrom(
                         (IntPtr)ptr, width, height, 32, width * 4, SDL.SDL_PIXELFORMAT_ABGR8888);
 
-                    if (surface != null)
-                    {
-                        result = SDL.SDL_CreateTextureFromSurface(_rend, (IntPtr)surface);
+                    texture = SDL.SDL_CreateTextureFromSurface(_rend, surface);
 
-                        SDL.SDL_SetTextureBlendMode(result, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
+                        SDL.SDL_SetTextureBlendMode(texture, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
 
                         SDL.SDL_FreeSurface((IntPtr)surface);
-                    }
                 }
             }
 
-            return result;
+            return (texture, surface);
         }
-
 
         public override void addToDraw(Sprite sprite)
         {
@@ -127,7 +124,7 @@ namespace Shard
                 return;
             }
 
-            spriteBuffer[sprite.spriteName] = sprite.img;
+            spriteBuffer[sprite.spriteName] = sprite.texture;
 
             SDL.SDL_SetTextureBlendMode(spriteBuffer[sprite.spriteName], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
 
@@ -290,7 +287,7 @@ namespace Shard
                 tRect.w = sRect.w;
                 tRect.h = sRect.h;
 
-                SDL.SDL_RenderCopyEx(_rend, sprite.img, ref sRect, ref tRect, (int)sprite.rotz, IntPtr.Zero, SDL.SDL_RendererFlip.SDL_FLIP_NONE);
+                SDL.SDL_RenderCopyEx(_rend, sprite.texture, ref sRect, ref tRect, (int)sprite.rotz, IntPtr.Zero, SDL.SDL_RendererFlip.SDL_FLIP_NONE);
             }
 
             foreach (Circle c in _circlesToDraw)
@@ -318,6 +315,11 @@ namespace Shard
             _linesToDraw.Clear();
 
             base.clearDisplay();
+        }
+
+        public IntPtr getRenderer()
+        {
+            return _rend;  // _rend is already managing the SDL renderer
         }
 
     }

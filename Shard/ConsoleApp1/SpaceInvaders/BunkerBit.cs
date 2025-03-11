@@ -12,8 +12,10 @@ namespace SpaceInvaders
         public override void initialize()
         {
 
-            sprite = new SpriteComponent(this,false);
-            sprite.addSprite("bunkerBit.png");
+            //sprite = new SpriteComponent(this,false);
+            sprite = new SpriteComponent(this);
+
+            sprite.addSprite("bunkerBit", "bunkerBit.png");
 
             physics = new PhysicsComponent(this);
 

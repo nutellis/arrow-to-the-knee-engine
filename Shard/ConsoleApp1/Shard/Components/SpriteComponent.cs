@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 
 namespace Shard.Shard.Components
 {
     internal class SpriteComponent : BaseComponent
     {
-        private Sprite sprite; //reference to sprite object
-        private List<Sprite> animationFrames; //replace sprite with animationFrames as teh default
-        private int currentFrame;
-        private double frameTimer;
-        private float frameDuration = 1.0f;
-        public bool hasAnimation = false;
+        private Sprite currentSprite;
+        private Dictionary<string, List<Sprite>> animations; 
+        private string currentAnimation = "";
+        private int currentFrameIndex;
+        private double frameTimer; 
+        private float frameDuration = 0.5f; 
 
-        public SpriteComponent(GameObject owner,bool hasAnimation = false) : base(owner)
+        private bool hasAnimation = false;
+        private List<Sprite> animationFrames;
+
+        public SpriteComponent(GameObject owner) : base(owner)
         {
-            this.hasAnimation = hasAnimation;
-            animationFrames = new List<Sprite>();
+            animations = new Dictionary<string, List<Sprite>>();
         }
 
         public override void initialize()
@@ -29,51 +26,105 @@ namespace Shard.Shard.Components
 
         public override void update()
         {
-            frameTimer += Bootstrap.getDeltaTime();
-            if (frameTimer >= frameDuration)
+            if (animations.TryGetValue(currentAnimation, out List<Sprite> animation))
             {
-                frameTimer = 0;
-                currentFrame = (currentFrame + 1) % animationFrames.Count;
-                sprite = animationFrames[currentFrame];
+                // Update the frame timer
+                frameTimer += Bootstrap.getDeltaTime();
+                if (frameTimer >= frameDuration)
+                {
+                    frameTimer = 0;
+                    currentFrameIndex = (currentFrameIndex + 1) % animation.Count;
+                    currentSprite = animation[currentFrameIndex];
+                    owner.transform.Wid = currentSprite.getWidth();
+                    owner.transform.Ht = currentSprite.getHeight();
+                    owner.transform.recalculateCentre();
+                }
             }
 
-            sprite.X = owner.transform.X;
-            sprite.Y = owner.transform.Y;
-
-            Bootstrap.getDisplay().addToDraw(this.sprite);
+            // Ensure the correct sprite is being drawn
+            if (currentSprite != null)
+            {
+                currentSprite.setPosition(owner.transform.X, owner.transform.Y);
+                Bootstrap.getDisplay().addToDraw(currentSprite);
+            }
         }
 
-        public void addSprite(string assetName)
+        public void setCurrentAnimation(string animationName)
         {
-            Sprite frame = Bootstrap.getAssetManager().getSprite(assetName);
-            if (frame != null)
+            if (animations.ContainsKey(animationName))
             {
-                animationFrames.Add(frame);
-                if (animationFrames.Count == 1)
+                currentAnimation = animationName;
+                currentFrameIndex = 0;
+                frameTimer = 0;
+                currentSprite = animations[currentAnimation][0]; 
+            } else
+            {
+                var animation = SpriteManager.getInstance().getAnimation(animationName);
+                if(animation != null)
                 {
-                    sprite = frame;
-                    sprite.setPosition(owner.transform.X, owner.transform.Y);
-                    owner.transform.Wid = sprite.getWidth();
-                    owner.transform.Ht = sprite.getHeight();
-                    owner.transform.recalculateCentre();
+                    animations[animationName] = animation;
+
+                    currentAnimation = animationName;
+                    currentFrameIndex = 0;
+                    frameTimer = 0;
+                    currentSprite = animations[currentAnimation][0];
                 }
             }
         }
 
-        public void changeColor(float r, float g, float b, float a)
+        public void addSprite(string spriteName, string filepath)
         {
-            if (sprite != null)
+            Sprite frame = SpriteManager.getInstance().getSprite(spriteName, filepath);
+            
+            currentSprite = frame;
+            currentSprite.setPosition(owner.transform.X, owner.transform.Y);
+            owner.transform.Wid = currentSprite.getWidth();
+            owner.transform.Ht = currentSprite.getHeight();
+            owner.transform.recalculateCentre();
+
+        }
+
+        public void addAnimationFrames(string spriteName, string filepath, string animationName)
+        {
+            Sprite frame = SpriteManager.getInstance().getSprite(spriteName,filepath);
+            if (frame != null)
             {
-                sprite.changeColor(r, g, b, a);
+                if (!animations.ContainsKey(animationName))
+                {
+                    animations[animationName] = new List<Sprite>();
+                }
+                animations[animationName].Add(frame);
             }
 
         }
 
-        internal void setSprite(int spriteToUse)
+        // For static sprites (no animation), set the sprite directly
+        public void setSprite(Sprite staticSprite)
         {
-            sprite = animationFrames[spriteToUse];
+            currentSprite = staticSprite;
+        }
+
+        public Sprite getSprite()
+        {
+            return currentSprite;
+        }
+
+        public void addAnimationFrames(string animationName, List<Sprite> frames)
+        {
+            if (!animations.ContainsKey(animationName))
+            {
+                animations[animationName] = new List<Sprite>();
+            }
+            animations[animationName].AddRange(frames);
+
+            // Set the first frame if no current animation is set
+            if (currentAnimation == null || currentAnimation == animationName)
+            {
+                currentAnimation = animationName;
+                currentFrameIndex = 0;
+                frameTimer = 0;
+                currentSprite = animations[currentAnimation][0];
+            }
         }
     }
-
 }
-

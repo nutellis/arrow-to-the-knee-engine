@@ -176,7 +176,5 @@ namespace Shard
                 }
             }
         }
-
-
     }
 }

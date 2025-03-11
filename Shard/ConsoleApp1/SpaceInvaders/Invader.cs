@@ -19,15 +19,21 @@ namespace SpaceInvaders
 
         private SpriteComponent sprite;
         private PhysicsComponent physics;
+        private SoundComponent sound;
 
         public override void initialize()
         {
 
             physics = new PhysicsComponent(this);
+            sound = new SoundComponent(this);
 
-            sprite = new SpriteComponent(this, true);
-            sprite.addSprite("invader1.png");
-            sprite.addSprite("invader2.png");
+            //sprite = new SpriteComponent(this, true);
+            sprite = new SpriteComponent(this);
+
+            sprite.addAnimationFrames("invader1","invader1.png", "Move");
+            sprite.addAnimationFrames("invader2", "invader2.png", "Move");
+
+            sprite.setCurrentAnimation("Move");
 
             game = (GameSpaceInvaders)Bootstrap.getRunningGame();
 
@@ -43,25 +49,31 @@ namespace SpaceInvaders
 
             physics.PassThrough = true;
 
+            sound.loadSound("InvaderAttack", "invaderfire.wav");
+            sound.loadSound("InvaderMove", "invadermove.wav");
         }
 
 
         public void changeSprite()
         {
-            spriteToUse += 1;
+            //spriteToUse += 1;
 
-            if (spriteToUse >= 2)
-            {
-                spriteToUse = 0;
-            }
+            //if (spriteToUse >= 2)
+            //{
+            //    spriteToUse = 0;
+            //}
 
-            this.sprite.setSprite(spriteToUse);
+            ////this.sprite.setSprite(spriteToUse);
+            //this.sprite.setAnimation("Move"); 
 
         }
 
         public override void update()
         {
             base.update();
+
+            //Sprite currentSprite = sprite.getSprite();
+            //Debug.Log("Invader: " + currentSprite);
         }
 
         //public void onCollisionEnter(PhysicsBody x)
@@ -116,6 +128,8 @@ namespace SpaceInvaders
             b.initialize();
             b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [0,1]);
             b.DestroyTag = "Player";
+
+            sound.playSound("InvaderAttack");
         }
     }
 }
