@@ -56,7 +56,7 @@ namespace Shard
             animCounter += (float)Bootstrap.getDeltaTime();
 
             //Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
-            //PathTracer.getInstance.findPath(((int)Ai.transform.X, (int)Ai.transform.Y), ((int)ship.transform.X, (int)ship.transform.Y));
+            PathTracer.getInstance.findPath(((int)Ai.transform.X, (int)Ai.transform.Y), ((int)ship.transform.X, (int)ship.transform.Y));
 
             if (animCounter > timeToSwap)
             {
