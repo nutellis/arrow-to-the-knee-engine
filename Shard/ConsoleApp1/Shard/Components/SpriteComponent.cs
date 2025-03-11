@@ -7,10 +7,11 @@ namespace Shard.Shard.Components
     {
         private Sprite currentSprite;
         private Dictionary<string, List<Sprite>> animations; 
+        private Dictionary<string, Sprite> sprites; 
         private string currentAnimation = "";
         private int currentFrameIndex;
         private double frameTimer; 
-        private float frameDuration = 0.5f; 
+        private float frameDuration = 0.2f; 
 
         private bool hasAnimation = false;
         private List<Sprite> animationFrames;
@@ -18,6 +19,7 @@ namespace Shard.Shard.Components
         public SpriteComponent(GameObject owner) : base(owner)
         {
             animations = new Dictionary<string, List<Sprite>>();
+            sprites = new Dictionary<string, Sprite>();
         }
 
         public override void initialize()
@@ -35,16 +37,14 @@ namespace Shard.Shard.Components
                     frameTimer = 0;
                     currentFrameIndex = (currentFrameIndex + 1) % animation.Count;
                     currentSprite = animation[currentFrameIndex];
-                    owner.transform.Wid = currentSprite.getWidth();
-                    owner.transform.Ht = currentSprite.getHeight();
-                    owner.transform.recalculateCentre();
                 }
             }
 
             // Ensure the correct sprite is being drawn
             if (currentSprite != null)
             {
-                currentSprite.setPosition(owner.transform.X, owner.transform.Y);
+                recenterIfNeeded(currentSprite.width, currentSprite.height, (int)currentSprite.scaleX, (int)currentSprite.scaleY);
+                currentSprite.setWorldPosition(owner.transform.X, owner.transform.Y);
                 Bootstrap.getDisplay().addToDraw(currentSprite);
             }
         }
@@ -72,16 +72,23 @@ namespace Shard.Shard.Components
             }
         }
 
-        public void addSprite(string spriteName, string filepath)
+        public void setLocalPositionForAnimation(string animationName, float x, float y)
+        {
+            if (animations.TryGetValue(animationName, out List<Sprite> value)) {
+                foreach (var item in value)
+                {
+                    item.setLocalPosition(x, y);
+                }
+            }
+        }
+
+        public void addSprite(string spriteName, string filepath, float scale = 1, float x = 0, float y = 0)
         {
             Sprite frame = SpriteManager.getInstance().getSprite(spriteName, filepath);
-            
-            currentSprite = frame;
-            currentSprite.setPosition(owner.transform.X, owner.transform.Y);
-            owner.transform.Wid = currentSprite.getWidth();
-            owner.transform.Ht = currentSprite.getHeight();
-            owner.transform.recalculateCentre();
+            frame.setUniformScale(scale);
+            frame.setLocalPosition(x, y);
 
+            sprites[spriteName] = frame;
         }
 
         public void addAnimationFrames(string spriteName, string filepath, string animationName)
@@ -98,10 +105,12 @@ namespace Shard.Shard.Components
 
         }
 
-        // For static sprites (no animation), set the sprite directly
-        public void setSprite(Sprite staticSprite)
+        public void setSprite(string spriteName)
         {
-            currentSprite = staticSprite;
+            currentSprite = sprites[spriteName];
+            currentSprite.setWorldPosition(owner.transform.X, owner.transform.Y);
+
+            recenterIfNeeded(currentSprite.width, currentSprite.height, currentSprite.scaleX, currentSprite.scaleY);
         }
 
         public Sprite getSprite()
@@ -125,6 +134,25 @@ namespace Shard.Shard.Components
                 frameTimer = 0;
                 currentSprite = animations[currentAnimation][0];
             }
+        }
+
+        private void recenterIfNeeded(int width, int height, float scaleX, float scaleY)
+        {
+            if (owner.transform.Wid < width)
+            {
+                owner.transform.Wid = width;
+            }
+            if (owner.transform.Ht < height)
+            {
+                owner.transform.Ht = height;
+            }
+            if (owner.transform.Scalex < scaleX || owner.transform.Scaley < scaleY)
+            {
+                owner.transform.Scalex = scaleX;
+                owner.transform.Scaley = scaleY;
+
+            }
+            owner.transform.recalculateCentre();
         }
     }
 }

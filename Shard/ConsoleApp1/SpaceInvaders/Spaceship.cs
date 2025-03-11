@@ -11,7 +11,9 @@ namespace SpaceInvaders
 {
     class Spaceship : GameObject, CollisionHandler
     {
-        public SpriteComponent sprite;
+        public SpriteComponent baseSprite;
+        public SpriteComponent engineSprite;
+        public SpriteComponent engineEffectAnimation;
 
         private InputComponent input;
 
@@ -20,7 +22,7 @@ namespace SpaceInvaders
         private PhysicsComponent physics;
 
         private double fireCounter, fireDelay = 1f;
-        private float moveDistance, moveSpeed = 200;
+        private float moveDistance, moveSpeed = 350;
 
         private (bool horizontal, bool vertical) isMoving = (false, false);
 
@@ -30,11 +32,25 @@ namespace SpaceInvaders
             this.transform.X = 100.0f;
             this.transform.Y = 800.0f;
 
-            //this.sprite = new SpriteComponent(this, false);
-            this.sprite = new SpriteComponent(this);
 
-            // store animations and pass them to the frames list 
-            this.sprite.setCurrentAnimation("spaceship_animation");
+
+            this.engineEffectAnimation = new SpriteComponent(this);
+            this.engineEffectAnimation.setCurrentAnimation("spaceship_engine");
+            this.engineEffectAnimation.setLocalPositionForAnimation("spaceship_engine", 12, 50);
+
+            this.engineSprite = new SpriteComponent(this);
+            this.engineSprite.addSprite("baseEngine", "BaseEngine.png", 1.5f, 10, 25);
+            this.engineSprite.setSprite("baseEngine");
+
+
+            this.baseSprite = new SpriteComponent(this);
+            this.baseSprite.addSprite("shipFull", "ShipFull.png", 1.5f);
+            this.baseSprite.addSprite("shipSlight", "ShipSlightDamaged.png", 1.5f);
+            this.baseSprite.addSprite("shipDamaged", "ShipDamaged.png", 1.5f);
+            this.baseSprite.addSprite("shipVeryDamaged", "ShipVeryDamaged.png", 1.5f);
+
+            this.baseSprite.setSprite("shipFull");
+
 
             fireDelay = 0.1;
             fireCounter = fireDelay;
@@ -60,13 +76,7 @@ namespace SpaceInvaders
 
             sound = new SoundComponent(this);
             sound.loadSound("SpaceShipAttack", "fire.wav");
-            //sound.loadSound("BackgroundMusic", "background.wav");
             sound.loadSound("SpaceShipMove", "spaceshipmove.wav");
-            //sound.loadSound("BackgroundEngine", "spaceshipengine.wav");
-
-
-            //sound.setVolume("BackgroundMusic", 0.1f);
-
         }
 
 

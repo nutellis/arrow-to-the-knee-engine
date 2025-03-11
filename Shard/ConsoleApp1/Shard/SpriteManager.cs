@@ -77,7 +77,7 @@ namespace Shard
             }
         }
 
-        public void loadSpriteSheet(string spriteSheetName, string spriteSheetPath, string jsonFileName)
+        public void loadSpriteSheet(string spriteSheetName, string spriteSheetPath, string jsonFileName, float scale = 1.0f)
         {
             string jsonAssetPath = Bootstrap.getAssetManager().getAssetPath(jsonFileName);
 
@@ -105,8 +105,13 @@ namespace Shard
                                 frame.width,
                                 frame.height,
                                 animation.animationName + "_" + index
-                            );
-                        frames.Add(sprite);
+                        );
+                        if (sprite != null)
+                        {
+                            sprite.setUniformScale(scale);
+
+                            frames.Add(sprite);
+                        }
                         index += 1;
                     }
                     animations[animation.animationName] = frames;

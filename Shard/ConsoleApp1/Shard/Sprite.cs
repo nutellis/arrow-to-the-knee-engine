@@ -8,10 +8,11 @@ namespace Shard
         public string spriteName;
         public IntPtr texture, surface;
         public float X, Y;
+        public float local_x, local_y;
         public float rotz;
         public float scaleX = 1, scaleY = 1;
         public int width, height;
-        private bool isAnimating = false;
+        public bool canCollide = false;
 
         public Sprite(string assetName)
         {
@@ -19,10 +20,16 @@ namespace Shard
         }
 
         //Updates position of sprite
-        public void setPosition(float x, float y)
+        public void setWorldPosition(float x, float y)
         {
-            X = x;
-            Y = y;
+            X = x + local_x;
+            Y = y + local_y;
+        }
+
+        public void setLocalPosition(float x, float y)
+        {
+           local_x = x;
+           local_y = y;
         }
 
         public int getWidth()
@@ -46,41 +53,15 @@ namespace Shard
             this.scaleX = scale;
             this.scaleY = scale;
 
-            //Minor priority
-            //TODO: actually scale the img when the scale is changed
-            this.width = (int)(this.width * scale);
-            this.height = (int)(this.height * scale);
+            this.width = (int)(this.width * scaleX);
+            this.height = (int)(this.height * scaleY);
+
         }
 
         //Change color of sprite
         public void changeColor(float r, float g, float b, float a)
         {
             Console.WriteLine($"Changing sprite {spriteName} color to RGBA({r}, {g}, {b}, {a})"); //placeholder
-        }
-
-        //Start animation for sprite
-        public void animate()
-        {
-            isAnimating = true;
-            Console.WriteLine($"Animating sprite {spriteName}"); //placeholder
-        }
-
-        public void stopAnimate()
-        {
-            isAnimating = false;
-            Console.WriteLine($"Stopped animating sprite {spriteName}"); //placeholder
-        }
-
-        public bool isAnimationPlaying()
-        {
-            return isAnimating;
-        }
-
-        //Plays the animation once.
-        public void repeatOnce()
-        {
-            isAnimating = true;
-            Console.WriteLine($"Playing sprite animation {spriteName} once"); //placeholder
         }
 
         public object Clone()

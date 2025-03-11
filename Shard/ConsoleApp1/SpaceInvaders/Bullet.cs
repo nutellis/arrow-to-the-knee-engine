@@ -53,7 +53,7 @@ namespace SpaceInvaders
 
         public override void update()
         {
-            this.transform.moveImidiately((float)(direction[0] * 400.0 * Bootstrap.getDeltaTime()), (float)(direction[1] * 400.0 * Bootstrap.getDeltaTime()));
+            this.transform.moveImidiately((float)(direction[0] * 450.0 * Bootstrap.getDeltaTime()), (float)(direction[1] * 400.0 * Bootstrap.getDeltaTime()));
 
             drawBullet();
         }
