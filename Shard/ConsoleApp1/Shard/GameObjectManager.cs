@@ -1,4 +1,4 @@
-﻿/*
+/*
 *
 *   This manager class makes sure update gets called when it should on all the game objects, 
 *       and also handles the pre-physics and post-physics ticks.  It also deals with 
@@ -176,7 +176,5 @@ namespace Shard
                 }
             }
         }
-
-
     }
 }

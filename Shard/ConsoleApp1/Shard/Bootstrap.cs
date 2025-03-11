@@ -6,6 +6,7 @@
 *   
 */
 
+using Shard.Shard;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,7 +23,7 @@ namespace Shard
 
         private static Game runningGame;
         private static Display displayEngine;
-        private static Sound soundEngine;
+        private static SoundManager soundEngine;
         private static InputSystem input;
         private static PhysicsManager phys;
         private static AssetManagerBase asset;
@@ -92,7 +93,7 @@ namespace Shard
             return displayEngine;
         }
 
-        public static Sound getSound()
+        public static SoundManager getSound()
         {
             return soundEngine;
         }
@@ -125,6 +126,9 @@ namespace Shard
             //made input a singleton
             input = InputFramework.getInstance();
 
+            //same with the sound
+            soundEngine = SoundManager.getInstance(); 
+
             foreach (KeyValuePair<string, string> kvp in config)
             {
                 t = Type.GetType("Shard." + kvp.Value);
@@ -143,9 +147,6 @@ namespace Shard
                     case "display":
                         displayEngine = (Display)ob;
                         displayEngine.initialize();
-                        break;
-                    case "sound":
-                        soundEngine = (Sound)ob;
                         break;
                     case "asset":
                         asset = (AssetManagerBase)ob;
