@@ -2,6 +2,7 @@
 using SpaceInvaders;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace Shard
@@ -19,6 +20,7 @@ namespace Shard
         private List<Invader> livingInvaders;
         private Random rand;
         private GameObject ship;
+        public Invader Ai;
         public int Xdir { get => xdir; set => xdir = value; }
         public bool Dead { get => dead; set => dead = value; }
 
@@ -53,6 +55,8 @@ namespace Shard
                 return;
             }
             animCounter += (float)Bootstrap.getDeltaTime();
+
+            PathTracer.getInstance.findPath(((int)Ai.transform.X, (int)Ai.transform.Y), ((int)ship.transform.X, (int)ship.transform.Y));
 
             //Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
 
@@ -123,8 +127,14 @@ namespace Shard
 
             ship = new Spaceship();
             ship.initialize();
+            Ai = new Invader();
+            Ai.transform.X = 1;
+            Ai.transform.Y = 1;
 
-           
+            Ai.Tags.addTag("AI");
+            PathTracer.getInstance.initialize(16, 16);
+
+
             int ymod = 0;
 
             timeToSwap = 3;
