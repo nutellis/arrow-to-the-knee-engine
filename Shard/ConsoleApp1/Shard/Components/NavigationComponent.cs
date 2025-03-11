@@ -10,7 +10,7 @@ namespace Shard.Shard.Components
 {
     internal class NavigationComponent : BaseComponent
     {
-        private (int x, int y) goalPosition;
+        public (int x, int y) goalPosition;
         private (int x, float y) currentPosition;
 
         private Queue<Node> pathQueue = new Queue<Node>();
@@ -22,10 +22,19 @@ namespace Shard.Shard.Components
             
         }
 
-        public override void update()
+        public override void physicsUpdate()
         {
-            base.update();
-            followPath();
+
+            base.physicsUpdate();
+            if (FollowingPath)
+            {
+                followPath();
+            }
+            else
+            {
+                if(owner.transform.X != goalPosition.x && owner.transform.Y != goalPosition.y)
+                    moveTowardsGoal(goalPosition);
+            }
         }
 
         public void setPath(List<Node> path)
@@ -60,6 +69,7 @@ namespace Shard.Shard.Components
         {
 
             PathTracer.getInstance.findPath(owner, goalPosition);
+            PathTracer.getInstance.debugPrintPathVisual((PathTracer.getInstance.getPath()));
             setPath(PathTracer.getInstance.getPath());
 
 

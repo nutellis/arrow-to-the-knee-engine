@@ -215,7 +215,7 @@ namespace Shard
 
             foreach (var gameObject in gameObjects)
             {
-                if (gameObject is Bullet || gameObject is Invader || gameObject.Tags.checkTag("ignore"))
+                if (gameObject is Bullet || gameObject.Tags.checkTag("Ai") || gameObject.Tags.checkTag("ignore"))
                 {
                     continue;
                 }
@@ -442,6 +442,61 @@ namespace Shard
         //    return new List<Node>();
         //}
 
+        public List<Node> CalculatePath((int, int) start, (int, int) goal)
+        {
+            //int startX, startY, goalX, goalY;
+
+            // This need fixing, cuz right now it only checks if its the last node
+            // I might need to check other wierd cases that might make it go out of bounds
+            int nodeMapWidth = nodeMap.GetLength(0);
+            int nodeMapHeight = nodeMap.GetLength(1);
+
+            int startX = Math.Clamp((int)(start.Item1 / nodeWidth), 0, nodeMapWidth - 1);
+            int startY = Math.Clamp((int)(start.Item2 / nodeHeight), 0, nodeMapHeight - 1);
+            int goalX = Math.Clamp(goal.Item1 / nodeWidth, 0, nodeMapWidth - 1);
+            int goalY = Math.Clamp(goal.Item2 / nodeHeight, 0, nodeMapHeight - 1);
+
+
+
+            List<Node> openList = new List<Node>();
+            HashSet<(int, int)> closedList = new HashSet<(int, int)>();
+
+            // I hard coded the the transformation of the start and goal to the nodeMap
+            // I need to fix this later
+
+            Node startNode = nodeMap[startX, startY];
+            Node goalNode = nodeMap[goalX, goalY];
+            openList.Add(startNode);
+
+            while (openList.Count > 0)
+            {
+                Node current = openList.OrderBy(n => n.F).First();
+                if (current.posX == goalNode.posX && current.posY == goalNode.posY)
+                    return ReconstructPath(current);
+
+                openList.Remove(current);
+                closedList.Add((current.posX, current.posY));
+
+                foreach (var direction in Directions)
+                {
+                    int newX = current.posX + direction[0], newY = current.posY + direction[1];
+                    if (newX < 0 || newY < 0 || newX >= nodeMap.GetLength(0) || newY >= nodeMap.GetLength(1) || !nodeMap[newX, newY].walkable || closedList.Contains((newX, newY)))
+                        continue;
+
+                    Node neighbor = nodeMap[newX, newY];
+                    neighbor.Parent = current;
+                    neighbor.G = current.G + 1;
+                    neighbor.H = Math.Abs(newX - goalNode.posX) + Math.Abs(newY - goalNode.posY);
+
+                    if (openList.Any(n => n.posX == neighbor.posX && n.posY == neighbor.posY && n.G <= neighbor.G))
+                        continue;
+
+                    openList.Add(neighbor);
+                }
+            }
+            return new List<Node>();
+        }
+
         public List<Node> CalculatePath2((int, int) start, (int, int) goal)
         {
             int startX = start.Item1 / nodeWidth;
@@ -611,7 +666,8 @@ namespace Shard
         public void findPath(GameObject gameObject, (int, int) goal)
         {
             transformWorldToNodeMap(gameObject);
-            path = CalculatePath3(gameObject, goal);
+            //path = CalculatePath3(gameObject, goal);
+            path = CalculatePath(((int)gameObject.transform.X,(int)gameObject.transform.Y), goal);
             //path = CalculatePath2(start, goal);
             debugPrintPathVisual(path);
         }

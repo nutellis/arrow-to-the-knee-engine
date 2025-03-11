@@ -56,7 +56,6 @@ namespace Shard
             animCounter += (float)Bootstrap.getDeltaTime();
 
             //Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
-            PathTracer.getInstance.findPath(Ai, ((int)ship.transform.X, (int)ship.transform.Y));
             if (animCounter > timeToSwap)
             {
                 animCounter -= timeToSwap;
@@ -121,19 +120,25 @@ namespace Shard
 
         public void createObjects()
         {
+            SpriteManager.getInstance().loadSpriteSheet("spaceship_Spritesheet", "SpaceShip_Idle.png", "animations.json");
             ship = new Spaceship();
+            ship.initialize();
+
             Ai = new Invader();
+            Ai.navigation = new Shard.Components.NavigationComponent(Ai);
+            Ai.Tags.addTag("Ai");
             Ai.transform.X = 1;
             Ai.transform.Y = 1;
             PathTracer.getInstance.initialize(16,16);
 
-            Ai.navigation.moveTowardsGoal(((int)ship.transform.X,(int)ship.transform.Y));
-            SpriteManager.getInstance().loadSpriteSheet("spaceship_Spritesheet", "SpaceShip_Idle.png", "animations.json");
 
-            //ship = new Spaceship();
-            //ship.initialize();
+            Ai.navigation.goalPosition = ((int)ship.transform.X, (int)ship.transform.Y);
+            //(int)ship.transform.X,(int) ship.transform.Y
 
-           
+
+
+
+
             int ymod = 0;
 
             timeToSwap = 3;
