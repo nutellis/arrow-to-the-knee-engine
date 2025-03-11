@@ -69,6 +69,7 @@ namespace Shard
         public List<Node> temp = new List<Node>();
         private Node[,] nodeMap;
         private List<string> excludedTags;
+        private GameObject owner = new GameObject();
 
 
         // Node class might later put it in a different file
@@ -76,6 +77,7 @@ namespace Shard
         {
             public int minX, minY, maxX, maxY;
             public int posX, posY;
+            public int centerX, centerY;    
             public int nodeWidth, nodeHeight;
             public bool walkable = true; // default value
             public struct isFilled()
@@ -108,6 +110,8 @@ namespace Shard
                 this.minY = minY;
                 this.maxX = minX + nodeWidth - 1;
                 this.maxY = minY + nodeHeight - 1;
+                this.centerX = ((minX + maxX) / 2) + 1;
+                this.centerY = ((minY + maxY) / 2) + 1;
             }
             public void setFilled(int row, int col)
             {
@@ -343,6 +347,56 @@ namespace Shard
             return new List<Node>();
         }
 
+        public List<Node> CalculatePath2((int, int) start, (int, int) goal)
+        {
+            int startX = start.Item1 / nodeWidth;
+            int startY = start.Item2 / nodeHeight;
+            int goalX = goal.Item1 / nodeWidth;
+            int goalY = goal.Item2 / nodeHeight;
+
+            Node startNode = nodeMap[startX, startY];
+            Node goalNode = nodeMap[goalX, goalY];
+
+            var openList = new SortedSet<Node>(Comparer<Node>.Create((a, b) => a.F == b.F ? a.H.CompareTo(b.H) : a.F.CompareTo(b.F)));
+            var closedList = new HashSet<(int, int)>();
+
+            openList.Add(startNode);
+
+            while (openList.Count > 0)
+            {
+                Node current = openList.Min;
+                openList.Remove(current);
+
+                if (current.posX == goalNode.posX && current.posY == goalNode.posY)
+                    return ReconstructPath(current);
+
+                closedList.Add((current.posX, current.posY));
+
+                foreach (var direction in Directions)
+                {
+                    int newX = current.posX + direction[0], newY = current.posY + direction[1];
+                    if (newX < 0 || newY < 0 || newX >= nodeMap.GetLength(0) || newY >= nodeMap.GetLength(1) || !nodeMap[newX, newY].walkable || closedList.Contains((newX, newY)))
+                        continue;
+
+                    Node neighbor = nodeMap[newX, newY];
+                    int tentativeG = current.G + 1;
+
+                    if (tentativeG < neighbor.G)
+                    {
+                        neighbor.Parent = current;
+                        neighbor.G = tentativeG;
+                        neighbor.H = Math.Abs(newX - goalNode.posX) + Math.Abs(newY - goalNode.posY);
+
+                        if (!openList.Contains(neighbor))
+                        {
+                            openList.Add(neighbor);
+                        }
+                    }
+                }
+            }
+            return new List<Node>();
+        }
+
         private List<Node> ReconstructPath(Node node)
         {
             List<Node> path = new List<Node>();
@@ -446,16 +500,23 @@ namespace Shard
             debugPrintPathVisual(path);
 
         }
-
+        /*
+        public void setOwner(GameObject owner)
+        {
+            this.owner = owner;
+        }
+        */
         public void initialize(int nodeWidth, int nodeHeight)
         {
             setNodeWidth(nodeWidth);
             setNodeHeight(nodeHeight);
+            //setOwner(owner);
             transformWorldToNodeMap();
         }
         public void findPath((int, int) start, (int, int) goal)
         {
             path = CalculatePath(start, goal);
+            //path = CalculatePath2(start, goal);
             debugPrintPathVisual(path);
         }
         public void excludingTags(List<string> tags)

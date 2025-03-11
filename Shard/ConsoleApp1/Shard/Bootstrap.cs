@@ -289,7 +289,7 @@ namespace Shard
                 // Clear the screen.
                 Bootstrap.getDisplay().clearDisplay();
 
-                if(frames % 5 == 0)
+                if(frames % 100 == 0)
                 {
                     //tracer.debugTestRun(8, 8, (380, 300), (520, 600));
                     //tracer.initialize(8, 8);
@@ -298,6 +298,8 @@ namespace Shard
                     //tracer.findPath((0, 0), (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()));
                     //tracer.FindPath((0, 0), (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()));
                     //tracer.debugPrintPathVisual();
+                    tracer.initialize(16, 16);
+                    tracer.findPath((100, 100), (520, 600));
 
                 }
   
