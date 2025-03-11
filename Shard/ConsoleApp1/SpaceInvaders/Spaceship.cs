@@ -22,6 +22,8 @@ namespace SpaceInvaders
         private double fireCounter, fireDelay = 1f;
         private float moveDistance, moveSpeed = 200;
 
+        private (bool horizontal, bool vertical) isMoving = (false, false);
+
 
         public override void initialize()
         {
@@ -57,7 +59,7 @@ namespace SpaceInvaders
             tags.addTag("Player");
 
             sound = new SoundComponent(this);
-            //sound.loadSound("SpaceShipAttack", "fire.wav");
+            sound.loadSound("SpaceShipAttack", "fire.wav");
             //sound.loadSound("BackgroundMusic", "background.wav");
             sound.loadSound("SpaceShipMove", "spaceshipmove.wav");
             //sound.loadSound("BackgroundEngine", "spaceshipengine.wav");
@@ -73,11 +75,11 @@ namespace SpaceInvaders
             if (value != 0.0)
             {
                 this.transform.translate(0, value * moveDistance);
-                sound.playSound("SpaceShipMove");
+                isMoving.vertical = true;
             }
             else
             {
-                sound.stopSound("SpaceShipMove");
+                isMoving.vertical = false;
             }
         }
 
@@ -86,10 +88,11 @@ namespace SpaceInvaders
             if (value != 0.0)
             {
                 this.transform.translate(value * moveDistance, 0);
-                sound.playSound("SpaceShipMove");
-            } else
+                isMoving.horizontal = true;
+            }
+            else
             {
-                sound.stopSound("SpaceShipMove");
+                isMoving.horizontal = false;
             }
         }
 
@@ -154,6 +157,13 @@ namespace SpaceInvaders
             fireCounter += (float)Bootstrap.getDeltaTime();
             moveDistance = (float)(moveSpeed * Bootstrap.getDeltaTime());
 
+
+            if (isMoving.Equals((false, false)))
+            {
+                sound.stopSound("SpaceShipMove");
+            } else {
+                sound.playSound("SpaceShipMove");
+            }
             //Console.WriteLine("Move Value: " + moveValue);
         }
 

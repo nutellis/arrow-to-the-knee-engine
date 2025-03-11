@@ -3,26 +3,35 @@ using SpaceInvaders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using static SDL2.SDL;
+using static SDL2.SDL_mixer;
 
 namespace Shard.Shard
 {
     internal class SoundManager
     {
+
+        static ushort mixerFormat = SDL_mixer.MIX_DEFAULT_FORMAT;
+        static Int32 frequency = SDL_mixer.MIX_DEFAULT_FREQUENCY;
+        static Int32 channels = SDL_mixer.MIX_DEFAULT_CHANNELS;
+        static Int32 chunckSize = 2048;
+
         private static SoundManager me;
-        private Dictionary<string, IntPtr> soundLibrary;
+        private Dictionary<string, Sound> soundLibrary;
 
         private Dictionary<string, int> occupiedChannels; // Store sound -> channel mapping
 
         private SoundManager()
         {
-            if (SDL_mixer.Mix_OpenAudio(44100, SDL_mixer.MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+            if (SDL_mixer.Mix_OpenAudio(frequency, mixerFormat, channels, chunckSize) < 0)
             {
                 Console.WriteLine($"SDL_mixer could not initialize! SDL_mixer Error: {SDL.SDL_GetError()}");
             }
 
-            soundLibrary = new Dictionary<string, IntPtr>();
+            soundLibrary = new Dictionary<string, Sound>();
             occupiedChannels = new Dictionary<string, int>(); // Initialize tracking
         }
 
@@ -38,7 +47,7 @@ namespace Shard.Shard
 
         public void loadSound(string soundName, string filePath)
         {
-            if (soundLibrary.TryGetValue(soundName, out IntPtr value))
+            if (soundLibrary.TryGetValue(soundName, out Sound value))
             {
                 return;
             }
@@ -53,15 +62,37 @@ namespace Shard.Shard
             
             Console.WriteLine($"Loading sound: {soundName} from {filePath}");
 
-            IntPtr sound = SDL_mixer.Mix_LoadWAV(filePath);
-            if (sound == IntPtr.Zero)
+            IntPtr soundwave = IntPtr.Zero;
+            double seconds = 0.0;
+
+            soundwave = SDL_mixer.Mix_LoadWAV(filePath);
+            
+
+            //soundwave = SDL.SDL_LoadWAV(filePath, out SDL.SDL_AudioSpec spec, out IntPtr soundBuff, out uint audioLen);
+
+            
+            if (soundwave != IntPtr.Zero)
+            {
+                SDL_mixer.MIX_Chunk chunk = Marshal.PtrToStructure<SDL_mixer.MIX_Chunk>(soundwave);
+
+                uint audioLen = (uint)chunk.alen / 4;
+
+                int sampleSize = SDL.SDL_AUDIO_BITSIZE(mixerFormat) / 8;
+
+                uint sampleCount = audioLen / (uint)sampleSize;
+
+                uint sampleLen = (channels > 0) ? (sampleCount / (uint)channels) : sampleCount;
+                
+                seconds = (double)sampleLen / frequency;
+                
+                Sound newSound = new Sound(soundName, seconds, false, soundwave);
+
+                soundLibrary[soundName] = newSound;
+            } else
             {
                 Console.WriteLine($"Failed to load sound: {filePath}, SDL_mixer Error: {SDL.SDL_GetError()}");
                 return;
             }
-
-            soundLibrary[soundName] = sound;
-            Console.WriteLine($"Sound {soundName} loaded successfully!");
         }
 
         public async Task playSoundWithDelay(string soundName, int delay, bool loop = false, int time = 0)
@@ -72,22 +103,30 @@ namespace Shard.Shard
 
         public int playSound(string soundName, bool loop = false, int time = 0)
         {
-            // sound is already playing. Skip.
+            //sound is already playing. Skip.
             if (occupiedChannels.ContainsKey(soundName))
             {
                 return -1;
-            } else
+            }
+            else
             {
-                if(soundLibrary.TryGetValue(soundName, out IntPtr sound)){
-                    if (sound == IntPtr.Zero)
+                if (soundLibrary.TryGetValue(soundName, out Sound sound))
+                {
+                    if (sound.soundwave == IntPtr.Zero)
                     {
                         return -1;
                     }
                     int loops = loop ? -1 : 0;
-                    int channel = SDL_mixer.Mix_PlayChannel(-1, sound, loops);
+                    int channel = SDL_mixer.Mix_PlayChannel(-1, sound.soundwave, loops);
                     if (channel != -1)
                     {
                         occupiedChannels[soundName] = channel; // Store channel for this sound
+
+                        if (loop == false)
+                        {
+                            TimeSpan span = TimeSpan.FromSeconds(sound.length);
+                            Task.Delay((int)span.TotalMilliseconds).ContinueWith(_ => stopSound(soundName));
+                        }
 
                         if (time > 0)
                         {
@@ -107,14 +146,11 @@ namespace Shard.Shard
 
         public void setVolume(string soundName, float volume)
         {
-            foreach (var (name, sound) in soundLibrary)
-            {
-                if (name == soundName)
-                {
+            if(soundLibrary.TryGetValue(soundName, out Sound value)) { 
+
                     int sdlVolume = (int)(volume * 128);
-                    SDL_mixer.Mix_VolumeChunk(sound, sdlVolume);
+                    SDL_mixer.Mix_VolumeChunk(value.soundwave, sdlVolume);
                     return;
-                }
             }
         }
 
@@ -122,7 +158,7 @@ namespace Shard.Shard
         {
             foreach (var (_, sound) in soundLibrary)
             {
-                SDL_mixer.Mix_FreeChunk(sound);
+                SDL_mixer.Mix_FreeChunk(sound.soundwave);
             }
             soundLibrary.Clear();
             SDL_mixer.Mix_CloseAudio();
@@ -137,6 +173,4 @@ namespace Shard.Shard
             }
         }
     }
-
-
 }

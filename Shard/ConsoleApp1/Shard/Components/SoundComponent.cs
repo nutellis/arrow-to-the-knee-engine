@@ -15,7 +15,6 @@ namespace Shard.Shard.Components
 
         public SoundComponent(GameObject owner) : base(owner)
         {
-            // Empty constructor for adding multiple sounds later
         }
 
         public void loadSound(string soundName, string filePath)
