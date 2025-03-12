@@ -20,7 +20,8 @@ namespace Shard
         private Random rand;
         private GameObject ship;
 
-        private Sprite background;
+        private Sprite background1;
+        private Sprite background2;
 
         public int Xdir { get => xdir; set => xdir = value; }
         public bool Dead { get => dead; set => dead = value; }
@@ -119,7 +120,8 @@ namespace Shard
                     livingInvaders[rand.Next(livingInvaders.Count)].fire();
                 }
             }
-            Bootstrap.getDisplay().addToDraw(background);
+            Bootstrap.getDisplay().addToDraw(background1);
+            Bootstrap.getDisplay().addToDraw(background2);
 
         }
 
@@ -130,8 +132,11 @@ namespace Shard
             SpriteManager.getInstance().loadSpriteSheet("cannon_weapon", "Auto_Cannon.png", "autoCannon.json", 1.5f);
             SpriteManager.getInstance().loadSpriteSheet("weapon_projectile", "projectile.png", "projectile.json", 1.5f);
 
-            background = SpriteManager.getInstance().getSprite("background", "Green_Nebula.png");
-            
+            background1 = SpriteManager.getInstance().getSprite("background", "Green_Nebula.png");
+            background2 = SpriteManager.getInstance().getSprite("background", "Green_Nebula.png");
+            background2.X = 1024;
+            background2.Y = 0;
+
 
             ship = new Spaceship();
 

@@ -34,7 +34,7 @@ namespace SpaceInvaders
         public override void initialize()
         {
             this.transform.X = 100.0f;
-            this.transform.Y = 800.0f;
+            this.transform.Y = 750.0f;
 
             this.engineEffectAnimation = new SpriteComponent(this);
             this.engineEffectAnimation.setCurrentAnimation("spaceship_engine");
