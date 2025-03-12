@@ -19,6 +19,9 @@ namespace Shard
         private List<Invader> livingInvaders;
         private Random rand;
         private GameObject ship;
+
+        private Sprite background;
+
         public int Xdir { get => xdir; set => xdir = value; }
         public bool Dead { get => dead; set => dead = value; }
 
@@ -54,66 +57,69 @@ namespace Shard
             }
             animCounter += (float)Bootstrap.getDeltaTime();
 
+
+
             //Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
 
-            //if (animCounter > timeToSwap)
-            //{
-            //    animCounter -= timeToSwap;
+            if (animCounter > timeToSwap)
+            {
+                animCounter -= timeToSwap;
 
-            //    livingInvaders.Clear();
-            //    if (moveCounter > 12 || moveCounter <= -2)
-            //    {
-            //        ymod = 50;
-            //        Xdir *= -1;
-            //        moveDir *= -1;
+                livingInvaders.Clear();
+                if (moveCounter > 12 || moveCounter <= -2)
+                {
+                    ymod = 50;
+                    Xdir *= -1;
+                    moveDir *= -1;
 
-            //    }
+                }
 
-            //    moveCounter += moveDir;
+                moveCounter += moveDir;
 
 
-            //    invaderCount = 0;
-            //    for (int i = 0; i < rows; i++)
-            //    {
-            //        for (int j = 0; j < columns; j++)
-            //        {
-            //            if (myInvaders[i, j] == null || myInvaders[i, j].ToBeDestroyed == true)
-            //            {
-            //                deaths += 1;
-            //                continue;
-            //            }
+                invaderCount = 0;
+                for (int i = 0; i < rows; i++)
+                {
+                    for (int j = 0; j < columns; j++)
+                    {
+                        if (myInvaders[i, j] == null || myInvaders[i, j].ToBeDestroyed == true)
+                        {
+                            deaths += 1;
+                            continue;
+                        }
 
-            //            // Speed them up as their numbers diminish.
-            //            timeToSwap = 2 - ((deaths / 3) * 0.1f);
+                        // Speed them up as their numbers diminish.
+                        timeToSwap = 2 - ((deaths / 3) * 0.1f);
 
-            //            //myInvaders[i, j].changeSprite();
+                        //myInvaders[i, j].changeSprite();
 
-            //            if (ymod != 0)
-            //            {
-            //                myInvaders[i, j].transform.translate(0, ymod);
-            //            }
-            //            else
-            //            {
-            //                myInvaders[i, j].transform.translate(xdir, 0);
-            //            }
+                        if (ymod != 0)
+                        {
+                            myInvaders[i, j].transform.translate(0, ymod);
+                        }
+                        else
+                        {
+                            myInvaders[i, j].transform.translate(xdir, 0);
+                        }
 
-            //            livingInvaders.Add(myInvaders[i, j]);
+                        livingInvaders.Add(myInvaders[i, j]);
 
-            //        }
-            //    }
+                    }
+                }
 
-            //    Debug.Log("Living invaders " + livingInvaders.Count);
+                Debug.Log("Living invaders " + livingInvaders.Count);
 
-            //    if (livingInvaders.Count > 0)
-            //    {
-            //        SoundManager.getInstance().playSound("InvaderMove");
+                if (livingInvaders.Count > 0)
+                {
+                    SoundManager.getInstance().playSound("InvaderMove");
 
-            //        Debug.Log("Living invaders" + livingInvaders.Count);
+                    Debug.Log("Living invaders" + livingInvaders.Count);
 
-            //        // Pick a random invader to fire.
-            //        livingInvaders[rand.Next(livingInvaders.Count)].fire();
-            //    }
-            //}
+                    // Pick a random invader to fire.
+                    livingInvaders[rand.Next(livingInvaders.Count)].fire();
+                }
+            }
+            Bootstrap.getDisplay().addToDraw(background);
 
         }
 
@@ -121,8 +127,11 @@ namespace Shard
         {
           //  SpriteManager.getInstance().loadSpriteSheet("spaceship_Spritesheet", "SpaceShip_Idle.png", "animations.json");
             SpriteManager.getInstance().loadSpriteSheet("spaceship_engine_effect", "EnginePowering.png", "EngineEffect.json", 1.5f);
+            SpriteManager.getInstance().loadSpriteSheet("cannon_weapon", "Auto_Cannon.png", "autoCannon.json", 1.5f);
+            SpriteManager.getInstance().loadSpriteSheet("weapon_projectile", "projectile.png", "projectile.json", 1.5f);
 
-
+            background = SpriteManager.getInstance().getSprite("background", "Green_Nebula.png");
+            
 
             ship = new Spaceship();
 
@@ -131,44 +140,44 @@ namespace Shard
 
             timeToSwap = 3;
             invaderCount = 0;
-            //livingInvaders = new List<Invader>();
-            //for (int j = 0; j < rows; j++)
-            //{
-            //    for (int i = 0; i < columns; i++)
-            //    {
-            //Invader invader = new Invader();
+            livingInvaders = new List<Invader>();
+            for (int j = 0; j < rows; j++)
+            {
+                for (int i = 0; i < columns; i++)
+                {
+                    Invader invader = new Invader();
 
-            //        invader.transform.X = 100 + (i * 50);
-            //        invader.transform.Y = 100 + (ymod * 50);
+                    invader.transform.X = 100 + (i * 65);
+                    invader.transform.Y = 100 + (ymod * 65);
 
-            //        myInvaders[j, i] = invader;
+                    myInvaders[j, i] = invader;
 
-            //        livingInvaders.Add(myInvaders[j, i]);
+                    livingInvaders.Add(myInvaders[j, i]);
 
-            //        invaderCount += 1;
-            //    }
+                    invaderCount += 1;
+                }
 
-            //    ymod += 1;
-            //}
+                ymod += 1;
+            }
 
             moveDir = 1;
             Xdir = 35;
 
             // Finally, four bunkers
 
-            //for (int i = 0; i < 4; i++)
-            //{
+            for (int i = 0; i < 4; i++)
+            {
 
-                //Bunker b = new Bunker();
+                Bunker b = new Bunker();
 
-            //    b.transform.X = 200 + (i * 180);
-            //    b.transform.Y = 600;
+                b.transform.X = 200 + (i * 180);
+                b.transform.Y = 600;
 
-            //    Debug.Log("Setting up bunker " + i + "at " + b.transform.X + ", " + b.transform.Y);
+                Debug.Log("Setting up bunker " + i + "at " + b.transform.X + ", " + b.transform.Y);
 
-                //b.setupBunker();
+                b.setupBunker();
 
-            //}
+            }
 
             rand = new Random();
 

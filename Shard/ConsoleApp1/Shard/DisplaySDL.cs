@@ -269,6 +269,8 @@ namespace Shard
             SDL.SDL_Rect sRect;
             SDL.SDL_Rect tRect;
 
+            _toDraw.Sort((sprite1, sprite2) => sprite1.zOrder.CompareTo(sprite2.zOrder));
+
             foreach (Sprite sprite in _toDraw)
             {
 

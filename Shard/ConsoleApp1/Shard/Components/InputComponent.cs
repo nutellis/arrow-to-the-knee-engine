@@ -14,6 +14,8 @@ namespace Shard.Shard.Components
         {
             actions = new Dictionary<string, InputAction>();
             axisActions = new Dictionary<string, InputAxis>();
+
+            initialize();
         }
 
         public override void initialize()

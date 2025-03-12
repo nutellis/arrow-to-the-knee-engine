@@ -13,6 +13,7 @@ namespace Shard
         public float scaleX = 1, scaleY = 1;
         public int width, height;
         public bool canCollide = false;
+        public int zOrder = 0;
 
         public Sprite(string assetName)
         {
@@ -30,6 +31,11 @@ namespace Shard
         {
            local_x = x;
            local_y = y;
+        }
+
+        public void setRotation(float angle)
+        {
+            rotz = angle % 360; // Keep within 0-360 degrees
         }
 
         public int getWidth()

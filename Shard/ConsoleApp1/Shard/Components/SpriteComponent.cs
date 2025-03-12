@@ -3,7 +3,7 @@
 
 namespace Shard.Shard.Components
 {
-    internal class SpriteComponent : BaseComponent
+    public class SpriteComponent : BaseComponent
     {
         private Sprite currentSprite;
         private Dictionary<string, List<Sprite>> animations; 
@@ -16,10 +16,19 @@ namespace Shard.Shard.Components
         private bool hasAnimation = false;
         private List<Sprite> animationFrames;
 
+        private bool isVisible;
+        public bool IsVisible
+        {
+            get { return isVisible; }
+            set { isVisible = value; }
+        }
+
         public SpriteComponent(GameObject owner) : base(owner)
         {
             animations = new Dictionary<string, List<Sprite>>();
             sprites = new Dictionary<string, Sprite>();
+
+            isVisible = true;
         }
 
         public override void initialize()
@@ -70,23 +79,27 @@ namespace Shard.Shard.Components
                     currentSprite = animations[currentAnimation][0];
                 }
             }
+            recenterIfNeeded(currentSprite.width, currentSprite.height, currentSprite.scaleX, currentSprite.scaleY);
         }
 
-        public void setLocalPositionForAnimation(string animationName, float x, float y)
+        public void setupAnimation(string animationName, float x, float y, float rotation = 0, int zOrder = 0)
         {
             if (animations.TryGetValue(animationName, out List<Sprite> value)) {
                 foreach (var item in value)
                 {
                     item.setLocalPosition(x, y);
+                    item.zOrder = zOrder;
+                    item.rotz = rotation;
                 }
             }
         }
 
-        public void addSprite(string spriteName, string filepath, float scale = 1, float x = 0, float y = 0)
+        public void addSprite(string spriteName, string filepath, float scale = 1, float x = 0, float y = 0, int zOrder = 0)
         {
             Sprite frame = SpriteManager.getInstance().getSprite(spriteName, filepath);
             frame.setUniformScale(scale);
             frame.setLocalPosition(x, y);
+            frame.zOrder = zOrder;
 
             sprites[spriteName] = frame;
         }

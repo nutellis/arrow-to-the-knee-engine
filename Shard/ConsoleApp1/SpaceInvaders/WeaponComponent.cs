@@ -7,7 +7,7 @@ using Shard.Shard.Components;
 
 namespace Shard.SpaceInvaders
 {
-    internal class WeaponComponent : BaseComponent
+    internal class WeaponComponent : SpriteComponent
     {
         private double fireCounter, fireDelay = 2.0f;
 
@@ -16,21 +16,16 @@ namespace Shard.SpaceInvaders
             fireCounter = fireDelay;
         }
 
-        public bool CanFire() => fireCounter >= fireDelay;
+        public bool canFire() => fireCounter >= fireDelay;
 
-        public void Fire()
+        public void fire()
         {
             fireCounter = 0;
         }
 
-        public void Update(double deltaTime)
+        public void update(double deltaTime)
         {
             fireCounter += deltaTime;
         }
-
-        //protected override void UpdateComponent()
-        //{
-
-        //}
     }
 }

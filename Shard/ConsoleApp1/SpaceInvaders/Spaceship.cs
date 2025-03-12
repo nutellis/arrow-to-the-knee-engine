@@ -21,6 +21,10 @@ namespace SpaceInvaders
   
         private PhysicsComponent physics;
 
+        private HealthComponent health;
+        private ShieldComponent shield;
+        private WeaponComponent weapon;
+
         private double fireCounter, fireDelay = 1f;
         private float moveDistance, moveSpeed = 350;
 
@@ -32,27 +36,24 @@ namespace SpaceInvaders
             this.transform.X = 100.0f;
             this.transform.Y = 800.0f;
 
-
-
             this.engineEffectAnimation = new SpriteComponent(this);
             this.engineEffectAnimation.setCurrentAnimation("spaceship_engine");
-            this.engineEffectAnimation.setLocalPositionForAnimation("spaceship_engine", 12, 50);
+            this.engineEffectAnimation.setupAnimation("spaceship_engine", 12, 50, 0, 5);
 
             this.engineSprite = new SpriteComponent(this);
-            this.engineSprite.addSprite("baseEngine", "BaseEngine.png", 1.5f, 10, 25);
+            this.engineSprite.addSprite("baseEngine", "BaseEngine.png", 1.5f, 10, 25, 5);
             this.engineSprite.setSprite("baseEngine");
 
-
             this.baseSprite = new SpriteComponent(this);
-            this.baseSprite.addSprite("shipFull", "ShipFull.png", 1.5f);
-            this.baseSprite.addSprite("shipSlight", "ShipSlightDamaged.png", 1.5f);
-            this.baseSprite.addSprite("shipDamaged", "ShipDamaged.png", 1.5f);
-            this.baseSprite.addSprite("shipVeryDamaged", "ShipVeryDamaged.png", 1.5f);
+            this.baseSprite.addSprite("shipFull", "ShipFull.png", 1.5f, 0, 0, 10);
+            this.baseSprite.addSprite("shipSlight", "ShipSlightDamaged.png", 1.5f, 0, 0, 10);
+            this.baseSprite.addSprite("shipDamaged", "ShipDamaged.png", 1.5f, 0, 0, 10);
+            this.baseSprite.addSprite("shipVeryDamaged", "ShipVeryDamaged.png", 1.5f, 0, 0, 10);
 
             this.baseSprite.setSprite("shipFull");
 
 
-            fireDelay = 0.1;
+            fireDelay = 0.5;
             fireCounter = fireDelay;
 
             tags = new Tags();
@@ -77,6 +78,14 @@ namespace SpaceInvaders
             sound = new SoundComponent(this);
             sound.loadSound("SpaceShipAttack", "fire.wav");
             sound.loadSound("SpaceShipMove", "spaceshipmove.wav");
+
+            health = new HealthComponent(this);
+            shield = new ShieldComponent(this);
+
+            weapon = new WeaponComponent(this);
+
+            //weapon.setCurrentAnimation("spaceship_guns");
+            //weapon.setupAnimation("spaceship_guns", 0, 0, 2);
         }
 
 
@@ -114,7 +123,6 @@ namespace SpaceInvaders
             }
 
             Bullet b = new Bullet();
-            b.initialize();
             b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [0, value]);
             b.DestroyTag = "Invader";
 
@@ -132,7 +140,6 @@ namespace SpaceInvaders
             }
 
             Bullet b = new Bullet();
-            b.initialize();
             b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [value, 0]);
             b.DestroyTag = "Invader";
 
@@ -149,7 +156,6 @@ namespace SpaceInvaders
             }
 
             Bullet b = new Bullet();
-            b.initialize();
             b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [0, -1]);
             b.Dir[1] = -1;
             b.DestroyTag = "Invader";
@@ -174,7 +180,6 @@ namespace SpaceInvaders
             } else {
                 sound.playSound("SpaceShipMove");
             }
-            //Console.WriteLine("Move Value: " + moveValue);
         }
 
         public void onCollisionEnter(PhysicsComponent x)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shard.Shard.Components
 {
-    internal abstract class BaseComponent
+    public abstract class BaseComponent
     {
         protected GameObject owner;
         protected Tags tags;

@@ -11,6 +11,7 @@ namespace SpaceInvaders
 
         private PhysicsComponent physics;
         private SoundComponent sound;
+        private SpriteComponent sprite;
 
         private string destroyTag;
         private float[] direction = { 0, 0 };
@@ -23,10 +24,23 @@ namespace SpaceInvaders
             this.direction = direction;
             this.transform.X = x;
             this.transform.Y = y;
-            this.transform.Wid = (int)(20 * direction[0]);
-            this.transform.Ht = (int)(20 * direction[1]);
-
             
+            if (direction[0] > 0)
+            {
+                this.sprite.setupAnimation("gun_projectile", 0, 0, 90, 20);
+            }
+            else if (direction[0] < 0)
+            {
+                this.sprite.setupAnimation("gun_projectile", 0, 0, -90, 20);
+            }
+            else if (direction[1] > 0)
+            {
+                this.sprite.setupAnimation("gun_projectile", 0, 0, 180, 20);
+            }
+            else
+            {
+                this.sprite.setupAnimation("gun_projectile", 0, 0, 0, 20);
+            }
 
             physics.addRectCollider();
 
@@ -41,6 +55,9 @@ namespace SpaceInvaders
             physics = new PhysicsComponent(this);
             sound = new SoundComponent(this);
 
+            this.sprite = new SpriteComponent(this);
+            this.sprite.setCurrentAnimation("gun_projectile");
+
             this.Transient = true;
 
             tags = new Tags();
@@ -53,9 +70,10 @@ namespace SpaceInvaders
 
         public override void update()
         {
+           
             this.transform.moveImidiately((float)(direction[0] * 450.0 * Bootstrap.getDeltaTime()), (float)(direction[1] * 400.0 * Bootstrap.getDeltaTime()));
 
-            drawBullet();
+            //drawBullet();
         }
 
         private void drawBullet()

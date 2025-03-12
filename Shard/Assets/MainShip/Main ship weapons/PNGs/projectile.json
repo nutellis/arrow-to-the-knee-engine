@@ -1,0 +1,27 @@
+{
+    "animations": [
+        {
+            "animationName": "gun_projectile",
+            "animationFrames": [
+                {
+                    "x": 0,
+                    "y": 0,
+                    "width": 5,
+                    "height": 15
+                },
+                {
+                    "x": 0,
+                    "y": 19,
+                    "width": 5,
+                    "height": 17
+                },
+                {
+                    "x": 0,
+                    "y": 38,
+                    "width": 5,
+                    "height": 18
+                }
+            ]
+        }
+    ]
+}

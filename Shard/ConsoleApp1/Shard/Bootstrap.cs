@@ -306,7 +306,7 @@ namespace Shard
                     }
 
                     if (physDebug) {
-                        phys.drawDebugColliders();
+                       // phys.drawDebugColliders();
                     }
 
                 }

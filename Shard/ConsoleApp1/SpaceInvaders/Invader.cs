@@ -30,10 +30,14 @@ namespace SpaceInvaders
             //sprite = new SpriteComponent(this, true);
             sprite = new SpriteComponent(this);
 
-            sprite.addAnimationFrames("invader1","invader1.png", "Move");
-            sprite.addAnimationFrames("invader2", "invader2.png", "Move");
 
-            sprite.setCurrentAnimation("Move");
+            sprite.addSprite("FighterBase", "FighterBase.png", 1.2f, 0, 0, 10);
+            sprite.setSprite("FighterBase");
+
+            //sprite.addAnimationFrames("invader1","invader1.png", "Move");
+            //sprite.addAnimationFrames("invader2", "invader2.png", "Move");
+
+            //sprite.setCurrentAnimation("Move");
 
             game = (GameSpaceInvaders)Bootstrap.getRunningGame();
 
@@ -125,7 +129,6 @@ namespace SpaceInvaders
         public void fire()
         {
             Bullet b = new Bullet();
-            b.initialize();
             b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [0,1]);
             b.DestroyTag = "Player";
 
