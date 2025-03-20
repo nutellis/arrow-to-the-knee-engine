@@ -7,7 +7,8 @@ namespace Shard.Shard.Components
 {
     internal class SoundComponent : BaseComponent
     {
-        private static Dictionary<string, bool> loadedSounds = new Dictionary<string, bool>();
+        private Dictionary<string, bool> loadedSounds = new Dictionary<string, bool>();
+
         private string currentSound;
         private int soundChannel = -1;
 
@@ -65,7 +66,6 @@ namespace Shard.Shard.Components
 
         public void stopAllSounds()
         {
-            //TODO: @christos
             //stop all sounds coming from this component!
             //SoundManager.getInstance().stopAllSounds(List<string> sounds);
         }

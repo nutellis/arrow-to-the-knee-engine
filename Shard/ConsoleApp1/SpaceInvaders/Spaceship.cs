@@ -83,9 +83,6 @@ namespace SpaceInvaders
             shield = new ShieldComponent(this);
 
             weapon = new WeaponComponent(this);
-
-            //weapon.setCurrentAnimation("spaceship_guns");
-            //weapon.setupAnimation("spaceship_guns", 0, 0, 2);
         }
 
 
