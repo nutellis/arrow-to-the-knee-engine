@@ -132,7 +132,6 @@ namespace SpaceInvaders
             b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [0,1]);
             b.DestroyTag = "Player";
 
-            sound.setVolume("InvaderAttack", 0.05f);
             sound.playSound("InvaderAttack");
         }
     }
