@@ -47,7 +47,7 @@ namespace SpaceInvaders
 
             sound.loadSound("GotHit", "hit.wav");
             sound.loadSound("BunkerExplosion", "bunkerexplosion.wav");
-            sound.setVolume("BunkerExplosion", 1.0f);
+            sound.setVolume("BunkerExplosion", 0.1f);
         }
 
 
