@@ -7,7 +7,8 @@ namespace Shard.Shard.Components
 {
     internal class SoundComponent : BaseComponent
     {
-        private static Dictionary<string, bool> loadedSounds = new Dictionary<string, bool>();
+        //private Dictionary<string, bool> loadedSounds;
+        private Dictionary<string, bool> loadedSounds = new Dictionary<string, bool>();
         private string currentSound;
         private int soundChannel = -1;
 
@@ -15,6 +16,7 @@ namespace Shard.Shard.Components
 
         public SoundComponent(GameObject owner) : base(owner)
         {
+            //loadedSounds = new Dictionary<string, bool>();
         }
 
         public void loadSound(string soundName, string filePath)
@@ -47,12 +49,15 @@ namespace Shard.Shard.Components
             return SoundManager.getInstance().playSoundWithDelay(soundName, delay);
         }
 
+
         public void playSound(string soundName, bool loop = false)
         {
             if (loadedSounds.ContainsKey(soundName))
             {
+                Debug.getInstance().log($"Playing sound: {soundName}, Loop: {loop}");
                 SoundManager.getInstance().playSound(soundName, loop);
             }
+            else { Debug.getInstance().log($"Sound: {soundName} not found!"); }
         }
 
         public void stopSound(string soundName)
@@ -63,11 +68,17 @@ namespace Shard.Shard.Components
             }
         }
 
-        public void stopAllSounds()
+        public void stopAllComponentSounds()
         {
             //TODO: @christos
             //stop all sounds coming from this component!
             //SoundManager.getInstance().stopAllSounds(List<string> sounds);
+
+            foreach(string sound in loadedSounds.Keys)
+            {
+                SoundManager.getInstance().stopSound(sound);
+                Debug.getInstance().log("Trying to stop sound: " + sound);
+            }
         }
 
         public void setVolume(string soundName, float volume)

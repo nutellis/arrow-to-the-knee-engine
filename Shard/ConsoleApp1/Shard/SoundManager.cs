@@ -23,6 +23,7 @@ namespace Shard.Shard
         private Dictionary<string, Sound> soundLibrary;
 
         private Dictionary<string, int> occupiedChannels; // Store sound -> channel mapping
+        private bool dontPlayAnySound = false;
 
         private SoundManager()
         {
@@ -103,6 +104,11 @@ namespace Shard.Shard
 
         public int playSound(string soundName, bool loop = false, int time = 0)
         {
+            if (dontPlayAnySound)
+            {
+                return -1;
+            }
+
             //sound is already playing. Skip.
             if (occupiedChannels.ContainsKey(soundName))
             {
@@ -139,9 +145,10 @@ namespace Shard.Shard
             return -1;
         }
 
-        public void stopAllSounds()
+        public void stopAllSounds(bool stopAll = false)
         {
             SDL_mixer.Mix_HaltChannel(-1);
+            dontPlayAnySound = stopAll;
         }
 
         public void setVolume(string soundName, float volume)
@@ -170,6 +177,8 @@ namespace Shard.Shard
             {
                 SDL_mixer.Mix_HaltChannel(channel);
                 occupiedChannels.Remove(soundName); // Remove from tracking
+                Debug.getInstance().log("Stopped: " + soundName);
+
             }
         }
     }
