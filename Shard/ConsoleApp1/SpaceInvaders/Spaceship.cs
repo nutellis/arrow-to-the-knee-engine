@@ -11,16 +11,22 @@ namespace SpaceInvaders
 {
     class Spaceship : GameObject, CollisionHandler
     {
-        public SpriteComponent sprite;
+        public SpriteComponent baseSprite;
+        public SpriteComponent engineSprite;
+        public SpriteComponent engineEffectAnimation;
 
         private InputComponent input;
 
         private SoundComponent sound;
-  
+
         private PhysicsComponent physics;
 
+        private HealthComponent health;
+        private ShieldComponent shield;
+        private WeaponComponent weapon;
+
         private double fireCounter, fireDelay = 1f;
-        private float moveDistance, moveSpeed = 200;
+        private float moveDistance, moveSpeed = 350;
 
         private (bool horizontal, bool vertical) isMoving = (false, false);
 
@@ -28,15 +34,26 @@ namespace SpaceInvaders
         public override void initialize()
         {
             this.transform.X = 100.0f;
-            this.transform.Y = 800.0f;
+            this.transform.Y = 750.0f;
 
-            //this.sprite = new SpriteComponent(this, false);
-            this.sprite = new SpriteComponent(this);
+            this.engineEffectAnimation = new SpriteComponent(this);
+            this.engineEffectAnimation.setCurrentAnimation("spaceship_engine");
+            this.engineEffectAnimation.setupAnimation("spaceship_engine", 12, 50, 0, 5);
 
-            // store animations and pass them to the frames list 
-            this.sprite.setCurrentAnimation("spaceship_animation");
+            this.engineSprite = new SpriteComponent(this);
+            this.engineSprite.addSprite("baseEngine", "BaseEngine.png", 1.5f, 10, 25, 5);
+            this.engineSprite.setSprite("baseEngine");
 
-            fireDelay = 0.1;
+            this.baseSprite = new SpriteComponent(this);
+            this.baseSprite.addSprite("shipFull", "ShipFull.png", 1.5f, 0, 0, 10);
+            this.baseSprite.addSprite("shipSlight", "ShipSlightDamaged.png", 1.5f, 0, 0, 10);
+            this.baseSprite.addSprite("shipDamaged", "ShipDamaged.png", 1.5f, 0, 0, 10);
+            this.baseSprite.addSprite("shipVeryDamaged", "ShipVeryDamaged.png", 1.5f, 0, 0, 10);
+
+            this.baseSprite.setSprite("shipFull");
+
+
+            fireDelay = 0.5;
             fireCounter = fireDelay;
 
             tags = new Tags();
@@ -59,17 +76,22 @@ namespace SpaceInvaders
             tags.addTag("Player");
 
             sound = new SoundComponent(this);
-            sound.setVolume("SpaceShipAttack", 0.1f);
             sound.loadSound("SpaceShipAttack", "fire.wav");
-            //sound.loadSound("BackgroundMusic", "background.wav");
             sound.loadSound("SpaceShipMove", "spaceshipmove.wav");
             sound.loadSound("BackgroundEngine", "spaceshipengine.wav");
-
 
             //sound.setVolume("BackgroundMusic", 0.1f);
 
             sound.setVolume("BackgroundEngine", 1f);
             sound.playSound("BackgroundEngine", true);
+
+            health = new HealthComponent(this);
+            shield = new ShieldComponent(this);
+
+            weapon = new WeaponComponent(this);
+
+            //weapon.setCurrentAnimation("spaceship_guns");
+            //weapon.setupAnimation("spaceship_guns", 0, 0, 2);
         }
 
 
@@ -107,7 +129,6 @@ namespace SpaceInvaders
             }
 
             Bullet b = new Bullet();
-            b.initialize();
             b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [0, value]);
             b.DestroyTag = "Invader";
 
@@ -125,7 +146,6 @@ namespace SpaceInvaders
             }
 
             Bullet b = new Bullet();
-            b.initialize();
             b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [value, 0]);
             b.DestroyTag = "Invader";
 
@@ -142,7 +162,6 @@ namespace SpaceInvaders
             }
 
             Bullet b = new Bullet();
-            b.initialize();
             b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [0, -1]);
             b.Dir[1] = -1;
             b.DestroyTag = "Invader";
@@ -164,10 +183,11 @@ namespace SpaceInvaders
             if (isMoving.Equals((false, false)))
             {
                 sound.stopSound("SpaceShipMove");
-            } else {
+            }
+            else
+            {
                 sound.playSound("SpaceShipMove");
             }
-            //Console.WriteLine("Move Value: " + moveValue);
         }
 
         public void onCollisionEnter(PhysicsComponent x)
