@@ -17,8 +17,6 @@ namespace Shard.Shard.Components
         private Queue<Node> pathQueue = new Queue<Node>();
         public bool FollowingPath => pathQueue.Count > 0; // Check if moving along a path
         public bool finishedNavigating = false;
-        private float moveDistance;
-        private double moveSpeed = 100;
 
         public NavigationComponent(GameObject owner) : base(owner)
         {

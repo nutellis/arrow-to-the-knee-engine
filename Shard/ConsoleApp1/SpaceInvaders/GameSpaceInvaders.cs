@@ -157,10 +157,10 @@ namespace Shard
             
 
             var testTransform = new Transform();
-            testTransform.X = 16;
-            testTransform.Y = 800;
+            testTransform.X = 606;
+            testTransform.Y = 500;
 
-            Ai.navigation.goalPosition = (ship.transform);
+            Ai.navigation.goalPosition = (testTransform);
 
             int ymod = 0;
 
