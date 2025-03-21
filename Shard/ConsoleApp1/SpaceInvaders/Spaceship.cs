@@ -197,12 +197,12 @@ namespace SpaceInvaders
 
             physics.DebugColor = Color.Green;
 
-            // Sound Testing
+            // Sound Testing Reset
             if (x.Owner.Tags.checkTag("BunkerBit"))
             {
                 //Resume the Spaceship engine sound again 
-                sound.setVolume("BackgroundEngine", 1f);
-                sound.playSound("BackgroundEngine", true);
+                //sound.setVolume("BackgroundEngine", 1f);
+                //sound.playSound("BackgroundEngine", true);
 
                 //Resume all sounds 
                 //SoundManager.getInstance().stopAllSounds(false);
@@ -211,12 +211,12 @@ namespace SpaceInvaders
 
         public void onCollisionStay(PhysicsComponent x)
         {
-            // Sound Testing
+            // Stop all Component Sounds Test
             physics.DebugColor = Color.Blue;
             if (x.Owner.Tags.checkTag("BunkerBit"))
             {
                 //Stop all sounds coming from this component!
-                sound.stopAllComponentSounds();
+                //sound.stopAllComponentSounds();
 
                 //Stops Every Sound Playing
                 //SoundManager.getInstance().stopAllSounds(true);
