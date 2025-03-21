@@ -154,14 +154,7 @@ namespace Shard
             Ai.navigation = new Shard.Components.NavigationComponent(Ai);
             Ai.Tags.addTag("Ai");
             Ai.Tags.removeTag("Invader");
-            
-
-            var testTransform = new Transform();
-            testTransform.X = 606;
-            testTransform.Y = 500;
-
-            Ai.navigation.goalPosition = (testTransform);
-
+           
             int ymod = 0;
 
             timeToSwap = 3;
@@ -206,6 +199,12 @@ namespace Shard
             }
 
             rand = new Random();
+
+            var testTransform = new Transform();
+            testTransform.X = 606;
+            testTransform.Y = 500;
+
+            Ai.navigation.goalPosition = (testTransform);
 
         }
 
