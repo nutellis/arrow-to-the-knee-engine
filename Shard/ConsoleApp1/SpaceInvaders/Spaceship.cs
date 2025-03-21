@@ -82,6 +82,15 @@ namespace SpaceInvaders
             shield = new ShieldComponent(this);
 
             weapon = new WeaponComponent(this);
+
+
+
+            sound.loadSound("BackgroundEngine", "spaceshipengine.wav");
+
+            //sound.setVolume("BackgroundMusic", 0.1f);
+
+            sound.setVolume("BackgroundEngine", 1f);
+            sound.playSound("BackgroundEngine", true);
         }
 
 
@@ -187,11 +196,31 @@ namespace SpaceInvaders
         {
 
             physics.DebugColor = Color.Green;
+
+            // Sound Testing
+            if (x.Owner.Tags.checkTag("BunkerBit"))
+            {
+                //Resume the Spaceship engine sound again 
+                sound.setVolume("BackgroundEngine", 1f);
+                sound.playSound("BackgroundEngine", true);
+
+                //Resume all sounds 
+                //SoundManager.getInstance().stopAllSounds(false);
+            }
         }
 
         public void onCollisionStay(PhysicsComponent x)
         {
+            // Sound Testing
             physics.DebugColor = Color.Blue;
+            if (x.Owner.Tags.checkTag("BunkerBit"))
+            {
+                //Stop all sounds coming from this component!
+                sound.stopAllComponentSounds();
+
+                //Stops Every Sound Playing
+                //SoundManager.getInstance().stopAllSounds(true);
+            }
         }
 
         public override string ToString()
