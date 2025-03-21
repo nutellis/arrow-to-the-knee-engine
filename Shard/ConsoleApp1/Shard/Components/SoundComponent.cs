@@ -64,10 +64,13 @@ namespace Shard.Shard.Components
             }
         }
 
-        public void stopAllSounds()
+        public void stopAllComponentSounds()
         {
-            //stop all sounds coming from this component!
-            //SoundManager.getInstance().stopAllSounds(List<string> sounds);
+            foreach (string sound in loadedSounds.Keys)
+            {
+                SoundManager.getInstance().stopSound(sound);
+                Debug.getInstance().log("Trying to stop sound: " + sound);
+            }
         }
 
         public void setVolume(string soundName, float volume)
