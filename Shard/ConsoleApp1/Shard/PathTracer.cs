@@ -22,32 +22,22 @@ namespace Shard
 {
     public class PathTracer
     {
-        // Singleton instance
         private static PathTracer instance = null;
-        private static readonly object padlock = new object();
 
-        // Private constructor to prevent instantiation
         private PathTracer()
         {
-
+            setNodeWidth(nodeWidth);
+            setNodeHeight(nodeHeight);
         }
 
-        public static PathTracer getInstance
+        public static PathTracer getInstance()
         {
-            get
+            if (instance == null)
             {
-                lock (padlock)
-                {
-                    if (instance == null)
-                    {
-                        instance = new PathTracer();
-                    }
-                    return instance;
-                }
+                instance = new PathTracer();
             }
+            return instance;
         }
-
-        //variables
 
         private static readonly int[][] Directions =
         {
@@ -91,8 +81,21 @@ namespace Shard
             public Node Parent;
             public int F => G + H;
 
-            public Node(int coordinateX, int coordinateY, Node parent = null)
+            public Transform transform
             {
+                get
+                {
+                    Transform t = new Transform();
+                    t.X = posX * nodeWidth;
+                    t.Y = posY * nodeHeight;
+                    return t;
+                }
+            }
+
+            public Node(int coordinateX, int coordinateY, int width, int height, Node parent = null)
+            {
+                nodeWidth = width;
+                nodeHeight = height;
                 posX = coordinateX;
                 posY = coordinateY;
                 Parent = parent;
@@ -121,56 +124,7 @@ namespace Shard
                 filled.Add(temp);
             }
         }
-
-
-        // Making a grid out of the display for each pixel
-        public void setGrid()
-        {
-            grid = new int[displayWidth, displayHeight];
-            for (int i = 0; i < displayWidth; i++)
-            {
-                for (int j = 0; j < displayHeight; j++)
-                {
-                    grid[i, j] = 0;
-                }
-            }
-        }
-        // Transforming the game objects to the grid and marking the occupied cells by 1
-        public void transformGameObjectsToGrid()
-        {
-            // Assuming Bootstrap.getGameObjects() returns a list of game objects with X and Y properties  
-            List<GameObject> gameObjects = GameObjectManager.getInstance().getMyObject();
-            foreach (var gameObject in gameObjects)
-            {
-                if (gameObject is Bullet)
-                {
-                    continue;
-                }
-                int x = (int)gameObject.transform.X;
-                int y = (int)gameObject.transform.Y;
-                //int x = (int)gameObject.transform.Centre.X;
-                //int y = (int)gameObject.transform.Centre.Y;
-
-                int width = (int)gameObject.transform.Wid;
-                int height = (int)gameObject.transform.Ht;
-                for (int i = x; i < x + width; i++)
-                {
-                    for (int j = y; j < y + height; j++)
-                    {
-                        grid[i, j] = 1;
-                    }
-                }
-
-                //grid[x, y] = 1;
-            }
-        }
-        // Transforming the game to the grid system
-        public void transformWorldToGrid()
-        {
-            setGrid();
-            transformGameObjectsToGrid();
-        }
-
+        
         public void setNodeMap(GameObject gameObject)
         {
             int numNodesX = 30;  
@@ -192,7 +146,7 @@ namespace Shard
             {
                 for (int j = startY; j <= endY; j++)
                 {
-                    nodeMap[i - startX, j - startY] = new Node(i, j);
+                    nodeMap[i - startX, j - startY] = new Node(i, j, nodeWidth, nodeHeight);
                 }
             }
         }
@@ -215,24 +169,24 @@ namespace Shard
 
             foreach (var gameObject in gameObjects)
             {
-                if (gameObject is Bullet || gameObject.Tags.checkTag("Ai") || gameObject.Tags.checkTag("ignore"))
+                if (gameObject.Tags.checkTag("Ai") || gameObject.Tags.checkTag("ignore"))
                 {
                     continue;
                 }
 
-                // Convert object bounds to node coordinates
+                //convert object bounds to node coordinates
                 int minNodeX = Math.Max((int)(gameObject.transform.X / nodeWidth), 0);
                 int minNodeY = Math.Max((int)(gameObject.transform.Y / nodeHeight), 0);
                 int maxNodeX = Math.Min((int)((gameObject.transform.X + gameObject.transform.Wid) / nodeWidth), nodeMapWidth - 1);
                 int maxNodeY = Math.Min((int)((gameObject.transform.Y + gameObject.transform.Ht) / nodeHeight), nodeMapHeight - 1);
 
-                // **Skip this object if it's completely outside the node map**
+                // skip this object if it's completely outside the node map
                 if (minNodeX > nodeMapWidth - 1 || minNodeY > nodeMapHeight - 1 || maxNodeX < 0 || maxNodeY < 0)
                 {
                     continue;
                 }
 
-                // Iterate only within the object’s node-space bounds
+                // iterate within the object’s node-space bounds
                 for (int i = minNodeX; i <= maxNodeX; i++)
                 {
                     for (int j = minNodeY; j <= maxNodeY; j++)
@@ -248,116 +202,6 @@ namespace Shard
             setNodeMap(gameObject);
             setGameObjectsToNodeMap(gameObject);
         }
-        // A little bit of a mess, works best in squere shapes, need to be checked for other shapes
-        // This function was used to transform the grid to the nodeMap
-        // Might be used later for more precision
-        public void transformGridToNodeMap()
-        {
-            int posX = 0, posY = 0;
-            int coordianteX = 0, coordinateY = 0;
-
-            nodeMap = new Node[displayWidth / nodeWidth, displayHeight / nodeHeight];
-
-            for (int rowCounter = 0; rowCounter < displayWidth / nodeWidth; rowCounter++)
-            {
-                posX = rowCounter;
-
-                for (int colCounter = 0; colCounter < displayHeight / nodeHeight; colCounter++)
-                {
-                    posY = colCounter;
-                    coordianteX = rowCounter * nodeWidth;
-                    coordinateY = colCounter * nodeHeight;
-                    Node node = new Node(posX, posY);
-                    node.setNodeInfo(coordianteX, coordinateY, nodeWidth, nodeHeight);
-                    nodeMap[rowCounter, colCounter] = node;
-
-                    for (int i = node.minX; i <= node.maxX; i++)
-                    {
-                        for (int j = node.minY; j <= node.maxY; j++)
-                        {
-                            if (grid[i, j] == 1)
-                            {
-                                node.setWalkable(false);
-                                node.setFilled(i, j);
-                            }
-                        }
-                    }
-                }
-
-
-            }
-        }
-
-        // this need to be fixed probably
-        public void transformPathToGrid()
-        {
-            foreach (var node in path)
-            {
-                for (int i = node.minX; i <= node.maxX; i++)
-                {
-                    for (int j = node.minY; j <= node.maxY; j++)
-                    {
-                        grid[i, j] = 2;
-                    }
-                }
-            }
-        }
-
-        public List<Node> CalculatePath3(GameObject gameObject, (int, int) goal)
-        {
-            int nodeMapWidth = nodeMap.GetLength(0);
-            int nodeMapHeight = nodeMap.GetLength(1);
-
-            int startX = Math.Clamp((int)(gameObject.transform.X / nodeWidth), 0, nodeMapWidth - 1);
-            int startY = Math.Clamp((int)(gameObject.transform.Y / nodeHeight), 0, nodeMapHeight - 1);
-            int goalX = Math.Clamp(goal.Item1 / nodeWidth, 0, nodeMapWidth - 1);
-            int goalY = Math.Clamp(goal.Item2 / nodeHeight, 0, nodeMapHeight - 1);
-
-            Node startNode = nodeMap[startX, startY];
-            Node goalNode = nodeMap[goalX, goalY];
-
-            PriorityQueue<Node, int> openList = new PriorityQueue<Node, int>();
-            HashSet<(int, int)> closedList = new HashSet<(int, int)>();
-
-            startNode.G = 0;
-            startNode.H = Math.Abs(startX - goalX) + Math.Abs(startY - goalY);
-            openList.Enqueue(startNode, startNode.F);
-
-            while (openList.Count > 0)
-            {
-                Node current = openList.Dequeue();
-
-                if (current.posX == goalX && current.posY == goalY)
-                    return ReconstructPath1(current);
-
-                closedList.Add((current.posX, current.posY));
-
-                foreach (var direction in Directions)
-                {
-                    int newX = current.posX + direction[0];
-                    int newY = current.posY + direction[1];
-
-                    // Check if within bounds & walkable
-                    if (newX < 0 || newY < 0 || newX >= nodeMapWidth || newY >= nodeMapHeight || !nodeMap[newX, newY].walkable || closedList.Contains((newX, newY)))
-                        continue;
-
-                    Node neighbor = nodeMap[newX, newY];
-                    int newG = current.G + 1; // Cost to move to neighbor
-
-                    if (newG < neighbor.G)
-                    {
-                        neighbor.Parent = current;
-                        neighbor.G = newG;
-                        neighbor.H = Math.Abs(newX - goalX) + Math.Abs(newY - goalY);
-
-                        if (!openList.UnorderedItems.Any(n => n.Element == neighbor))
-                            openList.Enqueue(neighbor, neighbor.F);
-                    }
-                }
-            }
-
-            return new List<Node>(); // No path found
-        }
 
         // Helper Function to Reconstruct Path
         private List<Node> ReconstructPath1(Node node)
@@ -369,6 +213,7 @@ namespace Shard
                 node = node.Parent;
             }
             path.Reverse();
+            
             return path;
         }
 
@@ -461,9 +306,6 @@ namespace Shard
             List<Node> openList = new List<Node>();
             HashSet<(int, int)> closedList = new HashSet<(int, int)>();
 
-            // I hard coded the the transformation of the start and goal to the nodeMap
-            // I need to fix this later
-
             Node startNode = nodeMap[startX, startY];
             Node goalNode = nodeMap[goalX, goalY];
             openList.Add(startNode);
@@ -497,56 +339,6 @@ namespace Shard
             return new List<Node>();
         }
 
-        public List<Node> CalculatePath2((int, int) start, (int, int) goal)
-        {
-            int startX = start.Item1 / nodeWidth;
-            int startY = start.Item2 / nodeHeight;
-            int goalX = goal.Item1 / nodeWidth;
-            int goalY = goal.Item2 / nodeHeight;
-
-            Node startNode = nodeMap[startX, startY];
-            Node goalNode = nodeMap[goalX, goalY];
-
-            var openList = new SortedSet<Node>(Comparer<Node>.Create((a, b) => a.F == b.F ? a.H.CompareTo(b.H) : a.F.CompareTo(b.F)));
-            var closedList = new HashSet<(int, int)>();
-
-            openList.Add(startNode);
-
-            while (openList.Count > 0)
-            {
-                Node current = openList.Min;
-                openList.Remove(current);
-
-                if (current.posX == goalNode.posX && current.posY == goalNode.posY)
-                    return ReconstructPath(current);
-
-                closedList.Add((current.posX, current.posY));
-
-                foreach (var direction in Directions)
-                {
-                    int newX = current.posX + direction[0], newY = current.posY + direction[1];
-                    if (newX < 0 || newY < 0 || newX >= nodeMap.GetLength(0) || newY >= nodeMap.GetLength(1) || !nodeMap[newX, newY].walkable || closedList.Contains((newX, newY)))
-                        continue;
-
-                    Node neighbor = nodeMap[newX, newY];
-                    int tentativeG = current.G + 1;
-
-                    if (tentativeG < neighbor.G)
-                    {
-                        neighbor.Parent = current;
-                        neighbor.G = tentativeG;
-                        neighbor.H = Math.Abs(newX - goalNode.posX) + Math.Abs(newY - goalNode.posY);
-
-                        if (!openList.Contains(neighbor))
-                        {
-                            openList.Add(neighbor);
-                        }
-                    }
-                }
-            }
-            return new List<Node>();
-        }
-
         private List<Node> ReconstructPath(Node node)
         {
             List<Node> path = new List<Node>();
@@ -556,7 +348,8 @@ namespace Shard
                 node = node.Parent;
             }
             path.Reverse();
-            this.temp = path; // Use 'this' to refer to the instance variable
+            path.RemoveAt(0);
+            this.temp = path;
             return path;
         }
 
@@ -576,17 +369,8 @@ namespace Shard
         {
             return path;
         }
-        public void debugPrintGrid()
-        {
-            for (int i = 0; i < grid.GetLength(0); i++)
-            {
-                for (int j = 0; j < grid.GetLength(1); j++)
-                {
-                    Console.Write(grid[i, j]);
-                }
-                Console.WriteLine();
-            }
-        }
+
+
         public void debugPrintNodeMap()
         {
             for (int i = 0; i < nodeMap.GetLength(0); i++)
@@ -636,33 +420,27 @@ namespace Shard
         {
             setNodeWidth(nodeWidth);
             setNodeHeight(nodeHeight);
-            transformWorldToGrid();
-            transformGridToNodeMap();
+            //transformWorldToGrid();
+           // transformGridToNodeMap();
             //transformWorldToNodeMap();
-           // path = CalculatePath(start, goal);
-            transformPathToGrid();
+            path = CalculatePath(start, goal);
+           // transformPathToGrid();
             Console.WriteLine("The nodeMap for Debugging");
             debugPrintNodeMap();
-            debugPrintGrid();
             Console.WriteLine("The path for Debugging");
             debugPrintPath();
             Console.WriteLine("The path visual for Debugging");
             debugPrintPathVisual(path);
 
         }
-        /*
-        public void setOwner(GameObject owner)
-        {
-            this.owner = owner;
-        }
-        */
-        public void initialize(int nodeWidth, int nodeHeight)
+
+        public void setNodeDimensions(int nodeWidth, int nodeHeight)
         {
             setNodeWidth(nodeWidth);
             setNodeHeight(nodeHeight);
-            //setOwner(owner);
-           // transformWorldToNodeMap();
         }
+
+
         public void findPath(GameObject gameObject, (int, int) goal)
         {
             transformWorldToNodeMap(gameObject);
@@ -671,9 +449,10 @@ namespace Shard
             //path = CalculatePath2(start, goal);
             debugPrintPathVisual(path);
         }
+
         public void excludingTags(List<string> tags)
         { 
-        excludedTags = tags;
+            excludedTags = tags;
         }
 
 

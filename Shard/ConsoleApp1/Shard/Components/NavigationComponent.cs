@@ -1,6 +1,7 @@
 ﻿using SpaceInvaders;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -11,36 +12,26 @@ namespace Shard.Shard.Components
 {
     internal class NavigationComponent : BaseComponent
     {
-        public (int x, int y) goalPosition;
-        private (int x, float y) currentPosition;
+        public Transform goalPosition;
 
         private Queue<Node> pathQueue = new Queue<Node>();
         public bool FollowingPath => pathQueue.Count > 0; // Check if moving along a path
-
+        public bool finishedNavigating = false;
+        private float moveDistance;
+        private double moveSpeed = 100;
 
         public NavigationComponent(GameObject owner) : base(owner)
         {
-            
+            finishedNavigating = true;
         }
 
         public override void physicsUpdate()
         {
-
             base.physicsUpdate();
-            if (FollowingPath)
-            {
-                followPath();
-            }
-            else
-            {
-                //if(owner.transform.X != goalPosition.x && owner.transform.Y != goalPosition.y)
-                
-                   
-                    moveTowardsGoal(goalPosition);
-
-                
-                    
-            }
+            if(FollowingPath == false)
+                {
+                    findGoal(goalPosition);
+                }
         }
 
         public void setPath(List<Node> path)
@@ -54,31 +45,56 @@ namespace Shard.Shard.Components
 
         public void followPath()
         {
-            if (pathQueue.Count == 0)
-                return; 
-
-            Node nextNode = pathQueue.Peek();
-            Vector2 nextPosition = new Vector2(nextNode.posX * 16, nextNode.posY * 16);
-
-            // Move towards next node
-            owner.transform.moveImidiately(nextPosition.X - owner.transform.X, nextPosition.Y - owner.transform.Y);
-
-            // Check if reached the node
-            if (Math.Abs(owner.transform.X - nextPosition.X) < 1 && Math.Abs(owner.transform.Y - nextPosition.Y) < 1)
+            if(Transform.distance(owner.transform, goalPosition) < 0.1f)
             {
-                pathQueue.Dequeue(); // Move to the next node
+                finishedNavigating = true;
             }
+
+            if (pathQueue.Count == 0)
+                return;
+
+            var targetPosition = pathQueue.Peek().transform;
+
+            var newPosition = Transform.lerp(owner.transform, targetPosition, 0.3f);
+
+            // snap if we are close to target
+            if (Transform.distance(newPosition.X, targetPosition.X) <= 1.0f)
+            {
+                newPosition.X = targetPosition.X;
+            }
+                
+            if (Transform.distance(newPosition.Y, targetPosition.Y) <= 1.0f)
+            { 
+                newPosition.Y = targetPosition.Y;
+            }
+
+            // get distance from origin
+            var finalMovementX = Transform.distance(newPosition.X, owner.transform.X);
+            var finalMovementY = Transform.distance(newPosition.Y, owner.transform.Y);
+
+            owner.transform.moveImmediately(finalMovementX, finalMovementY);
+
+            if (Transform.distance(owner.transform, targetPosition) < 1.0f)
+            {
+                pathQueue.Dequeue(); // Remove waypoint when reached
+            }
+
         }
 
-
-        public void moveTowardsGoal((int x, int y) goalPosition)
+        public override void update()
         {
+            if (FollowingPath)
+            {
+                followPath();
+            }
+                base.update();
 
-            PathTracer.getInstance.findPath(owner, goalPosition);
-            PathTracer.getInstance.debugPrintPathVisual((PathTracer.getInstance.getPath()));
-            setPath(PathTracer.getInstance.getPath());
+        }
 
-
+        public void findGoal(Transform goalPosition)
+        {
+            PathTracer.getInstance().findPath(owner, ((int, int))(goalPosition.X, goalPosition.Y));
+            setPath(PathTracer.getInstance().getPath());
         }
 
 

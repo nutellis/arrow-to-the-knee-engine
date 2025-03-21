@@ -37,6 +37,13 @@ namespace Shard
         {
             Bootstrap.getDisplay().showText("FPS: " + Bootstrap.getFPS(), 10, 10, 12, 255, 255, 255);
 
+
+            //if(Ai.navigation.finishedNavigating)
+            //{
+            //    Ai.navigation.goalPosition.X += 10;
+            //    Ai.navigation.goalPosition.Y += 15;
+            //}
+
             int ymod = 0;
             int deaths = 0;
 
@@ -55,7 +62,6 @@ namespace Shard
             }
             animCounter += (float)Bootstrap.getDeltaTime();
 
-            Ai.navigation.goalPosition = ((int)ship.transform.X, (int)ship.transform.Y);
             //Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
             if (animCounter > timeToSwap)
             {
@@ -126,19 +132,18 @@ namespace Shard
             ship.initialize();
 
             Ai = new Invader();
-            Ai.navigation = new Shard.Components.NavigationComponent(Ai);
-            Ai.Tags.addTag("Ai");
             Ai.transform.X = 1;
             Ai.transform.Y = 1;
-            PathTracer.getInstance.initialize(16,16);
+            Ai.navigation = new Shard.Components.NavigationComponent(Ai);
+            Ai.Tags.addTag("Ai");
+            Ai.Tags.removeTag("Invader");
+            
 
+            var testTransform = new Transform();
+            testTransform.X = 16;
+            testTransform.Y = 800;
 
-            Ai.navigation.goalPosition = ((int)ship.transform.X, (int)ship.transform.Y);
-            //(int)ship.transform.X,(int) ship.transform.Y
-
-
-
-
+            Ai.navigation.goalPosition = (ship.transform);
 
             int ymod = 0;
 
