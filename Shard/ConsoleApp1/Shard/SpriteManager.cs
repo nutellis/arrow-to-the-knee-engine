@@ -184,7 +184,12 @@ namespace Shard
         {
             if(animations.TryGetValue(animationName, out List<Sprite> animation))
             {
-                return animation;
+                var frames = new List<Sprite>();
+                foreach (var sprite in animation)
+                {
+                    frames.Add((Sprite)sprite.Clone());
+                }
+                return frames;
             }
             return null;
         }
