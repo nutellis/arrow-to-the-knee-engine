@@ -9,7 +9,9 @@
 using Shard.Shard;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace Shard
@@ -25,6 +27,7 @@ namespace Shard
         private static InputSystem input;
         private static PhysicsManager phys;
         private static AssetManagerBase asset;
+        private static PathTracer tracer;
 
         private static int targetFrameRate;
         private static int millisPerFrame;
@@ -35,7 +38,7 @@ namespace Shard
         private static long startTime;
         private static string baseDir;
         private static Dictionary<string,string> enVars;
-
+        
         public static bool checkEnvironmentalVariable (string id) {
             return enVars.ContainsKey (id);
         }
@@ -63,7 +66,6 @@ namespace Shard
 
             setupEnvironmentalVariables(baseDir + "\\" + "envar.cfg");
             setup(baseDir + "\\" + DEFAULT_CONFIG);
-
         }
 
         public static void setupEnvironmentalVariables (String path) {
@@ -116,14 +118,6 @@ namespace Shard
             object ob;
             bool bailOut = false;
 
-            phys = PhysicsManager.getInstance();
-
-            //made input a singleton
-            input = InputFramework.getInstance();
-
-            //same with the sound
-            soundEngine = SoundManager.getInstance(); 
-
             foreach (KeyValuePair<string, string> kvp in config)
             {
                 t = Type.GetType("Shard." + kvp.Value);
@@ -156,6 +150,19 @@ namespace Shard
 
                 Debug.getInstance().log("Config file... setting " + kvp.Key + " to " + kvp.Value);
             }
+
+
+            phys = PhysicsManager.getInstance();
+
+            //made input a singleton
+            input = InputFramework.getInstance();
+
+            //same with the sound
+            soundEngine = SoundManager.getInstance();
+
+            //pathtracer
+            tracer = PathTracer.getInstance();
+            
 
             if (runningGame == null)
             {
@@ -265,6 +272,8 @@ namespace Shard
 
             while (true)
             {
+               
+                
                 frames += 1;
 
                 timeInMillisecondsStart = getCurrentMillis();
@@ -272,6 +281,20 @@ namespace Shard
                 // Clear the screen.
                 Bootstrap.getDisplay().clearDisplay();
 
+                if(frames % 100 == 0)
+                {
+                    //tracer.debugTestRun(8, 8, (380, 300), (520, 600));
+                    //tracer.initialize(8, 8);
+                    //tracer.findPath((380, 300), (520, 600));
+
+                    //tracer.findPath((0, 0), (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()));
+                    //tracer.FindPath((0, 0), (Bootstrap.getDisplay().getWidth(), Bootstrap.getDisplay().getHeight()));
+                    //tracer.debugPrintPathVisual();
+                    //tracer.initialize(16, 16);
+                   // tracer.findPath((100, 100), (520, 600));
+
+                }
+  
                 // Update 
                 runningGame.update();
                 // Input
@@ -310,10 +333,10 @@ namespace Shard
                     }
 
                 }
-
+                
                 // Render the screen.
                 Bootstrap.getDisplay().display();
-
+                
                 timeInMillisecondsEnd = getCurrentMillis();
 
                 frameTimes.Add (timeInMillisecondsEnd);
@@ -325,6 +348,8 @@ namespace Shard
 
                 TimeElapsed += deltaTime;
 
+
+                ///
                 if (sleep >= 0)
                 {
                     // Frame rate regulator.  Bear in mind since this is millisecond precision, and we 
@@ -342,7 +367,9 @@ namespace Shard
 
                 lastTick = timeInMillisecondsStart;
 
-            } 
+                
+
+            }
 
 
         }

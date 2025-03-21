@@ -23,6 +23,7 @@ namespace Shard
         private Sprite background1;
         private Sprite background2;
 
+        private Invader Ai;
         public int Xdir { get => xdir; set => xdir = value; }
         public bool Dead { get => dead; set => dead = value; }
 
@@ -39,6 +40,13 @@ namespace Shard
         public override void update()
         {
             Bootstrap.getDisplay().showText("FPS: " + Bootstrap.getFPS(), 10, 10, 12, 255, 255, 255);
+
+
+            //if(Ai.navigation.finishedNavigating)
+            //{
+            //    Ai.navigation.goalPosition.X += 10;
+            //    Ai.navigation.goalPosition.Y += 15;
+            //}
 
             int ymod = 0;
             int deaths = 0;
@@ -61,7 +69,6 @@ namespace Shard
 
 
             //Debug.Log("Move Counter is " + moveCounter + ", dir is " + moveDir);
-
             if (animCounter > timeToSwap)
             {
                 animCounter -= timeToSwap;
@@ -118,6 +125,7 @@ namespace Shard
 
                     // Pick a random invader to fire.
                     livingInvaders[rand.Next(livingInvaders.Count)].fire();
+
                 }
             }
             Bootstrap.getDisplay().addToDraw(background1);
@@ -140,7 +148,20 @@ namespace Shard
 
             ship = new Spaceship();
 
-           
+            Ai = new Invader();
+            Ai.transform.X = 1;
+            Ai.transform.Y = 1;
+            Ai.navigation = new Shard.Components.NavigationComponent(Ai);
+            Ai.Tags.addTag("Ai");
+            Ai.Tags.removeTag("Invader");
+            
+
+            var testTransform = new Transform();
+            testTransform.X = 16;
+            testTransform.Y = 800;
+
+            Ai.navigation.goalPosition = (ship.transform);
+
             int ymod = 0;
 
             timeToSwap = 3;

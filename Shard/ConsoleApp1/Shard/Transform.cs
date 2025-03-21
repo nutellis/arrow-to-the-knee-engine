@@ -75,19 +75,19 @@ namespace Shard
         public void translate(float nx, float ny)
         {
 
-            Lx += (float)nx;
-            Ly += (float)ny;
+            lx += (float)nx;
+            ly += (float)ny;
 
-            if (Lx != 0 && Ly != 0)
-            {
-                // Normalize the movement vector to ensure consistent speed
-                float magnitude = (float)Math.Sqrt(Lx * Lx + Ly * Ly);
-                if (magnitude > 0)
-                {
-                    lx = lx * (Math.Abs(lx) / magnitude);
-                    ly = ly * (Math.Abs(ly) / magnitude);
-                }
-            }
+            //if (lx != 0 && ly != 0)
+            //{
+            //    // normalize the movement vector to ensure consistent speed
+            //    float magnitude = (float)Math.Sqrt(Lx * Lx + Ly * Ly);
+            //    if (magnitude > 0)
+            //    {
+            //        lx = lx * (Math.Abs(lx) / magnitude);
+            //        ly = ly * (Math.Abs(ly) / magnitude);
+            //    }
+            //}
         }
 
         public void translate(Vector2 vect)
@@ -106,12 +106,41 @@ namespace Shard
             recalculateCentre();
         }
 
-        public void moveImidiately(float nx, float ny)
+        public void moveImmediately(float nx, float ny)
         {
             translate(nx, ny);
             consumeMovement();
         }
 
+        public float magnitude()
+        {
+            return MathF.Sqrt(x * x + y * y);
+        }
+
+        public Transform normalized()
+        {
+            float mag = magnitude();
+            var newVect = new Transform();
+            if (mag > 0)
+            {
+                newVect.x = x / mag;
+                newVect.y = y / mag;
+            }
+            return newVect;
+        }
+
+        public static float distance(Transform a, Transform b)
+        {
+            float dx = b.x - a.x;
+            float dy = b.y - a.y;
+            return (float)Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dy, 2));
+        }
+
+        public static float distance(float a, float b)
+        {
+            float delta = b - a;
+            return (float)Math.Abs(delta);
+        }
 
         public void rotate(float dir)
         {
@@ -135,7 +164,21 @@ namespace Shard
 
         }
 
+        public static Transform lerp(Transform a, Transform b, float t)
+        {
+            t = Math.Clamp(t, 0f, 1f);
 
+            Transform result = new Transform();
+
+            result.X = a.X + (b.X - a.X) * t;
+            result.Y = a.Y + (b.Y - a.Y) * t;
+
+            result.Rotz = a.Rotz + (b.Rotz - a.Rotz) * t;
+            result.Scalex = a.Scalex + (b.Scalex - a.Scalex) * t;
+            result.Scaley = a.Scaley + (b.Scaley - a.Scaley) * t;
+
+            return result;
+        }
 
         public float X
         {

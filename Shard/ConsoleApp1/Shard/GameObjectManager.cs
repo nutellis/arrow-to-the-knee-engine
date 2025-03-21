@@ -40,6 +40,8 @@ namespace Shard
             return me;
         }
 
+        public List<GameObject> getMyObject() => myObjects;
+
         public void addGameObject(GameObject gob)
         {
             myObjects.Add(gob);

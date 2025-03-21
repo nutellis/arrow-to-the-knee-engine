@@ -21,11 +21,14 @@ namespace SpaceInvaders
         private PhysicsComponent physics;
         private SoundComponent sound;
 
+        public NavigationComponent navigation;
+
         public override void initialize()
         {
 
             physics = new PhysicsComponent(this);
             sound = new SoundComponent(this);
+
 
             //sprite = new SpriteComponent(this, true);
             sprite = new SpriteComponent(this);
@@ -55,6 +58,8 @@ namespace SpaceInvaders
 
             sound.loadSound("InvaderAttack", "invaderfire.wav");
             sound.loadSound("InvaderMove", "invadermove.wav");
+
+
         }
 
 

@@ -30,7 +30,6 @@ namespace SpaceInvaders
 
         private (bool horizontal, bool vertical) isMoving = (false, false);
 
-
         public override void initialize()
         {
             this.transform.X = 100.0f;
