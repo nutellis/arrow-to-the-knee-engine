@@ -1,4 +1,6 @@
 ﻿using Shard;
+using Shard.Shard;
+using Shard.Shard.Components;
 using System;
 using System.Drawing;
 
@@ -6,85 +8,119 @@ namespace SpaceInvaders
 {
     class Bullet : GameObject, CollisionHandler
     {
+
+        private PhysicsComponent physics;
+        private SoundComponent sound;
+        private SpriteComponent sprite;
+
         private string destroyTag;
-        private int dir;
+        private float[] direction = { 0, 0 };
 
         public string DestroyTag { get => destroyTag; set => destroyTag = value; }
-        public int Dir { get => dir; set => dir = value; }
+        public float[] Dir { get => direction; set => direction = value; }
 
-        public void setupBullet(float x, float y)
+        public void setupBullet(float x, float y, float[] direction)
         {
-            this.Transform.X = x;
-            this.Transform.Y = y;
-            this.Transform.Wid = 1;
-            this.Transform.Ht = 20;
+            this.direction = direction;
+            this.transform.X = x;
+            this.transform.Y = y;
+            
+            if (direction[0] > 0)
+            {
+                this.sprite.setupAnimation("gun_projectile", 0, 0, 90, 20);
+            }
+            else if (direction[0] < 0)
+            {
+                this.sprite.setupAnimation("gun_projectile", 0, 0, -90, 20);
+            }
+            else if (direction[1] > 0)
+            {
+                this.sprite.setupAnimation("gun_projectile", 0, 0, 180, 20);
+            }
+            else
+            {
+                this.sprite.setupAnimation("gun_projectile", 0, 0, 0, 20);
+            }
 
+            physics.addRectCollider();
 
-            setPhysicsEnabled();
+            tags.addTag("Bullet");
 
-            MyBody.addRectCollider();
-
-            addTag("Bullet");
-
-            MyBody.PassThrough = true;
+            physics.PassThrough = true;
 
         }
 
         public override void initialize()
         {
+            physics = new PhysicsComponent(this);
+            sound = new SoundComponent(this);
+
+            this.sprite = new SpriteComponent(this);
+            this.sprite.setCurrentAnimation("gun_projectile");
+
             this.Transient = true;
+
+            tags = new Tags();
+
+            sound.loadSound("GotHit", "hit.wav");
+            sound.loadSound("BunkerExplosion", "bunkerexplosion.wav");
+            sound.setVolume("BunkerExplosion", 1.0f);
         }
 
 
         public override void update()
         {
+           
+            this.transform.moveImmediately((float)(direction[0] * 450.0 * Bootstrap.getDeltaTime()), (float)(direction[1] * 400.0 * Bootstrap.getDeltaTime()));
+
+            //drawBullet();
+        }
+
+        private void drawBullet()
+        {
             Random r = new Random();
             Color col = Color.FromArgb(r.Next(0, 256), r.Next(0, 256), 0);
 
-            this.Transform.translate(0, dir * 400 * Bootstrap.getDeltaTime());
-
             Bootstrap.getDisplay().drawLine(
-                (int)Transform.X,
-                (int)Transform.Y,
-                (int)Transform.X,
-                (int)Transform.Y + 20,
+                (int)transform.X ,
+                (int)transform.Y ,
+                (int)(transform.X + (20 * direction[0])),
+                (int)(transform.Y + (20 * direction[1])),
                 col);
-
-
-
-
         }
 
-        public void onCollisionEnter(PhysicsBody x)
+         public void onCollisionEnter(PhysicsComponent other)
         {
             GameSpaceInvaders g;
 
-            if (x.Parent.checkTag(destroyTag) == true || x.Parent.checkTag("BunkerBit"))
+            if (ToBeDestroyed) return;
+
+            if (other.Owner.Tags != null && (other.Owner.Tags.checkTag(destroyTag) || other.Owner.Tags.checkTag("BunkerBit")))
             {
                 ToBeDestroyed = true;
-                x.Parent.ToBeDestroyed = true;
+                other.Owner.ToBeDestroyed = true;
 
-                if (x.Parent.checkTag("Player"))
+                sound.playSound("BunkerExplosion");
+
+                if (other.Owner.Tags.checkTag("Player"))
                 {
                     g = (GameSpaceInvaders)Bootstrap.getRunningGame();
-
                     g.Dead = true;
                 }
-
             }
         }
 
-        public void onCollisionExit(PhysicsBody x)
+        public void onCollisionExit(PhysicsComponent x)
         {
         }
 
-        public void onCollisionStay(PhysicsBody x)
+        public void onCollisionStay(PhysicsComponent x)
         {
         }
 
         public override string ToString()
         {
-            return "Bullet: " + Transform.X + ", " + Transform.X;
+            return "Bullet: " + transform.X + ", " + transform.Y;
         }
     }
 }

@@ -195,7 +195,7 @@ namespace Shard
             td.Font = font;
             try
             {
-                IntPtr surf = SDL_ttf.TTF_RenderText_Blended(td.Font, td.Text, td.Col);
+                IntPtr surf = SDL_ttf.TTF_RenderText_Solid(td.Font, td.Text, td.Col);
                 IntPtr lblText = SDL.SDL_CreateTextureFromSurface(_rend, surf);
                 SDL.SDL_FreeSurface(surf);
                 SDL.SDL_Rect sRect;
@@ -236,6 +236,15 @@ namespace Shard
 
             }
 
+        }
+        public override nint loadTexture(nint loadedImage)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override (IntPtr, IntPtr) loadTextureFromPixels(byte[] pixelArray, int width, int height)
+        {
+            throw new NotImplementedException();
         }
     }
 }

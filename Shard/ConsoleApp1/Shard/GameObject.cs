@@ -8,77 +8,20 @@
 *   
 */
 
+using Shard.Shard;
 using System;
-using System.Collections.Generic;
 
 namespace Shard
 {
-    class GameObject
+    public class GameObject
     {
-        private Transform3D transform;
-        private bool transient;
-        private bool toBeDestroyed;
-        private bool visible;
-        private PhysicsBody myBody;
-        private List<string> tags;
+        public Guid uuid;
+        protected Tags tags;
+        protected bool visible = true;
+        protected bool transient = false;
+        protected bool toBeDestroyed = false;
 
-        public void addTag(string str)
-        {
-            if (tags.Contains(str))
-            {
-                return;
-            }
-
-            tags.Add(str);
-        }
-
-        public void removeTag(string str)
-        {
-            tags.Remove(str);
-        }
-
-        public bool checkTag(string tag)
-        {
-            return tags.Contains(tag);
-        }
-
-        public String getTags()
-        {
-            string str = "";
-
-            foreach (string s in tags)
-            {
-                str += s;
-                str += ";";
-            }
-
-            return str;
-        }
-
-        public void setPhysicsEnabled()
-        {
-            MyBody = new PhysicsBody(this);
-        }
-
-
-        public bool queryPhysicsEnabled()
-        {
-            if (MyBody == null)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        internal Transform3D Transform
-        {
-            get => transform;
-        }
-
-        internal Transform Transform2D
-        {
-            get => (Transform)transform;
-        }
+        public Transform transform { get; private set; }
 
 
         public bool Visible
@@ -86,18 +29,40 @@ namespace Shard
             get => visible;
             set => visible = value;
         }
-        public bool Transient { get => transient; set => transient = value; }
-        public bool ToBeDestroyed { get => toBeDestroyed; set => toBeDestroyed = value; }
-        internal PhysicsBody MyBody { get => myBody; set => myBody = value; }
 
-        public virtual void initialize()
+        public bool Transient
         {
+            get => transient;
+            set => transient = value;
         }
 
-        public virtual void update()
+        public bool ToBeDestroyed
         {
-
+            get => toBeDestroyed;
+            set => toBeDestroyed = value;
         }
+        public Tags Tags
+        {
+            get => tags;
+            set => tags = value;
+        }
+
+
+        public GameObject()
+        {
+            uuid = Guid.NewGuid();
+
+            GameObjectManager.getInstance().addGameObject(this);  // Manage game object
+            transform = new Transform();
+            tags = new Tags();
+
+            visible = false;
+            toBeDestroyed = false;
+
+            this.initialize();
+        }
+
+        public virtual void initialize() { }
 
         public virtual void physicsUpdate()
         {
@@ -107,18 +72,10 @@ namespace Shard
         {
         }
 
-        public GameObject()
+        // Called each frame to update all enabled components
+        public virtual void update()
         {
-            GameObjectManager.getInstance().addGameObject(this);
-
-            transform = new Transform3D(this);
-            visible = false;
-
-            ToBeDestroyed = false;
-            tags = new List<string>();
-
-            this.initialize();
-
+            transform.consumeMovement();
         }
 
         public void checkDestroyMe()
@@ -129,27 +86,23 @@ namespace Shard
                 return;
             }
 
-            if (Transform.X > 0 && Transform.X < Bootstrap.getDisplay().getWidth())
+            if (transform.X > 0 && transform.X < Bootstrap.getDisplay().getWidth())
             {
-                if (Transform.Y > 0 && Transform.Y < Bootstrap.getDisplay().getHeight())
+                if (transform.Y > 0 && transform.Y < Bootstrap.getDisplay().getHeight())
                 {
                     return;
                 }
             }
 
-
             ToBeDestroyed = true;
-
         }
 
         public virtual void killMe()
         {
-            PhysicsManager.getInstance().removePhysicsObject(myBody);
-
-            myBody = null;
             transform = null;
+            tags = null;
+
+            GameObjectManager.getInstance().removeAllComponents(this);
         }
-
-
     }
 }

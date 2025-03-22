@@ -18,15 +18,14 @@ using System.Numerics;
 namespace Shard
 {
 
-    class Transform
+    public class Transform
     {
-        private GameObject owner;
         private float x, y;
         private float lx, ly;
         private float rotz;
         private int wid, ht;
         private float scalex, scaley;
-        private string spritePath;
+
         private Vector2 forward;
         private Vector2 right, centre;
 
@@ -39,9 +38,8 @@ namespace Shard
             return new Vector2(-dx, -dy);
         }
 
-        public Transform(GameObject ow)
+        public Transform()
         {
-            Owner = ow;
             forward = new Vector2();
             right = new Vector2();
             centre = new Vector2();
@@ -76,14 +74,20 @@ namespace Shard
 
         public void translate(float nx, float ny)
         {
-            Lx = X;
-            Ly = Y;
 
-            x += (float)nx;
-            y += (float)ny;
+            lx += (float)nx;
+            ly += (float)ny;
 
-
-            recalculateCentre();
+            //if (lx != 0 && ly != 0)
+            //{
+            //    // normalize the movement vector to ensure consistent speed
+            //    float magnitude = (float)Math.Sqrt(Lx * Lx + Ly * Ly);
+            //    if (magnitude > 0)
+            //    {
+            //        lx = lx * (Math.Abs(lx) / magnitude);
+            //        ly = ly * (Math.Abs(ly) / magnitude);
+            //    }
+            //}
         }
 
         public void translate(Vector2 vect)
@@ -91,7 +95,52 @@ namespace Shard
             translate(vect.X, vect.Y);
         }
 
+        public void consumeMovement()
+        {
+            X += Lx;
+            Y += Ly;
 
+            Lx = 0;
+            Ly = 0;
+
+            recalculateCentre();
+        }
+
+        public void moveImmediately(float nx, float ny)
+        {
+            translate(nx, ny);
+            consumeMovement();
+        }
+
+        public float magnitude()
+        {
+            return MathF.Sqrt(x * x + y * y);
+        }
+
+        public Transform normalized()
+        {
+            float mag = magnitude();
+            var newVect = new Transform();
+            if (mag > 0)
+            {
+                newVect.x = x / mag;
+                newVect.y = y / mag;
+            }
+            return newVect;
+        }
+
+        public static float distance(Transform a, Transform b)
+        {
+            float dx = b.x - a.x;
+            float dy = b.y - a.y;
+            return (float)Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dy, 2));
+        }
+
+        public static float distance(float a, float b)
+        {
+            float delta = b - a;
+            return (float)Math.Abs(delta);
+        }
 
         public void rotate(float dir)
         {
@@ -115,7 +164,21 @@ namespace Shard
 
         }
 
+        public static Transform lerp(Transform a, Transform b, float t)
+        {
+            t = Math.Clamp(t, 0f, 1f);
 
+            Transform result = new Transform();
+
+            result.X = a.X + (b.X - a.X) * t;
+            result.Y = a.Y + (b.Y - a.Y) * t;
+
+            result.Rotz = a.Rotz + (b.Rotz - a.Rotz) * t;
+            result.Scalex = a.Scalex + (b.Scalex - a.Scalex) * t;
+            result.Scaley = a.Scaley + (b.Scaley - a.Scaley) * t;
+
+            return result;
+        }
 
         public float X
         {
@@ -134,17 +197,10 @@ namespace Shard
             set => rotz = value;
         }
 
-
-        public string SpritePath
-        {
-            get => spritePath;
-            set => spritePath = value;
-        }
         public ref Vector2 Forward { get => ref forward; }
         public int Wid { get => wid; set => wid = value; }
         public int Ht { get => ht; set => ht = value; }
         public ref Vector2 Right { get => ref right; }
-        internal GameObject Owner { get => owner; set => owner = value; }
         public ref Vector2 Centre { get => ref centre; }
         public float Scalex { get => scalex; set => scalex = value; }
         public float Scaley { get => scaley; set => scaley = value; }

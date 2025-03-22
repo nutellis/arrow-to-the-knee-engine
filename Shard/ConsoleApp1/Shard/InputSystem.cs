@@ -8,6 +8,8 @@
 *   
 */
 
+using Shard.Shard;
+using System;
 using System.Collections.Generic;
 
 namespace Shard
@@ -16,6 +18,7 @@ namespace Shard
     abstract class InputSystem
     {
         private List<InputListener> myListeners;
+
 
         public virtual void initialize()
         {
@@ -39,7 +42,7 @@ namespace Shard
             myListeners.Remove(il);
         }
 
-        public void informListeners(InputEvent ie, string eventType)
+        public void informListeners(InputEvent ie, InputType eventType)
         {
             InputListener il;
             for (int i = 0; i < myListeners.Count; i++)
@@ -54,6 +57,9 @@ namespace Shard
                 il.handleInput(ie, eventType);
             }
         }
+
+       
+
         public abstract void getInput();
     }
 }

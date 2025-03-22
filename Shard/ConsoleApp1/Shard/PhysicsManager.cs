@@ -22,6 +22,7 @@
 *   
 */
 
+using Shard.Shard.Components;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -37,32 +38,36 @@ namespace Shard
 
     class CollidingObject
     {
-        PhysicsBody a, b;
+        PhysicsComponent a, b;
 
-        public CollidingObject() {
+        public CollidingObject()
+        {
         }
 
-        public CollidingObject (PhysicsBody x, PhysicsBody y) {
+        public CollidingObject(PhysicsComponent x, PhysicsComponent y)
+        {
             A = x;
             B = y;
         }
 
-        internal PhysicsBody A { get => a; set => a = value; }
-        internal PhysicsBody B { get => b; set => b = value; }
+        internal PhysicsComponent A { get => a; set => a = value; }
+        internal PhysicsComponent B { get => b; set => b = value; }
 
-        public override bool Equals(object other) {
+        public override bool Equals(object other)
+        {
             return other is CollidingObject co &&
                 (A == co.A && B == co.B ||
                 A == co.B && B == co.A);
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return A.GetHashCode() ^ B.GetHashCode();
         }
 
         public override String ToString()
         {
-            return "[" + A.Parent.ToString() + " v " + B.Parent.ToString() + "]";
+            return "[" + A.Owner.ToString() + " v " + B.Owner.ToString() + "]";
         }
     }
 
@@ -74,13 +79,13 @@ namespace Shard
 
     class SAPEntry
     {
-        PhysicsBody owner;
+        PhysicsComponent owner;
         float start, end;
         SAPEntry previous, next;
 
         public float Start { get => start; set => start = value; }
         public float End { get => end; set => end = value; }
-        internal PhysicsBody Owner { get => owner; set => owner = value; }
+        internal PhysicsComponent Owner { get => owner; set => owner = value; }
         internal SAPEntry Previous { get => previous; set => previous = value; }
         internal SAPEntry Next { get => next; set => next = value; }
     }
@@ -91,13 +96,13 @@ namespace Shard
         private static PhysicsManager me;
         private List<CollidingObject> collisionsToCheck;
         HashSet<CollidingObject> colliding;
-            
+
         private long timeInterval;
         SAPEntry sapX, sapY;
         float gravityModifier;
         Vector2 gravityDir;
 
-        List<PhysicsBody> allPhysicsObjects;
+        List<PhysicsComponent> allPhysicsObjects;
         private long lastUpdate;
         private long lastDebugDraw;
         private PhysicsManager()
@@ -105,7 +110,7 @@ namespace Shard
             string tmp = "";
             string[] tmpbits;
 
-            allPhysicsObjects = new List<PhysicsBody>();
+            allPhysicsObjects = new List<PhysicsComponent>();
             colliding = new HashSet<CollidingObject>();
 
             lastUpdate = Bootstrap.getCurrentMillis();
@@ -116,7 +121,7 @@ namespace Shard
             // 50 FPS            
 
             TimeInterval = 20;
-            
+
             if (Bootstrap.checkEnvironmentalVariable("gravity_modifier"))
             {
                 gravityModifier = float.Parse
@@ -127,21 +132,23 @@ namespace Shard
                 gravityModifier = 0.1f;
             }
 
-            if (Bootstrap.checkEnvironmentalVariable("gravity_dir")) {
+            if (Bootstrap.checkEnvironmentalVariable("gravity_dir"))
+            {
                 tmp = Bootstrap.getEnvironmentalVariable("gravity_dir");
 
                 tmpbits = tmp.Split(",");
 
                 gravityDir = new Vector2(int.Parse(tmpbits[0]), int.Parse(tmpbits[1]));
             }
-            else {
-                gravityDir = new Vector2 (0, 1);
+            else
+            {
+                gravityDir = new Vector2(0, 1);
             }
 
-            
-    }
 
-    public static PhysicsManager getInstance()
+        }
+
+        public static PhysicsManager getInstance()
         {
             if (me == null)
             {
@@ -156,8 +163,9 @@ namespace Shard
         public long TimeInterval { get => timeInterval; set => timeInterval = value; }
         public long LastDebugDraw { get => lastDebugDraw; set => lastDebugDraw = value; }
         public float GravityModifier { get => gravityModifier; set => gravityModifier = value; }
+        public Vector2 GravityDirection { get => gravityDir; set => gravityDir = value; }
 
-        public void addPhysicsObject(PhysicsBody body)
+        public void addPhysicsObject(PhysicsComponent body)
         {
             if (allPhysicsObjects.Contains(body))
             {
@@ -168,9 +176,9 @@ namespace Shard
 
         }
 
-        public void removePhysicsObject(PhysicsBody body)
+        public void removePhysicsObject(PhysicsComponent body)
         {
-                allPhysicsObjects.Remove(body);           
+            allPhysicsObjects.Remove(body);
         }
 
         public void clearList(SAPEntry node)
@@ -256,7 +264,7 @@ namespace Shard
 
             while (pointer != null)
             {
-                text += "[" + counter + "]: " + pointer.Owner.Parent + ", ";
+                text += "[" + counter + "]: " + pointer.Owner + ", ";
                 pointer = pointer.Next;
                 counter += 1;
             }
@@ -285,24 +293,16 @@ namespace Shard
                 return false;
             }
 
-            //            Debug.Log("Tick: " + Bootstrap.TimeElapsed);
+            //Debug.Log("Tick: " + Bootstrap.TimeElapsed);
 
             lastUpdate = Bootstrap.getCurrentMillis();
 
 
             toRemove = new List<CollidingObject>();
 
-            foreach (PhysicsBody body in allPhysicsObjects)
+            foreach (PhysicsComponent body in allPhysicsObjects)
             {
-
-                if (body.UsesGravity) {
-                    body.applyGravity(gravityModifier, gravityDir);
-                }
-
-                body.physicsTick();
-                body.recalculateColliders();
-
-
+                body.update();
             }
 
 
@@ -315,12 +315,13 @@ namespace Shard
 
                 // If the object has been destroyed in the interim, it should still 
                 // trigger a collision exit.
-                if (col.A.Parent.ToBeDestroyed) {
-                    ch2.onCollisionExit (null);
+                if (col.A.Owner.ToBeDestroyed)
+                {
+                    ch2.onCollisionExit(null);
                     toRemove.Add(col);
                 }
 
-                if (col.B.Parent.ToBeDestroyed)
+                if (col.B.Owner.ToBeDestroyed)
                 {
                     ch.onCollisionExit(null);
                     toRemove.Add(col);
@@ -353,22 +354,22 @@ namespace Shard
 
 
 
-                //            Debug.Log("Time Interval is " + (Bootstrap.getCurrentMillis() - lastUpdate) + ", " + colliding.Count);
+            //            Debug.Log("Time Interval is " + (Bootstrap.getCurrentMillis() - lastUpdate) + ", " + colliding.Count);
 
 
-                return true;
+            return true;
         }
 
         public void drawDebugColliders()
         {
-            foreach (PhysicsBody body in allPhysicsObjects)
+            foreach (PhysicsComponent body in allPhysicsObjects)
             {
                 // Debug drawing - always happens.
                 body.drawMe();
             }
         }
 
-        private Vector2? checkCollisionBetweenObjects(PhysicsBody a, PhysicsBody b)
+        private Vector2? checkCollisionBetweenObjects(PhysicsComponent a, PhysicsComponent b)
         {
             Vector2? impulse;
 
@@ -431,13 +432,14 @@ namespace Shard
                 }
             }
 
-//            Debug.Log("Checking " + collisionsToCheck.Count + " collisions");
+            //            Debug.Log("Checking " + collisionsToCheck.Count + " collisions");
 
         }
 
-        public bool findColliding(PhysicsBody a, PhysicsBody b) {
-            CollidingObject col = new CollidingObject (a, b);
-              
+        public bool findColliding(PhysicsComponent a, PhysicsComponent b)
+        {
+            CollidingObject col = new CollidingObject(a, b);
+
             return colliding.Contains(col);
         }
 
@@ -487,7 +489,7 @@ namespace Shard
 
                         if (ob.B.Kinematic == false)
                         {
-                            ob.B.Parent.Transform.translate(-1 * (impulse.X * massProp), -1 * (impulse.Y * massProp));
+                            ob.B.Owner.transform.translate(-1 * (impulse.X * massProp), -1 * (impulse.Y * massProp));
                         }
 
 
@@ -506,7 +508,7 @@ namespace Shard
                         if (ob.A.Kinematic == false)
                         {
 
-                            ob.A.Parent.Transform.translate((impulse.X * massProp), (impulse.Y * massProp));
+                            ob.A.Owner.transform.translate((impulse.X * massProp), (impulse.Y * massProp));
                         }
 
 
@@ -524,14 +526,14 @@ namespace Shard
                     }
 
 
-                    ((CollisionHandler)ob.A.Parent).onCollisionEnter(ob.B);
-                    ((CollisionHandler)ob.B.Parent).onCollisionEnter(ob.A);
+                    ((CollisionHandler)ob.A.Owner).onCollisionEnter(ob.B);
+                    ((CollisionHandler)ob.B.Owner).onCollisionEnter(ob.A);
                     colliding.Add(ob);
 
 
 
                     if (ob.A.ReflectOnCollision)
-                    {                        
+                    {
                         ob.A.reflectForces(impulse);
                     }
                     if (ob.B.ReflectOnCollision)
@@ -624,10 +626,10 @@ namespace Shard
             float[] x, y;
             sapX = null;
             sapY = null;
-            List<PhysicsBody> candidates = new List<PhysicsBody>();
+            List<PhysicsComponent> candidates = new List<PhysicsComponent>();
 
 
-            foreach (PhysicsBody body in allPhysicsObjects)
+            foreach (PhysicsComponent body in allPhysicsObjects)
             {
                 sx = new SAPEntry();
 
@@ -659,7 +661,7 @@ namespace Shard
         public void broadPass()
         {
             broadPassSearchAndSweep();
-//          broadPassBruteForce();
+            //          broadPassBruteForce();
         }
 
 

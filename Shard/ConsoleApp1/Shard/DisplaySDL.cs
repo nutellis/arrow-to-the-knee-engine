@@ -12,9 +12,13 @@
 */
 
 using SDL2;
+using Shard;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Threading;
+using static SDL2.SDL;
 
 namespace Shard
 {
@@ -52,7 +56,8 @@ namespace Shard
 
     class DisplaySDL : DisplayText
     {
-        private List<Transform> _toDraw;
+        private List<Sprite> _toDraw;
+
         private List<Line> _linesToDraw;
         private List<Circle> _circlesToDraw;
         private Dictionary<string, IntPtr> spriteBuffer;
@@ -62,71 +67,78 @@ namespace Shard
 
             base.initialize();
 
-            _toDraw = new List<Transform>();
+            _toDraw = new List<Sprite>();
             _linesToDraw = new List<Line>();
             _circlesToDraw = new List<Circle>();
 
 
         }
 
-        public IntPtr loadTexture(Transform trans)
+        public override IntPtr loadTexture(IntPtr loadedImage)
         {
-            IntPtr ret;
-            uint format;
-            int access;
-            int w;
-            int h;
+            IntPtr result;
 
-            ret = loadTexture(trans.SpritePath);
+            result = SDL.SDL_CreateTextureFromSurface(_rend, loadedImage);
 
-            SDL.SDL_QueryTexture(ret, out format, out access, out w, out h);
-            trans.Ht = h;
-            trans.Wid = w;
-            trans.recalculateCentre();
+            SDL.SDL_SetTextureBlendMode(result, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
 
-            return ret;
+            return result;
 
         }
 
-
-        public IntPtr loadTexture(string path)
+        public override (IntPtr, IntPtr) loadTextureFromPixels(byte[] pixelArray, int width, int height)
         {
-            IntPtr img;
+            IntPtr texture = IntPtr.Zero;
+            IntPtr surface;
 
-            if (spriteBuffer.ContainsKey(path))
+            unsafe
             {
-                return spriteBuffer[path];
+                fixed (byte* ptr = pixelArray)
+                {
+                    surface = SDL.SDL_CreateRGBSurfaceWithFormatFrom(
+                        (IntPtr)ptr, width, height, 32, width * 4, SDL.SDL_PIXELFORMAT_ABGR8888);
+
+                    texture = SDL.SDL_CreateTextureFromSurface(_rend, surface);
+
+                        SDL.SDL_SetTextureBlendMode(texture, SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
+
+                        SDL.SDL_FreeSurface((IntPtr)surface);
+                }
             }
 
-            img = SDL_image.IMG_Load(path);
-
-            Debug.getInstance().log("IMG_Load: " + SDL_image.IMG_GetError());
-
-            spriteBuffer[path] = SDL.SDL_CreateTextureFromSurface(_rend, img);
-
-            SDL.SDL_SetTextureBlendMode(spriteBuffer[path], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
-
-            return spriteBuffer[path];
-
+            return (texture, surface);
         }
 
-
-        public override void addToDraw(GameObject gob)
+        public override void addToDraw(Sprite sprite)
         {
-            _toDraw.Add(gob.Transform);
+            _toDraw.Add(sprite);
 
-            if (gob.Transform.SpritePath == null)
+            if (sprite.spriteName == null)
+            {
+                return;
+            }
+            //if the sprite exists and it is valid, try and see if it is contained on the draw buffer
+            // if its already there return the buffer
+            if (spriteBuffer.ContainsKey(sprite.spriteName))
             {
                 return;
             }
 
-            loadTexture(gob.Transform.SpritePath);
+            spriteBuffer[sprite.spriteName] = sprite.texture;
+
+            SDL.SDL_SetTextureBlendMode(spriteBuffer[sprite.spriteName], SDL.SDL_BlendMode.SDL_BLENDMODE_BLEND);
+
         }
 
-        public override void removeToDraw(GameObject gob)
+        public override void removeToDraw(Sprite sprite)
         {
-            _toDraw.Remove(gob.Transform);
+            _toDraw.Remove(sprite);
         }
+
+        //public override void removeToDraw(GameObject gob)
+        //{
+        //    _toDraw.Remove(gob.transform);
+        //}
 
 
         void renderCircle(int centreX, int centreY, int rad)
@@ -173,6 +185,53 @@ namespace Shard
             }
         }
 
+        void renderCircle1(int centreX, int centreY, int rad)
+        {
+            int dia = (rad * 2);
+            byte r, g, b, a;
+            int x = (rad - 1);
+            int y = 0;
+            int tx = 1;
+            int ty = 1;
+            int error = (tx - dia);
+
+            SDL.SDL_GetRenderDrawColor(_rend, out r, out g, out b, out a);
+
+            var points = new List<SDL.SDL_Point>();
+
+            // We draw an octagon around the point, and then turn it a bit. Do 
+            // that until we have an outline circle. If you want a filled one, 
+            // do the same thing with an ever decreasing radius.
+            while (x >= y)
+            {
+                points.Add(new SDL.SDL_Point { x = centreX + x, y = centreY - y });
+                points.Add(new SDL.SDL_Point { x = centreX + x, y = centreY + y });
+                points.Add(new SDL.SDL_Point { x = centreX - x, y = centreY - y });
+                points.Add(new SDL.SDL_Point { x = centreX - x, y = centreY + y });
+                points.Add(new SDL.SDL_Point { x = centreX + y, y = centreY - x });
+                points.Add(new SDL.SDL_Point { x = centreX + y, y = centreY + x });
+                points.Add(new SDL.SDL_Point { x = centreX - y, y = centreY - x });
+                points.Add(new SDL.SDL_Point { x = centreX - y, y = centreY + x });
+
+                if (error <= 0)
+                {
+                    y += 1;
+                    error += ty;
+                    ty += 2;
+                }
+
+                if (error > 0)
+                {
+                    x -= 1;
+                    tx += 2;
+                    error += (tx - dia);
+                }
+            }
+
+            SDL.SDL_RenderDrawPoints(_rend, points.ToArray(), points.Count);
+        }
+
+
         public override void drawCircle(int x, int y, int rad, int r, int g, int b, int a)
         {
             Circle c = new Circle();
@@ -210,35 +269,33 @@ namespace Shard
             SDL.SDL_Rect sRect;
             SDL.SDL_Rect tRect;
 
+            _toDraw.Sort((sprite1, sprite2) => sprite1.zOrder.CompareTo(sprite2.zOrder));
 
-
-            foreach (Transform trans in _toDraw)
+            foreach (Sprite sprite in _toDraw)
             {
 
-                if (trans.SpritePath == null)
+                if (sprite.spriteName == null)
                 {
                     continue;
                 }
 
-                var sprite = loadTexture(trans);
-
                 sRect.x = 0;
                 sRect.y = 0;
-                sRect.w = (int)(trans.Wid * trans.Scalex);
-                sRect.h = (int)(trans.Ht * trans.Scaley);
+                sRect.w = (int)(sprite.width * sprite.scaleX);
+                sRect.h = (int)(sprite.height * sprite.scaleY);
 
-                tRect.x = (int)trans.X;
-                tRect.y = (int)trans.Y;
+                tRect.x = (int)sprite.X;
+                tRect.y = (int)sprite.Y;
                 tRect.w = sRect.w;
                 tRect.h = sRect.h;
 
-                SDL.SDL_RenderCopyEx(_rend, sprite, ref sRect, ref tRect, (int)trans.Rotz, IntPtr.Zero, SDL.SDL_RendererFlip.SDL_FLIP_NONE);
+                SDL.SDL_RenderCopyEx(_rend, sprite.texture, ref sRect, ref tRect, (int)sprite.rotz, IntPtr.Zero, SDL.SDL_RendererFlip.SDL_FLIP_NONE);
             }
 
             foreach (Circle c in _circlesToDraw)
             {
                 SDL.SDL_SetRenderDrawColor(_rend, (byte)c.R, (byte)c.G, (byte)c.B, (byte)c.A);
-                renderCircle(c.X, c.Y, c.Radius);
+                renderCircle1(c.X, c.Y, c.Radius);
             }
 
             foreach (Line l in _linesToDraw)
@@ -250,7 +307,6 @@ namespace Shard
             // Show it off.
             base.display();
 
-
         }
 
         public override void clearDisplay()
@@ -261,6 +317,11 @@ namespace Shard
             _linesToDraw.Clear();
 
             base.clearDisplay();
+        }
+
+        public IntPtr getRenderer()
+        {
+            return _rend;  // _rend is already managing the SDL renderer
         }
 
     }

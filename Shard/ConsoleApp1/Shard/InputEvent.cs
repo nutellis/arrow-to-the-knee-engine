@@ -18,6 +18,8 @@ namespace Shard
         private int button;
         private int key;
         private string classification;
+        private string inputActionName;
+        private float moveAmount;
 
         public int X
         {
@@ -43,6 +45,18 @@ namespace Shard
         {
             get => key;
             set => key = value;
+        }
+
+        public string InputActionName
+        {
+            get => inputActionName;
+            set => inputActionName = value;
+        }
+
+        public float MoveAmount
+        {
+            get => moveAmount;
+            set => moveAmount = value;
         }
     }
 }

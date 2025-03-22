@@ -11,11 +11,11 @@ using System;
 
 namespace Shard
 {
-    public class SoundSDL : Sound
+    public class SoundSDL
     {
 
 
-        public override void playSound(string file)
+        public void playSound(string file)
         {
             SDL.SDL_AudioSpec have, want;
             uint length, dev;

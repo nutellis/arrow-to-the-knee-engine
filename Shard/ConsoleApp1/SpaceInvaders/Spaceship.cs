@@ -1,35 +1,156 @@
 ﻿using SDL2;
 using Shard;
+using Shard.Shard.Components;
 using System.Drawing;
+using Shard.Shard;
+using Shard.SpaceInvaders;
+using System;
+using System.Text.Json;
 
 namespace SpaceInvaders
 {
-    class Spaceship : GameObject, InputListener, CollisionHandler
+    class Spaceship : GameObject, CollisionHandler
     {
-        bool left, right;
-        float fireCounter, fireDelay;
+        public SpriteComponent baseSprite;
+        public SpriteComponent engineSprite;
+        public SpriteComponent engineEffectAnimation;
 
+        private InputComponent input;
+
+        private SoundComponent sound;
+  
+        private PhysicsComponent physics;
+
+        private HealthComponent health;
+        private ShieldComponent shield;
+        private WeaponComponent weapon;
+
+        private double fireCounter, fireDelay = 1f;
+        private float moveDistance, moveSpeed = 350;
+
+        private (bool horizontal, bool vertical) isMoving = (false, false);
 
         public override void initialize()
         {
+            this.transform.X = 100.0f;
+            this.transform.Y = 750.0f;
 
-            this.Transform.X = 100.0f;
-            this.Transform.Y = 800.0f;
-            this.Transform.SpritePath = Bootstrap.getAssetManager().getAssetPath("player.png");
+            this.engineEffectAnimation = new SpriteComponent(this);
+            this.engineEffectAnimation.setCurrentAnimation("spaceship_engine");
+            this.engineEffectAnimation.setupAnimation("spaceship_engine", 12, 50, 0, 5);
+
+            this.engineSprite = new SpriteComponent(this);
+            this.engineSprite.addSprite("baseEngine", "BaseEngine.png", 1.5f, 10, 25, 5);
+            this.engineSprite.setSprite("baseEngine");
+
+            this.baseSprite = new SpriteComponent(this);
+            this.baseSprite.addSprite("shipFull", "ShipFull.png", 1.5f, 0, 0, 10);
+            this.baseSprite.addSprite("shipSlight", "ShipSlightDamaged.png", 1.5f, 0, 0, 10);
+            this.baseSprite.addSprite("shipDamaged", "ShipDamaged.png", 1.5f, 0, 0, 10);
+            this.baseSprite.addSprite("shipVeryDamaged", "ShipVeryDamaged.png", 1.5f, 0, 0, 10);
+
+            this.baseSprite.setSprite("shipFull");
 
 
-            fireDelay = 2;
+            fireDelay = 0.5;
             fireCounter = fireDelay;
 
-            Bootstrap.getInput().addListener(this);
+            tags = new Tags();
+            tags.addTag("Player");
 
-            setPhysicsEnabled();
+            input = new InputComponent(this);
+            input.initialize();
 
-            MyBody.addRectCollider();
+            input.bindInputAction("Fire", InputType.Pressed, (parameters) => fireBullet());
 
-            addTag("Player");
+            input.bindAxisAction("Horizontal", moveHorizontal);
+            input.bindAxisAction("Vertical", moveVertical);
+
+            input.bindAxisAction("FireHorizontal", fireHorizontalBullet);
+            input.bindAxisAction("FireVertical", fireVerticalBullet);
+
+            physics = new PhysicsComponent(this);
+            physics.addRectCollider();
+
+            tags.addTag("Player");
+
+            sound = new SoundComponent(this);
+            sound.loadSound("SpaceShipAttack", "fire.wav");
+            sound.loadSound("SpaceShipMove", "spaceshipmove.wav");
+
+            health = new HealthComponent(this);
+            shield = new ShieldComponent(this);
+
+            weapon = new WeaponComponent(this);
 
 
+
+            sound.loadSound("BackgroundEngine", "spaceshipengine.wav");
+
+            //sound.setVolume("BackgroundMusic", 0.1f);
+
+            sound.setVolume("BackgroundEngine", 1f);
+            sound.playSound("BackgroundEngine", true);
+        }
+
+
+        public void moveVertical(float value)
+        {
+            if (value != 0.0)
+            {
+                this.transform.translate(0, value * moveDistance);
+                isMoving.vertical = true;
+            }
+            else
+            {
+                isMoving.vertical = false;
+            }
+        }
+
+        public void moveHorizontal(float value)
+        {
+            if (value != 0.0)
+            {
+                this.transform.translate(value * moveDistance, 0);
+                isMoving.horizontal = true;
+            }
+            else
+            {
+                isMoving.horizontal = false;
+            }
+        }
+
+        public void fireVerticalBullet(float value)
+        {
+            if (fireCounter < fireDelay || value == 0.0)
+            {
+                return;
+            }
+
+            Bullet b = new Bullet();
+            b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [0, value]);
+            b.DestroyTag = "Invader";
+
+            fireCounter = 0;
+
+            sound.playSound("SpaceShipAttack");
+        }
+
+
+        public void fireHorizontalBullet(float value)
+        {
+            if (fireCounter < fireDelay || value == 0.0)
+            {
+                return;
+            }
+
+            Bullet b = new Bullet();
+            b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [value, 0]);
+            b.DestroyTag = "Invader";
+
+            fireCounter = 0;
+
+            sound.playSound("SpaceShipAttack");
         }
 
         public void fireBullet()
@@ -40,104 +161,71 @@ namespace SpaceInvaders
             }
 
             Bullet b = new Bullet();
-
-            b.setupBullet(this.Transform.Centre.X, this.Transform.Centre.Y);
-            b.Dir = -1;
+            b.setupBullet(this.transform.Centre.X, this.transform.Centre.Y, [0, -1]);
+            b.Dir[1] = -1;
             b.DestroyTag = "Invader";
 
             fireCounter = 0;
 
-        }
+            sound.playSound("SpaceShipAttack");
 
-        public void handleInput(InputEvent inp, string eventType)
-        {
-
-            if (Bootstrap.getRunningGame().isRunning() == false)
-            {
-                return;
-            }
-
-            if (eventType == "KeyDown")
-            {
-
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
-                {
-                    right = true;
-                }
-
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
-                {
-                    left = true;
-                }
-
-            }
-            else if (eventType == "KeyUp")
-            {
-
-
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_D)
-                {
-                    right = false;
-                }
-
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_A)
-                {
-                    left = false;
-                }
-
-
-            }
-
-
-
-            if (eventType == "KeyUp")
-            {
-                if (inp.Key == (int)SDL.SDL_Scancode.SDL_SCANCODE_SPACE)
-                {
-                    fireBullet();
-                }
-            }
         }
 
         public override void update()
         {
-            float amount = (float)(100 * Bootstrap.getDeltaTime());
+            base.update();
 
             fireCounter += (float)Bootstrap.getDeltaTime();
+            moveDistance = (float)(moveSpeed * Bootstrap.getDeltaTime());
 
-            if (left)
+
+            if (isMoving.Equals((false, false)))
             {
-                this.Transform.translate(-1 * amount, 0);
+                sound.stopSound("SpaceShipMove");
+            } else {
+                sound.playSound("SpaceShipMove");
             }
+        }
 
-            if (right)
+        public void onCollisionEnter(PhysicsComponent x)
+        {
+
+        }
+
+        public void onCollisionExit(PhysicsComponent x)
+        {
+
+            physics.DebugColor = Color.Green;
+
+            // Sound Testing Reset
+            if (x.Owner.Tags.checkTag("BunkerBit"))
             {
-                this.Transform.translate(1 * amount, 0);
+                //Resume the Spaceship engine sound again 
+                //sound.setVolume("BackgroundEngine", 1f);
+                //sound.playSound("BackgroundEngine", true);
+
+                //Resume all sounds 
+                //SoundManager.getInstance().stopAllSounds(false);
             }
-
-            Bootstrap.getDisplay().addToDraw(this);
         }
 
-        public void onCollisionEnter(PhysicsBody x)
+        public void onCollisionStay(PhysicsComponent x)
         {
+            // Stop all Component Sounds Test
+            physics.DebugColor = Color.Blue;
+            if (x.Owner.Tags.checkTag("BunkerBit"))
+            {
+                //Stop all sounds coming from this component!
+                //sound.stopAllComponentSounds();
 
-        }
-
-        public void onCollisionExit(PhysicsBody x)
-        {
-
-            MyBody.DebugColor = Color.Green;
-        }
-
-        public void onCollisionStay(PhysicsBody x)
-        {
-            MyBody.DebugColor = Color.Blue;
+                //Stops Every Sound Playing
+                //SoundManager.getInstance().stopAllSounds(true);
+            }
         }
 
         public override string ToString()
         {
-            return "Spaceship: [" + Transform.X + ", " + Transform.Y + ", " + Transform.Wid + ", " + Transform.Ht + "]";
+            return "Spaceship: [" + transform.X + ", " + transform.Y + ", " + transform.Wid + ", " + transform.Ht + "]";
         }
-
     }
 }
